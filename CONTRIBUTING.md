@@ -4,6 +4,15 @@ You should follow the steps below to make contribution to the project:
 
 ## Submit a PR
 
+### Commit Title convention
+
+Please be descriptive when you commit your code. A good practice is to follow the format below:  
+[Part] <Commit summary\>, for example:
+
+```
+[Database][Schema] Create the schema of the database
+```
+
 ### PR Title convention
 
 A valid PR title should begin with one of the following prefix: 
