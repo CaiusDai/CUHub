@@ -29,3 +29,27 @@ npm init -y
 npm i express pg
 ```
 
+### Table Manipulation
+Table Creation:  
+
+```bash
+node ./src/scripts/db_create.js
+```
+
+Table Deletion: (Delete the table as well as the data)
+
+```bash
+node ./src/scripts/db_delete.js
+```
+
+Load Data: (TODO)
+
+```bash
+node ./src/scripts/db_load_data.js
+```
+
+Clear Data: (Tables will remain. Only data will be cleared) (TODO)
+
+```bash
+node ./src/scripts/db_clear_data.js
+```
