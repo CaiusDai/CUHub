@@ -9,18 +9,26 @@ async function create_table(){
         const database = await connect_db();
 
         // Queries:
-        const query = 
-                    "CREATE TABLE Account ()\
-                     user_id integer,\
-                     "
-        // Free resources
-        await database.end();
+        const query_account = "CREATE TABLE Account (\
+                        user_id SERIAL PRIMARY KEY,\
+                        user_name TEXT NOT NULL,\
+                        password TEXT NOT NULL,\
+                        is_blocked BOOLEAN NOT NULL)";
+        await database.query(query_account,[],(error,res)=>{
+            if(error){
+                console.log("[Error] Failed to create table Account.");
+                console.log(error);
+            }else{
+                console.log("[INFO] Table Account creation succeed.");
+                console.log(res);
+            }
+        })
     }catch(error){
         console.log(error);
     }finally{
-        console.log("Connection end");
+        console.log("[INFO] Connection end");
     }
 }
 
 
-main();
+create_table();
