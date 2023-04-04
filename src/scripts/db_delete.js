@@ -2,41 +2,51 @@ const process = require('process');
 
 const { connect_db } = require('../configs/db');
 
-async function delete_table() {
-    try {
+ // Queries:
+ const query="\
+            DROP TABLE IF EXISTS Postaltitude;\
+            DROP TABLE IF EXISTS StatusType;\
+            DROP TABLE IF EXISTS Repost;\
+            DROP TABLE IF EXISTS Comment;\
+            DROP TABLE IF EXISTS Post;\
+            DROP TABLE IF EXISTS Message;\
+            DROP TABLE IF EXISTS ChatSession;\
+            DROP TABLE IF EXISTS Block;\
+            DROP TABLE IF EXISTS Announcement;\
+            DROP TABLE IF EXISTS Admin;\
+            DROP TABLE IF EXISTS Profile;\
+            DROP TABLE IF EXISTS FollowRelationship;\
+            DROP TABLE IF EXISTS Account;\
+            DROP TYPE IF EXISTS GENDER;";
+
+
+async function delete_table(){
+    try{
         // Get connection
         const database = await connect_db();
 
-        // Queries:
-        const query_account = "DROP TABLE Account";
-
-        const result = await database.query(query_account, (error, res) => {
-            if (error) {
-                console.log("[Error] Failed to drop table Account.");
-                console.log(error);
-            } else {
-                console.log("[INFO] Deletion succeed.");
-                console.log(res);
-            }
-        }).then(() => {
-            const query_post = "DROP TABLE Post";
-            database.query(query_post, (error, res) => {
-                if (error) {
-                    console.log("[Error] Failed to drop table Account.");
-                    console.log(error);
-                } else {
-                    console.log("[INFO] Deletion succeed.");
-                    console.log(res);
-                }
-            })
-
-        });
-    } catch (error) {
+       
+                        
+        return database.query(query)
+                      .then((result)=>{
+                        console.log("[INFO] All Tables dropped successfully");
+                        return result;
+                      })
+                      .catch((error)=>{
+                        console.log("[Error] Error occurred during table deletion");
+                        return error;
+                      })
+        
+    }catch(error){
         console.log(error);
-    } finally {
-        console.log("[INFO] Connection end");
     }
 }
 
 
-delete_table();
+delete_table().then((result)=>{
+    console.log("[INFO] Deletion end.");
+    process.exit(0);
+}).catch((error)=>{
+    console.log("[Error] Deletion failed");
+    process.exit(-1);
+})
