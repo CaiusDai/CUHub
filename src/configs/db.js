@@ -7,7 +7,7 @@ const connect_db = async () =>{
             user: 'postgres',
             host : 'localhost',
             database: 'cuhub',
-            password: 'cuhub',
+            password: '',
             port : 5432,
         })
         await pool.connect();

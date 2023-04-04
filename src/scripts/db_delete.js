@@ -1,27 +1,39 @@
 const process = require('process');
 
-const {connect_db} = require('../configs/db');
+const { connect_db } = require('../configs/db');
 
-async function delete_table(){
-    try{
+async function delete_table() {
+    try {
         // Get connection
         const database = await connect_db();
 
         // Queries:
         const query_account = "DROP TABLE Account";
-                        
-        await database.query(query_account,(error,res)=>{
-            if(error){
+
+        const result = await database.query(query_account, (error, res) => {
+            if (error) {
                 console.log("[Error] Failed to drop table Account.");
                 console.log(error);
-            }else{
+            } else {
                 console.log("[INFO] Deletion succeed.");
                 console.log(res);
             }
+        }).then(() => {
+            const query_post = "DROP TABLE Post";
+            database.query(query_post, (error, res) => {
+                if (error) {
+                    console.log("[Error] Failed to drop table Account.");
+                    console.log(error);
+                } else {
+                    console.log("[INFO] Deletion succeed.");
+                    console.log(res);
+                }
+            })
+
         });
-    }catch(error){
+    } catch (error) {
         console.log(error);
-    }finally{
+    } finally {
         console.log("[INFO] Connection end");
     }
 }
