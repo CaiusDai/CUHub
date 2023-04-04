@@ -68,12 +68,52 @@ const query_message =
         content TEXT NOT NULL,\
         PRIMARY KEY (session_id,message_id))'
 
+const query_post =
+    'CREATE TABLE Post (\
+                            post_id BIGSERIAL PRIMARY KEY ,\
+                            user_id INTEGER NOT NULL REFERENCES Account,\
+                            content TEXT NOT NULL,\
+                            creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
+                            num_like INTEGER NOT NULL,\
+                            num_dislike INTEGER NOT NULL,\
+                            images VARCHAR NOT NULL,\
+                            num_comment INTEGER NOT NULL,\
+                            num_retweet INTEGER NOT NULL,\
+                            is_anonymous BOOLEAN NOT NULL,\
+                            is_public BOOLEAN NOT NULL,\
+                            is_draft BOOLEAN NOT NULL,\
+                            tags TEXT[] NOT NULL)'
+
+const query_comment =
+    'CREATE TABLE Comment(\
+                                            comment_id SERIAL PRIMARY KEY,\
+                                            user_id INTEGER NOT NULL REFERENCES Account,\
+                                            post_id BIGINT NOT NULL REFERENCES Post,\
+                                            reply_to INTEGER NOT NULL REFERENCES Account,\
+                                            content TEXT NOT NULL,\
+                                            creation_time TIMESTAMP NOT NULL DEFAULT NOW())'
+
+const query_repost =
+    'CREATE TABLE Repost(\
+                                        repost_id SERIAL PRIMARY KEY,\
+                                        comment TEXT NOT NULL,\
+                                        original_post_id BIGINT NOT NULL REFERENCES Post,\
+                                        user_id INTEGER NOT NULL REFERENCES Account)'
+
+const query_status_type = "CREATE TYPE STATUS AS ENUM ('like', 'dislike')"
+
+const query_postaltitude =
+    'CREATE TABLE Postaltitude(\
+                                            user_id INTEGER PRIMARY KEY,\
+                                            post_id BIGINT REFERENCES Post,\
+                                            status STATUS NOT NULL)'
+
 function create_query_execute(database, table_name, query) {
     return database
         .query(query)
-        .then((result) => {
+        .then(() => {
             console.log(`[INFO] Created ${table_name} successfully`)
-            return Promise.resolve(result)
+            return Promise.resolve()
         })
         .catch((error) => {
             console.log(`[Error] Failed to create ${table_name}`)
@@ -98,6 +138,11 @@ async function create_table() {
         await create_query_execute(database, 'Block', query_block)
         await create_query_execute(database, 'ChatSession', query_chat_session)
         await create_query_execute(database, 'Message', query_message)
+        await create_query_execute(database, 'Post', query_post)
+        await create_query_execute(database, 'Comment', query_comment)
+        await create_query_execute(database, 'Repost', query_repost)
+        await create_query_execute(database, 'Status Type', query_status_type)
+        await create_query_execute(database, 'PostAltitude', query_postaltitude)
         return Promise.resolve()
     } catch (error) {
         return Promise.reject(error)

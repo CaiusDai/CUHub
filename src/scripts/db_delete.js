@@ -2,7 +2,13 @@ const { connect_db } = require('../configs/db')
 
 // Queries:
 const query =
-    'DROP TABLE IF EXISTS Message;\
+    '\
+            DROP TABLE IF EXISTS Postaltitude;\
+            DROP TABLE IF EXISTS StatusType;\
+            DROP TABLE IF EXISTS Repost;\
+            DROP TABLE IF EXISTS Comment;\
+            DROP TABLE IF EXISTS Post;\
+            DROP TABLE IF EXISTS Message;\
             DROP TABLE IF EXISTS ChatSession;\
             DROP TABLE IF EXISTS Block;\
             DROP TABLE IF EXISTS Announcement;\
