@@ -16,7 +16,8 @@ const query =
             DROP TABLE IF EXISTS Profile;\
             DROP TABLE IF EXISTS FollowRelationship;\
             DROP TABLE IF EXISTS Account;\
-            DROP TYPE IF EXISTS GENDER;'
+            DROP TYPE IF EXISTS GENDER;\
+            DROP TYPE IF EXISTS TAG;'
 
 async function delete_table() {
     try {

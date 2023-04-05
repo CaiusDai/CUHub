@@ -68,25 +68,27 @@ const query_message =
         content TEXT NOT NULL,\
         PRIMARY KEY (session_id,message_id))'
 
+const query_tag_type =
+        "CREATE TYPE TAG AS ENUM ('normal','treehole','acedemic','life')";
 const query_post =
-    'CREATE TABLE Post (\
+    "CREATE TABLE Post (\
                             post_id BIGSERIAL PRIMARY KEY ,\
                             user_id INTEGER NOT NULL REFERENCES Account,\
                             content TEXT NOT NULL,\
                             creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
-                            num_like INTEGER NOT NULL,\
-                            num_dislike INTEGER NOT NULL,\
-                            images VARCHAR NOT NULL,\
-                            num_comment INTEGER NOT NULL,\
-                            num_retweet INTEGER NOT NULL,\
+                            num_like INTEGER DEFAULT 0,\
+                            num_dislike INTEGER DEFAULT 0,\
+                            images BYTEA,\
+                            num_comment INTEGER DEAULT 0,\
+                            num_retweet INTEGER DEFAULT 0,\
                             is_anonymous BOOLEAN NOT NULL,\
                             is_public BOOLEAN NOT NULL,\
                             is_draft BOOLEAN NOT NULL,\
-                            tags TEXT[] NOT NULL)'
+                            tags TAG DEAULT 'normal')"
 
 const query_comment =
     'CREATE TABLE Comment(\
-                                            comment_id SERIAL PRIMARY KEY,\
+                                            comment_id BIGSERIAL PRIMARY KEY,\
                                             user_id INTEGER NOT NULL REFERENCES Account,\
                                             post_id BIGINT NOT NULL REFERENCES Post,\
                                             reply_to INTEGER NOT NULL REFERENCES Account,\
@@ -96,7 +98,7 @@ const query_comment =
 const query_repost =
     'CREATE TABLE Repost(\
                                         repost_id SERIAL PRIMARY KEY,\
-                                        comment TEXT NOT NULL,\
+                                        comment TEXT,\
                                         original_post_id BIGINT NOT NULL REFERENCES Post,\
                                         user_id INTEGER NOT NULL REFERENCES Account)'
 
@@ -138,6 +140,7 @@ async function create_table() {
         await create_query_execute(database, 'Block', query_block)
         await create_query_execute(database, 'ChatSession', query_chat_session)
         await create_query_execute(database, 'Message', query_message)
+        await create_query_execute(database, 'TAG', query_tag_type)
         await create_query_execute(database, 'Post', query_post)
         await create_query_execute(database, 'Comment', query_comment)
         await create_query_execute(database, 'Repost', query_repost)
