@@ -3,8 +3,14 @@ const { connect_db } = require('../configs/db')
 // Queries:
 const query =
     '\
+            DROP INDEX IF EXISTS FollowFrom;\
+            DROP INDEX IF EXISTS FollowBy;\
+            DROP INDEX IF EXISTS PostCreator;\
+            DROP INDEX IF EXISTS CommentPost;\
+            DROP INDEX IF EXISTS RepostBy;\
+            DROP INDEX IF EXISTS AltitudeOf;\
             DROP TABLE IF EXISTS PostAltitude;\
-            DROP TABLE IF EXISTS STATUSTYPE;\
+            DROP TYPE IF EXISTS STATUSTYPE;\
             DROP TABLE IF EXISTS Repost;\
             DROP TABLE IF EXISTS Comment;\
             DROP TABLE IF EXISTS Post;\
