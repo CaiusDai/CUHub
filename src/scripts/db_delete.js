@@ -3,8 +3,8 @@ const { connect_db } = require('../configs/db')
 // Queries:
 const query =
     '\
-            DROP TABLE IF EXISTS Postaltitude;\
-            DROP TABLE IF EXISTS StatusType;\
+            DROP TABLE IF EXISTS PostAltitude;\
+            DROP TYPE IF EXISTS STATUSTYPE;\
             DROP TABLE IF EXISTS Repost;\
             DROP TABLE IF EXISTS Comment;\
             DROP TABLE IF EXISTS Post;\
