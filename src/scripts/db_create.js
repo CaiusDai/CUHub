@@ -14,7 +14,8 @@ const query_follow_relationship =
         user2 INTEGER NOT NULL REFERENCES Account,\
         status BOOLEAN NOT NULL,\
         creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
-        PRIMARY KEY (user1,user2))'
+        PRIMARY KEY (user1,user2),\
+        CHECK (user1<>user2))'
 
 const query_gender_type =
     "CREATE TYPE GENDER AS ENUM ('male','female','others')"
@@ -48,7 +49,7 @@ const query_announcement =
 const query_block =
     'CREATE TABLE Block(\
         block_id SERIAL PRIMARY KEY,\
-        user_id INTEGER NOT NULL REFERENCES Account,\
+        user_id INTEGER NOT NULL REFERENCES Account UNIQUE,\
         admin_id INTEGER NOT NULL REFERENCES Admin,\
         start_at TIMESTAMP NOT NULL DEFAULT NOW(),\
         end_at TIMESTAMP NOT NULL CHECK (end_at > start_at) )'
@@ -58,12 +59,13 @@ const query_chat_session =
         session_id SERIAL PRIMARY KEY,\
         user1 INTEGER NOT NULL REFERENCES Account,\
         user2 INTEGER NOT NULL REFERENCES Account,\
-        CHECK(user1<>user2))'
+        CHECK(user1<>user2),\
+        UNIQUE(user1,user2))'
 
 const query_message =
     'CREATE TABLE Message(\
         session_id INTEGER NOT NULL REFERENCES ChatSession,\
-        message_id SERIAL NOT NULL,\
+        message_id SERIAL NOT NULL UNIQUE,\
         sender_id INTEGER NOT NULL REFERENCES Account,\
         content TEXT NOT NULL,\
         PRIMARY KEY (session_id,message_id))'
@@ -86,27 +88,29 @@ const query_post =
 
 const query_comment =
     'CREATE TABLE Comment(\
-                                            comment_id SERIAL PRIMARY KEY,\
-                                            user_id INTEGER NOT NULL REFERENCES Account,\
-                                            post_id BIGINT NOT NULL REFERENCES Post,\
-                                            reply_to INTEGER NOT NULL REFERENCES Account,\
-                                            content TEXT NOT NULL,\
-                                            creation_time TIMESTAMP NOT NULL DEFAULT NOW())'
+        comment_id BIGSERIAL PRIMARY KEY,\
+        user_id INTEGER NOT NULL REFERENCES Account,\
+        post_id BIGINT NOT NULL REFERENCES Post,\
+        reply_to INTEGER NOT NULL REFERENCES Account,\
+        content TEXT NOT NULL,\
+        creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
+        CHECK (user_id<>reply_to))'
 
 const query_repost =
     'CREATE TABLE Repost(\
-                                        repost_id SERIAL PRIMARY KEY,\
-                                        comment TEXT NOT NULL,\
-                                        original_post_id BIGINT NOT NULL REFERENCES Post,\
-                                        user_id INTEGER NOT NULL REFERENCES Account)'
+        repost_id BIGSERIAL PRIMARY KEY,\
+        comment TEXT,\
+        original_post_id BIGINT NOT NULL REFERENCES Post,\
+        user_id INTEGER NOT NULL REFERENCES Account)'
 
-const query_status_type = "CREATE TYPE STATUS AS ENUM ('like', 'dislike')"
+const query_status_type = "CREATE TYPE STATUSTYPE AS ENUM ('like', 'dislike')"
 
 const query_postaltitude =
-    'CREATE TABLE Postaltitude(\
-                                            user_id INTEGER PRIMARY KEY,\
-                                            post_id BIGINT REFERENCES Post,\
-                                            status STATUS NOT NULL)'
+    'CREATE TABLE PostAltitude(\
+        user_id INTEGER NOT NULL REFERENCES Account,\
+        post_id BIGINT NOT NULL REFERENCES Post,\
+        status STATUSTYPE NOT NULL,\
+        PRIMARY KEY (user_id,post_id))'
 
 function create_query_execute(database, table_name, query) {
     return database
