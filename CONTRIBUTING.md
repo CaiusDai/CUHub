@@ -13,6 +13,7 @@ We will check your code format in Github Action. Your code will not be accepted 
 
 ```bash
 #Environment Setting
+npm init -y
 npm install eslint --save-dev
 npm install eslint-plugin-node --save-dev
 npm install prettier --save-dev
