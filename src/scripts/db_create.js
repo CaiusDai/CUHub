@@ -11,19 +11,25 @@ const query_account =
 
 const query_follow_relationship =
     'CREATE TABLE FollowRelationship(\
-        user1 INTEGER NOT NULL REFERENCES Account,\
-        user2 INTEGER NOT NULL REFERENCES Account,\
+        user1 INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+        user2 INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
         status BOOLEAN NOT NULL,\
         creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
         PRIMARY KEY (user1,user2),\
         CHECK (user1<>user2))'
+
+const query_follow_index_from =
+    'CREATE INDEX FollowFrom ON FollowRelationship (user1)'
+
+const query_follow_index_by =
+    'CREATE INDEX FollowBy ON FollowRelationship (user2)'
 
 const query_gender_type =
     "CREATE TYPE GENDER AS ENUM ('male','female','others')"
 
 const query_profile =
     "CREATE TABLE Profile(\
-        user_id INTEGER PRIMARY KEY REFERENCES Account,\
+        user_id INTEGER PRIMARY KEY REFERENCES Account ON DELETE RESTRICT,\
         major TEXT,\
         gender GENDER DEFAULT 'others',\
         birthday DATE ,\
@@ -43,31 +49,31 @@ const query_admin =
 const query_announcement =
     'CREATE TABLE Announcement(\
         announcement_id SERIAL PRIMARY KEY,\
-        admin_id INTEGER NOT NULL REFERENCES Admin,\
+        admin_id INTEGER NOT NULL REFERENCES Admin ON DELETE RESTRICT,\
         content TEXT NOT NULL,\
         creation_time TIMESTAMP NOT NULL DEFAULT NOW())'
 
 const query_block =
     'CREATE TABLE Block(\
         block_id SERIAL PRIMARY KEY,\
-        user_id INTEGER NOT NULL REFERENCES Account UNIQUE,\
-        admin_id INTEGER NOT NULL REFERENCES Admin,\
+        user_id INTEGER UNIQUE NOT NULL REFERENCES Account ON DELETE CASCADE,\
+        admin_id INTEGER NOT NULL REFERENCES Admin ON DELETE RESTRICT,\
         start_at TIMESTAMP NOT NULL DEFAULT NOW(),\
         end_at TIMESTAMP NOT NULL CHECK (end_at > start_at) )'
 
 const query_chat_session =
     'CREATE TABLE ChatSession(\
         session_id SERIAL PRIMARY KEY,\
-        user1 INTEGER NOT NULL REFERENCES Account,\
-        user2 INTEGER NOT NULL REFERENCES Account,\
+        user1 INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+        user2 INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
         CHECK(user1<>user2),\
         UNIQUE(user1,user2))'
 
 const query_message =
     'CREATE TABLE Message(\
-        session_id INTEGER NOT NULL REFERENCES ChatSession,\
+        session_id INTEGER NOT NULL REFERENCES ChatSession ON DELETE CASCADE,\
         message_id SERIAL NOT NULL UNIQUE,\
-        sender_id INTEGER NOT NULL REFERENCES Account,\
+        sender_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
         content TEXT NOT NULL,\
         PRIMARY KEY (session_id,message_id))'
 
@@ -76,7 +82,7 @@ const query_tag_type =
 const query_post =
     "CREATE TABLE Post (\
                             post_id BIGSERIAL PRIMARY KEY ,\
-                            user_id INTEGER NOT NULL REFERENCES Account,\
+                            user_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
                             content TEXT NOT NULL,\
                             creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
                             num_like INTEGER DEFAULT 0,\
@@ -89,31 +95,40 @@ const query_post =
                             is_draft BOOLEAN NOT NULL,\
                             tags TAG DEAULT 'normal')"
 
+const query_index_post = 'CREATE INDEX PostCreator ON Post(user_id)'
+
 const query_comment =
     'CREATE TABLE Comment(\
         comment_id BIGSERIAL PRIMARY KEY,\
-        user_id INTEGER NOT NULL REFERENCES Account,\
-        post_id BIGINT NOT NULL REFERENCES Post,\
-        reply_to INTEGER NOT NULL REFERENCES Account,\
+        user_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+        post_id BIGINT NOT NULL REFERENCES Post ON DELETE CASCADE,\
+        reply_to INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
         content TEXT NOT NULL,\
         creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
         CHECK (user_id<>reply_to))'
+
+const query_index_comment_post = 'CREATE INDEX CommentPost ON Comment (post_id)'
 
 const query_repost =
     'CREATE TABLE Repost(\
         repost_id BIGSERIAL PRIMARY KEY,\
         comment TEXT,\
         original_post_id BIGINT NOT NULL REFERENCES Post,\
-        user_id INTEGER NOT NULL REFERENCES Account)'
+        user_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT)'
+
+const query_index_repost = 'CREATE INDEX RepostBy ON Repost(user_id)'
 
 const query_status_type = "CREATE TYPE STATUSTYPE AS ENUM ('like', 'dislike')"
 
 const query_postaltitude =
     'CREATE TABLE PostAltitude(\
-        user_id INTEGER NOT NULL REFERENCES Account,\
-        post_id BIGINT NOT NULL REFERENCES Post,\
+        user_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+        post_id BIGINT NOT NULL REFERENCES Post ON DELETE CASCADE,\
         status STATUSTYPE NOT NULL,\
         PRIMARY KEY (user_id,post_id))'
+
+const query_index_altitude_of =
+    'CREATE INDEX AltitudeOf ON PostAltitude(user_id)'
 
 function create_query_execute(database, table_name, query) {
     return database
@@ -138,6 +153,12 @@ async function create_table() {
             'FollowRelationship',
             query_follow_relationship
         )
+        await create_query_execute(
+            database,
+            'Index From',
+            query_follow_index_from
+        )
+        await create_query_execute(database, 'Index To', query_follow_index_by)
         await create_query_execute(database, 'Gender', query_gender_type)
         await create_query_execute(database, 'Profile', query_profile)
         await create_query_execute(database, 'Admin', query_admin)
@@ -147,10 +168,30 @@ async function create_table() {
         await create_query_execute(database, 'Message', query_message)
         await create_query_execute(database, 'TAG', query_tag_type)
         await create_query_execute(database, 'Post', query_post)
+        await create_query_execute(
+            database,
+            'Index PostCreator',
+            query_index_post
+        )
         await create_query_execute(database, 'Comment', query_comment)
+        await create_query_execute(
+            database,
+            'Index CommentPost',
+            query_index_comment_post
+        )
         await create_query_execute(database, 'Repost', query_repost)
+        await create_query_execute(
+            database,
+            'Index RepostBy',
+            query_index_repost
+        )
         await create_query_execute(database, 'Status Type', query_status_type)
         await create_query_execute(database, 'PostAltitude', query_postaltitude)
+        await create_query_execute(
+            database,
+            'Index AltitudeOf',
+            query_index_altitude_of
+        )
         return Promise.resolve()
     } catch (error) {
         return Promise.reject(error)
