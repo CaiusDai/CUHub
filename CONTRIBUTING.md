@@ -9,6 +9,7 @@ You should follow the steps below to make contribution to the project:
 Before pushing your code to the repository, please make sure your code is consistent with our code format.
 We will check your code format in Github Action. Your code will not be accepted if it could not pass the ci.  
 **Make sure you've set up the npm, node environment and has a package.json file. If not, go README to setup**
+**You should do the following under the root directory.**
 
 ```bash
 #Environment Setting
@@ -17,7 +18,7 @@ npm install eslint-plugin-node --save-dev
 npm install prettier --save-dev
 npm install eslint-config-prettier --save-dev
 
-# Code format: Do this before you push your code
+# Code format: You MUST do the following before you push your code
 npx eslint .
 npx prettier . -w
 ```
