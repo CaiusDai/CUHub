@@ -12,8 +12,8 @@ const LoginForm = () => {
     const onFinish = (values) => {
         console.log('Form submitted!')
         let result = false
-        const { username_input, password_input } = values
-        fetch(`http://localhost:5000/api/login?username='${username_input}'&password ='${password_input}'`,{
+        const { username, password } = values
+        fetch(`http://localhost:5000/api/login/?username=${username}&password=${password}`,{
             method:'GET',
             headers:{
                 'Content-Type':'application/json'
@@ -22,7 +22,7 @@ const LoginForm = () => {
         .then(response=>response.json())
         .then((data)=>{
             console.log(data)
-            result = data
+            result = data.data
             console.log(`The return result is: ${result}`)
         })
         .catch(error =>console.error(error))

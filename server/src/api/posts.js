@@ -1,3 +1,3 @@
-'/posts/me/:id';
-'/posts/owner/:id';
-'/posts/all';
+'/posts/me/:id'
+'/posts/owner/:id'
+'/posts/all'
