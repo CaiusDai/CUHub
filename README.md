@@ -5,6 +5,19 @@ CUHub is an online platform that blends the functionalities of traditional socia
 # Setup Guidelines
 
 ## Frontend
+You should do the following operations in the folder `client`. **Do not do them in root**
+
+## ReactFrameWork start up
+```bash
+# After entering the client folder, user the following command to set up the framework
+# this command is used to install the node_modules required by frontend
+npm install
+```
+```bash
+# After installed modules, start the frontend with following command to check whether it works well
+npm start
+```
+
 
 ## Backend
 
