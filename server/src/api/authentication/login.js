@@ -3,15 +3,21 @@ const { connect_db } = require('../../configs/db')
 
 const login_router = express.Router()
 
+const IdentityCodes = {
+    Admin: 0,
+    NormalUser: 1,
+    Visitor: 2,
+}
+
 login_router.get('/', async (req, res) => {
     //Get the input data from the request
     const username = req.query.username
     const password = req.query.password
-    console.log(username)
-    console.log(password)
-    //Format the query
-    const query = `SELECT * FROM Account WHERE username = '${username}' AND password = '${password}'`
-    console.log(query)
+    const is_admin = username == 'Admin' ? true : false
+    //Format the query.
+    const query = is_admin
+        ? `SELECT * FROM Admin WHERE username = ${username} AND password = ${password}`
+        : `SELECT * FROM Account WHERE username = ${username} AND password = ${password}`
     //Operation on db
     const database = await connect_db()
     database
@@ -21,19 +27,23 @@ login_router.get('/', async (req, res) => {
                 res.status(404).json({
                     status: 'fail',
                     data: {
-                        is_valid: 'false',
+                        result_code: `"${IdentityCodes.Visitor}"`,
                     },
                     message: "Can not find the user's information",
                 })
             } else {
                 req.session.isAuthenticated = true
+                req.session.isAdmin = is_admin
                 req.session.username = username
+                const identity_code = is_admin
+                    ? IdentityCodes.Admin
+                    : IdentityCodes.NormalUser
                 res.status(200).json({
                     status: 'success',
                     data: {
-                        is_valid: 'true',
+                        result_code: `"${identity_code}"`,
                     },
-                    message: 'User logged in',
+                    message: 'Success Login',
                 })
             }
         })

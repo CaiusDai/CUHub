@@ -13,30 +13,26 @@ const LoginForm = () => {
         console.log('Form submitted!')
         let result = false
         const { username, password } = values
-        fetch(`http://localhost:5000/api/login/?username=${username}&password=${password}`,{
-            method:'GET',
-            headers:{
-                'Content-Type':'application/json'
+        fetch(
+            `http://localhost:5000/api/login/?username='${username}'&password='${password}'`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             }
-        })
-        .then(response=>response.json())
-        .then((data)=>{
-            console.log(data)
-            result = data.data
-            console.log(`The return result is: ${result}`)
-        })
-        .catch(error =>console.error(error))
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+                result = data.data.result_code
+                console.log(`The return result is: ${result}`)
+            })
+            .catch((error) => console.error(error))
         // the input for backend is stored in username and password,
         // please provide me a corresponding function that return result for further use
         // the result need to have at least 4 states: admin user, normal user, invalid, network err
         console.log('code can enter here')
-        if (result) {
-            console.log('Login successful!')
-            // redirect to the home page
-        } else {
-            console.log('Login failed!')
-            // display an error message to the user
-        }
     }
 
     const onRememberChange = (e) => {
