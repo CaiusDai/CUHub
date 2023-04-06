@@ -47,7 +47,7 @@ Then, run the following commands in your working directory to set up package fil
 # You will have a package.json file after this step.
 npm init -y
 # Set up the express and pg modules
-npm i express pg
+npm i express pg express-session
 ```
 
 ### Table Manipulation

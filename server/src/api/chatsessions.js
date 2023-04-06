@@ -1,0 +1,1 @@
+'/chatsessions/owner/:id'
