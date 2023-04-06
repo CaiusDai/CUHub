@@ -14,7 +14,7 @@ const LoginForm = () => {
         let result = false
         const { username, password } = values
         fetch(
-            `http://localhost:5000/api/login/?username='${username}'&password='${password}'`,
+            `http://localhost:5000/api/login/?username=${username}&password=${password}`,
             {
                 method: 'GET',
                 headers: {
