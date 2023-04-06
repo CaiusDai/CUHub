@@ -78,5 +78,9 @@ node ./src/scripts/db_insert.js
 
 ```bash
 # Run this under server folder
+node ./src/index.js
+
+# Or you can configure your package.json script, add a "start" : "node ./src/index.js"
+# Then you can start the server via:
 npm start
 ```
