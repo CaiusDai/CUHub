@@ -48,6 +48,8 @@ Then, run the following commands in your working directory to set up package fil
 npm init -y
 # Set up the express and pg modules
 npm i express pg
+#Add a package called cors to handle cross-origin request
+npm install cors
 ```
 
 ### Table Manipulation
