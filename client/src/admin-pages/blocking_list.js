@@ -7,15 +7,17 @@ import { OrdersTable } from 'src/admin-sections/orders/orders-table'
 
 const now = new Date()
 
+//I need backend to provide the mail address(id) and the start & end date of the blocking user.
+//You can refer to the examples already entered below, 
+//but of course I will replace them with real user data after you have provided me with the backend user data.
 const orders = [
     {
-        id: '暂时不知如何输入',
+        id: 'usermail@gmail.com',
         createdAt: subDays(now, 21).getTime(),
-        status: 'delivered',
         updatedAt: subDays(now, 7).getTime(),
     },
     {
-        id: '9265',
+        id: '9265@xxx',
         createdAt: subDays(now, 56).getTime(),
         status: 'complete',
         updatedAt: subDays(now, 54).getTime(),
@@ -43,7 +45,7 @@ const orders = [
         createdAt: subDays(now, 17).getTime(),
         status: 'complete',
         updatedAt: subDays(now, 1).getTime(),
-    },
+    }
 ]
 
 const Page = () => {

@@ -7,15 +7,17 @@ import { OrdersTable } from 'src/admin-sections/orders_2/orders-table'
 
 const now = new Date()
 
+//I need backend to provide the mail address(id) and the start & end date of the blocking user.
+//You can look at blocking_list.js first.
 const orders = [
     {
-        id: '暂时不知如何输入',
+        id: 'usermail@gmail.com',
         createdAt: subDays(now, 21).getTime(),
         status: 'delivered',
         updatedAt: subDays(now, 7).getTime(),
     },
     {
-        id: '9265',
+        id: '9265@xxx',
         createdAt: subDays(now, 56).getTime(),
         status: 'complete',
         updatedAt: subDays(now, 54).getTime(),
@@ -38,12 +40,12 @@ const orders = [
         status: 'processed',
         updatedAt: subDays(now, 54).getTime(),
     },
-    {
-        id: '2475',
-        createdAt: subDays(now, 17).getTime(),
-        status: 'complete',
-        updatedAt: subDays(now, 1).getTime(),
-    },
+    // {
+    //     id: '2475',
+    //     createdAt: subDays(now, 17).getTime(),
+    //     status: 'complete',
+    //     updatedAt: subDays(now, 1).getTime(),
+    // },
 ]
 
 const Page = () => {
