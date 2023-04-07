@@ -34,15 +34,15 @@ async function get_blocking_time(database, userid) {
 
 login_router.get('/', async (req, res) => {
     //Get the input data from the request
-    const username = req.query.username
+    const email = req.query.email
     const password = req.query.password
-    const is_admin = username === "Admin" ? true : false
-    console.log(username)
+    const is_admin = email === "Admin" ? true : false
+    console.log(email)
     console.log(password)
     //Format the query.
     const query = is_admin
-        ? `SELECT * FROM Admin WHERE username = '${username}' AND password = '${password}'`
-        : `SELECT * FROM Account WHERE log_in_name = '${username}' AND password = '${password}'`
+        ? `SELECT * FROM Admin WHERE username = '${email}' AND password = '${password}'`
+        : `SELECT * FROM Account WHERE email = '${email}' AND password = '${password}'`
     //Operation on db
     const database = await connect_db()
     database
@@ -85,7 +85,7 @@ login_router.get('/', async (req, res) => {
                 } else {
                     req.session.isAuthenticated = true
                     req.session.isAdmin = is_admin
-                    req.session.username = username
+                    req.session.username = db_result.rows[0].username
                     const identity_code = is_admin
                         ? IdentityCodes.Admin
                         : IdentityCodes.NormalUser

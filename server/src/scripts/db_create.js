@@ -4,9 +4,8 @@ const { connect_db } = require('../configs/db')
 const query_account =
     'CREATE TABLE Account (\
     user_id SERIAL PRIMARY KEY,\
-    log_in_name TEXT UNIQUE NOT NULL,\
-    email TEXT NOT NULL,\
     username TEXT NOT NULL,\
+    email TEXT NOT NULL,\
     password TEXT NOT NULL,\
     is_blocked BOOLEAN NOT NULL)'
 

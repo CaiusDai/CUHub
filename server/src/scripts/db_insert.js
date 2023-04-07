@@ -2,9 +2,9 @@ const { connect_db } = require('../configs/db')
 
 //Queries:
 
-const insert_account = (log_in_name, username, email, password, is_blocked) => {
+const insert_account = (username, email, password, is_blocked) => {
     const query_account = `INSERT INTO Account\
-    VALUES(DEFAULT,'${log_in_name}','${username}', '${email}','${password}', ${is_blocked})`
+    VALUES(DEFAULT,'${username}', '${email}','${password}', ${is_blocked})`
     return query_account
 }
 
@@ -118,7 +118,6 @@ async function insert_data() {
             'Account',
             insert_account(
                 'TAN',
-                'ruijie',
                 'hahaha@outlook.com',
                 'tanruijie',
                 true
@@ -129,7 +128,6 @@ async function insert_data() {
             'Account',
             insert_account(
                 'DAI',
-                'zijie',
                 'hehehe@outlook.com',
                 'daizijie',
                 false
@@ -140,7 +138,6 @@ async function insert_data() {
             'Account',
             insert_account(
                 'SU',
-                'runlong',
                 'xixixi@outlook.com',
                 'surunlong',
                 false
