@@ -41,10 +41,11 @@ const query_profile =
         CHECK (num_of_follower>=0 AND num_of_following >=0 ))"
 
 const query_admin =
-    'CREATE TABLE Admin(\
+    "CREATE TABLE Admin(\
         admin_id SERIAL PRIMARY KEY,\
          username TEXT NOT NULL,\
-         password TEXT NOT NULL)'
+         password TEXT NOT NULL,\
+         CHECK(username = 'Admin'))"
 
 const query_announcement =
     'CREATE TABLE Announcement(\
