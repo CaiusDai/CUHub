@@ -46,7 +46,7 @@ export const OrdersTable = (props) => {
                                             underline="none"
                                             variant="subtitle2"
                                         >
-                                            {order.id}@link.cuhk.edu.hk
+                                            {order.id}
                                         </Link>
                                     </TableCell>
                                     <TableCell>
