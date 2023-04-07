@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image } from 'antd'
-import './Images/logo.png'
+import './logo.png'
 
 const Logo = () => {
     return (
@@ -13,7 +13,7 @@ const Logo = () => {
                 scale: '0.5',
             }}
         >
-            <Image src={require('./Images/logo.png')} preview={false} />
+            <Image src={require('./logo.png')} preview={false} />
         </div>
     )
 }
