@@ -5,7 +5,7 @@ const query_account =
     'CREATE TABLE Account (\
     user_id SERIAL PRIMARY KEY,\
     username TEXT NOT NULL,\
-    email TEXT NOT NULL,\
+    email TEXT UNIQUE NOT NULL,\
     password TEXT NOT NULL,\
     is_blocked BOOLEAN NOT NULL)'
 

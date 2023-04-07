@@ -4,7 +4,7 @@ const { connect_db } = require('../configs/db')
 
 const insert_account = (username, email, password, is_blocked) => {
     const query_account = `INSERT INTO Account\
-    VALUES(DEFAULT, '${username}', '${email}','${password}', ${is_blocked})`
+    VALUES(DEFAULT,'${username}', '${email}','${password}', ${is_blocked})`
     return query_account
 }
 
