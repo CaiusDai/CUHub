@@ -50,3 +50,25 @@ A valid PR title should begin with one of the following prefix:
 -   `revert`: Reverts a previous commit
 
 You are encourage to check out and review [previous PRs](https://github.com/CaiusDai/CUHub/pulls).
+
+## Backend json convention
+
+Every response sent from the backend will be a json file. The following convention will be used to ensure consistent communication pattern:
+
+```
+{
+  "status" : <"success"/"fail"/"error">
+  "data" : {
+    <data that is requested>
+  }
+  "message" : <"message">
+}
+```
+
+**status** indicates the status of this request. `success` means the you are guaranteed to get the data you want, `fail` means that
+the message and fields you sent are in valid format, but the information you provided can not find the corresponding records in the db,
+and the `error` means that you are providing the wrong data format.
+
+**data** is used to store the data that is required. Note: when status is error, there's no data attribute.
+
+**message** is used to be informative. You may find some useful error information here.
