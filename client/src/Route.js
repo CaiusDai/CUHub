@@ -3,11 +3,11 @@ import React from 'react'
 import LoginForm from './Authorization/Sign in/loginForm'
 import SignUp from './Authorization/Sign up/SignUp'
 import { Outlet } from 'react-router-dom'
-import { Layout as AdminDashboardLayout } from './admin/admin-layouts/dashboard/layout'
-import NotFoundPage from './admin/admin-pages/404'
-import BlockinglistPage from './admin/admin-pages/blocking_list'
-import ReportsPage from './admin/admin-pages'
-import AllaccountslistPage from './admin/admin-pages/all_accounts_list'
+import { Layout as AdminDashboardLayout } from './Admin/admin-layouts/dashboard/layout'
+import NotFoundPage from './Admin/admin-pages/404'
+import BlockinglistPage from './Admin/admin-pages/blocking_list'
+import ReportsPage from './Admin/admin-pages'
+import AllaccountslistPage from './Admin/admin-pages/all_accounts_list'
 
 export const AppRouter = [
     {

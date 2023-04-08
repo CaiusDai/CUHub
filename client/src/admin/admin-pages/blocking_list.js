@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { subDays } from 'date-fns'
 import { Box, Card, Container, Divider, Stack, Typography } from '@mui/material'
-import { OrdersSearch } from 'src/admin/admin-sections/orders/orders-search'
-import { OrdersTable } from 'src/admin/admin-sections/orders/orders-table'
+import { OrdersSearch } from 'src/Admin/admin-sections/orders/orders-search'
+import { OrdersTable } from 'src/Admin/admin-sections/orders/orders-table'
 
 const now = new Date()
 

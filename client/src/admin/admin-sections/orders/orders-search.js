@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { Stack, toggleButtonClasses, ToggleButtonGroup } from '@mui/material'
-import { QueryField } from 'src/admin/admin-components/query-field'
+import { QueryField } from 'src/Admin/admin-components/query-field'
 
 export const OrdersSearch = (props) => {
     const { mode = 'table', onModeChange, onQueryChange, query } = props

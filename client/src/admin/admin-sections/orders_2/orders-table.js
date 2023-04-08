@@ -10,7 +10,7 @@ import {
     TableRow,
     Button,
 } from '@mui/material'
-import { Scrollbar } from 'src/admin/admin-components/scrollbar'
+import { Scrollbar } from 'src/Admin/admin-components/scrollbar'
 
 export const OrdersTable = (props) => {
     const {
