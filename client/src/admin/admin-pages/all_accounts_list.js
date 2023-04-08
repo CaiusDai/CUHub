@@ -2,18 +2,18 @@ import { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { subDays } from 'date-fns'
 import { Box, Card, Container, Divider, Stack, Typography } from '@mui/material'
-import { OrdersSearch } from 'src/admin-sections/orders/orders-search'
-import { OrdersTable } from 'src/admin-sections/orders/orders-table'
+import { OrdersSearch } from 'src/admin/admin-sections/orders_2/orders-search'
+import { OrdersTable } from 'src/admin/admin-sections/orders_2/orders-table'
 
 const now = new Date()
 
 //I need backend to provide the mail address(id) and the start & end date of the blocking user.
-//You can refer to the examples already entered below, 
-//but of course I will replace them with real user data after you have provided me with the backend user data.
+//You can look at blocking_list.js first.
 const orders = [
     {
         id: 'usermail@gmail.com',
         createdAt: subDays(now, 21).getTime(),
+        status: 'delivered',
         updatedAt: subDays(now, 7).getTime(),
     },
     {
@@ -40,12 +40,12 @@ const orders = [
         status: 'processed',
         updatedAt: subDays(now, 54).getTime(),
     },
-    {
-        id: '2475',
-        createdAt: subDays(now, 17).getTime(),
-        status: 'complete',
-        updatedAt: subDays(now, 1).getTime(),
-    }
+    // {
+    //     id: '2475',
+    //     createdAt: subDays(now, 17).getTime(),
+    //     status: 'complete',
+    //     updatedAt: subDays(now, 1).getTime(),
+    // },
 ]
 
 const Page = () => {
@@ -76,7 +76,7 @@ const Page = () => {
     return (
         <>
             <Helmet>
-                <title>Blocking List</title>
+                <title>All Accounts List</title>
             </Helmet>
             <Box
                 sx={{
@@ -92,7 +92,9 @@ const Page = () => {
                             justifyContent="space-between"
                             spacing={3}
                         >
-                            <Typography variant="h4">Blocking List</Typography>
+                            <Typography variant="h4">
+                                All Accounts List
+                            </Typography>
                         </Stack>
                         <div>
                             <Card>
