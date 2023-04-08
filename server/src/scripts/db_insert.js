@@ -4,7 +4,7 @@ const { connect_db } = require('../configs/db')
 
 const insert_account = (username, email, password, is_blocked) => {
     const query_account = `INSERT INTO Account\
-    VALUES(DEFAULT, '${username}', '${email}','${password}', ${is_blocked})`
+    VALUES(DEFAULT,'${username}', '${email}','${password}', ${is_blocked})`
     return query_account
 }
 
@@ -116,17 +116,32 @@ async function insert_data() {
         await create_query_execute(
             database,
             'Account',
-            insert_account('TAN', 'hahaha@outlook.com', 'tanruijie', true)
+            insert_account(
+                'TAN',
+                'hahaha@outlook.com',
+                'tanruijie',
+                true
+            )
         )
         await create_query_execute(
             database,
             'Account',
-            insert_account('DAI', 'hehehe@outlook.com', 'daizijie', false)
+            insert_account(
+                'DAI',
+                'hehehe@outlook.com',
+                'daizijie',
+                false
+            )
         )
         await create_query_execute(
             database,
             'Account',
-            insert_account('SU', 'xixixi@outlook.com', 'surunlong', false)
+            insert_account(
+                'SU',
+                'xixixi@outlook.com',
+                'surunlong',
+                false
+            )
         )
         //Insert follow relationship
         await create_query_execute(

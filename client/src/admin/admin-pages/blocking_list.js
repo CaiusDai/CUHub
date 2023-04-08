@@ -2,13 +2,13 @@ import { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { subDays } from 'date-fns'
 import { Box, Card, Container, Divider, Stack, Typography } from '@mui/material'
-import { OrdersSearch } from 'src/admin-sections/orders/orders-search'
-import { OrdersTable } from 'src/admin-sections/orders/orders-table'
+import { OrdersSearch } from 'src/Admin/admin-sections/orders/orders-search'
+import { OrdersTable } from 'src/Admin/admin-sections/orders/orders-table'
 
 const now = new Date()
 
 //I need backend to provide the mail address(id) and the start & end date of the blocking user.
-//You can refer to the examples already entered below, 
+//You can refer to the examples already entered below,
 //but of course I will replace them with real user data after you have provided me with the backend user data.
 const orders = [
     {
@@ -45,7 +45,7 @@ const orders = [
         createdAt: subDays(now, 17).getTime(),
         status: 'complete',
         updatedAt: subDays(now, 1).getTime(),
-    }
+    },
 ]
 
 const Page = () => {
