@@ -4,6 +4,7 @@ const crypto = require('crypto')
 const cors = require('cors')
 // Router files:
 const login_router = require('./api/authentication/login.js')
+const signup_router = require('./api/authentication/signup.js')
 
 // Configuration variables:
 const session_store = new session.MemoryStore()
@@ -31,6 +32,7 @@ app.use(cors())
 
 // Routers Setup:
 app.use('/api/login', login_router)
+app.use('/api/signup', signup_router)
 
 // Server Start:
 app.listen(PORT, () => {
