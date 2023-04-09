@@ -4,9 +4,12 @@ const crypto = require('crypto')
 const cors = require('cors')
 const config = require('./configs/configs')
 
-// Router files:
+// Router files: (TODO: Better format)
 const login_router = require('./api/authentication/login.js')
 const signup_router = require('./api/authentication/signup.js')
+const block_router = require('./api/admin/block.js')
+const admin_router = require('./api/admin/admin.js')
+const logout_router = require('./api/authentication/logout.js')
 
 // Configuration variables:
 const session_store = new session.MemoryStore()
@@ -33,9 +36,12 @@ app.use(cors())
 
 // Routers Setup:
 app.use('/api/login', login_router)
+app.use('/api/logout', logout_router)
 app.use('/api/signup', signup_router)
+app.use('/api/admin/block', block_router)
+app.use('/api/admin', admin_router)
 
 // Server Start:
-app.listen(config.PORT, () => {
-    console.log(`[INFO] Server start to listen on port ${config.PORT}`)
+app.listen(config.ListenPort, () => {
+    console.log(`[INFO] Server start to listen on port ${config.ListenPort}`)
 })

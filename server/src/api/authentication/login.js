@@ -20,10 +20,6 @@ async function get_blocking_time(database, userid) {
                 start_time: new Date(start_at),
                 end_time: new Date(end_at),
             }
-            return {
-                start_time: new Date(start_at),
-                end_time: new Date(end_at),
-            }
         })
         .catch((error) => {
             console.log('[Error] When trying to read from the blocking list')
@@ -37,7 +33,7 @@ login_router.get('/', async (req, res) => {
     const email = req.query.email
     const password = req.query.password
     if (!email || !password) {
-        res.status(400).json({
+        res.status(config.HTTPCode.BadRequest).json({
             status: 'error',
             message: 'Wrong query format',
         })
@@ -58,7 +54,7 @@ login_router.get('/', async (req, res) => {
                 res.status(config.HTTPCode.NotFound).json({
                     status: 'fail',
                     data: {
-                        result_code: `"${config.IdentityCodes.Visitor}"`,
+                        result_code: config.IdentityCodes.Visitor,
                     },
                     message: "Can not find the user's information",
                 })
@@ -71,7 +67,7 @@ login_router.get('/', async (req, res) => {
                             res.status(config.HTTPCode.Ok).json({
                                 status: 'success',
                                 data: {
-                                    result_code: `"${config.IdentityCodes.Blocked}"`,
+                                    result_code: config.IdentityCodes.Blocked,
                                     start_time: `${start_time.toDateString()},${start_time.toLocaleTimeString()}`,
                                     end_time: `${end_time.toDateString()},${end_time.toLocaleTimeString()}`,
                                 },
@@ -91,7 +87,9 @@ login_router.get('/', async (req, res) => {
                 } else {
                     req.session.isAuthenticated = true
                     req.session.isAdmin = is_admin
-                    req.session.username = db_result.rows[0].username
+                    req.session.uid = is_admin
+                        ? db_result.rows[0].admin_id
+                        : db_result.rows[0].user_id
                     const identity_code = is_admin
                         ? config.IdentityCodes.Admin
                         : config.IdentityCodes.NormalUser
