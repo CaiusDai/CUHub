@@ -10,12 +10,14 @@ const LoginForm = () => {
         console.log('info for cookie')
     }
 
-    const onFinish = (values) => {
+    async function onFinish(values){
         console.log('Form submitted!')
         let result = false
-        const { email, password } = values
-        fetch(
-            `http://localhost:5000/api/login/?email=${email}&password=${password}`,
+        console.log(values)
+        const { username, password } = values
+        console.log(password)
+        await fetch(
+            `http://localhost:5000/api/login/?email=${username}&password=${password}`,
             {
                 method: 'GET',
                 headers: {
@@ -34,18 +36,18 @@ const LoginForm = () => {
         // please provide me a corresponding function that return result for further use
         // the result need to have at least 4 states: admin user, normal user, invalid, network err
         console.log('code can enter here')
-        if (result === 0) {
+        if (result === '0') {
             console.log('Login as Admin')
             window.location.href = '/admin'
-        } else if (result === 1) {
+        } else if (result === '1') {
             console.log('Login successful!')
             window.location.href = '/homepage'
             // display an error message to the user
-        } else if (result === 2) {
+        } else if (result === '2') {
             console.log('Login failed!')
             alert('invalid username or password, please try again')
             // display an error message to the user
-        } else if (result === 3) {
+        } else if (result === '3') {
             console.log('Account Blocked!')
             alert('you account has been blocked')
         } else {

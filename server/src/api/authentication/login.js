@@ -49,10 +49,11 @@ login_router.get('/', async (req, res) => {
         .query(query)
         .then((db_result) => {
             if (db_result.rowCount == 0) {
+                console.log('No such user or admin')
                 res.status(404).json({
                     status: 'fail',
                     data: {
-                        result_code: `"${IdentityCodes.Visitor}"`,
+                        result_code: `${IdentityCodes.Visitor}`,
                     },
                     message: "Can not find the user's information",
                 })
@@ -65,7 +66,7 @@ login_router.get('/', async (req, res) => {
                             res.status(200).json({
                                 status: 'success',
                                 data: {
-                                    result_code: `"${IdentityCodes.Blocked}"`,
+                                    result_code: `${IdentityCodes.Blocked}`,
                                     start_time: `${start_time.toDateString()},${start_time.toLocaleTimeString()}`,
                                     end_time: `${end_time.toDateString()},${end_time.toLocaleTimeString()}`,
                                 },
@@ -92,7 +93,7 @@ login_router.get('/', async (req, res) => {
                     res.status(200).json({
                         status: 'success',
                         data: {
-                            result_code: `"${identity_code}"`,
+                            result_code: `${identity_code}`,
                         },
                         message: 'Success Login',
                     })
