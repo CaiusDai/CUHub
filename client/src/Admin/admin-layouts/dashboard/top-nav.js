@@ -33,7 +33,7 @@ export const TopNav = () => (
                     }}
                 >
                     <Avatar
-                        src="/src/Images/icon.png"
+                        src="/client/src/Images/icon.png"
                         variant="rounded"
                         size="large"
                     />

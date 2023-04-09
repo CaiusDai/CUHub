@@ -31,7 +31,7 @@ const Page = () => (
                     }}
                 >
                     <img
-                        src="/Images/illustration-not-found.svg"
+                        src="../../Images/illustration-not-found.svg"
                         alt="not found"
                     />
                 </Box>

@@ -10,7 +10,7 @@ import {
     TableRow,
     Button,
 } from '@mui/material'
-import { Scrollbar } from 'src/admin-components/scrollbar'
+import { Scrollbar } from 'src/Admin/admin-components/scrollbar'
 
 export const OrdersTable = (props) => {
     const {
@@ -42,7 +42,6 @@ export const OrdersTable = (props) => {
                                     <TableCell>
                                         <Link
                                             color="inherit"
-                                            href="#"
                                             underline="none"
                                             variant="subtitle2"
                                         >

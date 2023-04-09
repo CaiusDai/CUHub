@@ -116,32 +116,17 @@ async function insert_data() {
         await create_query_execute(
             database,
             'Account',
-            insert_account(
-                'TAN',
-                'hahaha@outlook.com',
-                'tanruijie',
-                true
-            )
+            insert_account('TAN', 'hahaha@outlook.com', 'tanruijie', true)
         )
         await create_query_execute(
             database,
             'Account',
-            insert_account(
-                'DAI',
-                'hehehe@outlook.com',
-                'daizijie',
-                false
-            )
+            insert_account('DAI', 'hehehe@outlook.com', 'daizijie', false)
         )
         await create_query_execute(
             database,
             'Account',
-            insert_account(
-                'SU',
-                'xixixi@outlook.com',
-                'surunlong',
-                false
-            )
+            insert_account('SU', 'xixixi@outlook.com', 'surunlong', false)
         )
         //Insert follow relationship
         await create_query_execute(
