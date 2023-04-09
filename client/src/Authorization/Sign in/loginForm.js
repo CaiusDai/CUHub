@@ -10,13 +10,13 @@ const LoginForm = () => {
         console.log('info for cookie')
     }
 
-    async function onFinish(values){
+    const onFinish = (values) => {
         console.log('Form submitted!')
         let result = false
         console.log(values)
         const { username, password } = values
         console.log(password)
-        await fetch(
+        fetch(
             `http://localhost:5000/api/login/?email=${username}&password=${password}`,
             {
                 method: 'GET',
@@ -30,30 +30,32 @@ const LoginForm = () => {
                 console.log(data)
                 result = data.data.result_code
                 console.log(`The return result is: ${result}`)
+                // the input for backend is stored in username and password,
+                // please provide me a corresponding function that return result for further use
+                // the result need to have at least 4 states: admin user, normal user, invalid, network err
+                console.log('code can enter here')
+                if (result === 0) {
+                    console.log('Login as Admin')
+                    window.location.href = '/admin'
+                } else if (result === 1) {
+                    console.log('Login successful!')
+                    window.location.href = '/homepage'
+                    // display an error message to the user
+                } else if (result === 2) {
+                    console.log('Login failed!')
+                    alert('invalid username or password, please try again')
+                    // display an error message to the user
+                } else if (result === 3) {
+                    console.log('Account Blocked!')
+                    alert('you account has been blocked')
+                } else {
+                    console.log('unexpect return value')
+                    alert(
+                        'Unexpect return from server, please contact the developer'
+                    )
+                }
             })
             .catch((error) => console.error(error))
-        // the input for backend is stored in username and password,
-        // please provide me a corresponding function that return result for further use
-        // the result need to have at least 4 states: admin user, normal user, invalid, network err
-        console.log('code can enter here')
-        if (result === '0') {
-            console.log('Login as Admin')
-            window.location.href = '/admin'
-        } else if (result === '1') {
-            console.log('Login successful!')
-            window.location.href = '/homepage'
-            // display an error message to the user
-        } else if (result === '2') {
-            console.log('Login failed!')
-            alert('invalid username or password, please try again')
-            // display an error message to the user
-        } else if (result === '3') {
-            console.log('Account Blocked!')
-            alert('you account has been blocked')
-        } else {
-            console.log('unexpect return value')
-            alert('Unexpect return from server, please contact the developer')
-        }
     }
 
     const onRememberChange = (e) => {

@@ -19,11 +19,14 @@ async function get_blocking_time(database, userid) {
         .then((result) => {
             if (result.rowCount == 0) {
                 return Promise.reject(
-                    `[Error] Can not find the nlocking record of ${userid}`
+                    `[Error] Can not find the blocking record of ${userid}`
                 )
             }
             const { start_at, end_at } = result.rows[0]
-            return { start_time: new Date(start_at), end_time: new Date(end_at) }
+            return {
+                start_time: new Date(start_at),
+                end_time: new Date(end_at),
+            }
         })
         .catch((error) => {
             console.log('[Error] When trying to read from the blocking list')
@@ -36,9 +39,15 @@ login_router.get('/', async (req, res) => {
     //Get the input data from the request
     const email = req.query.email
     const password = req.query.password
-    const is_admin = email === "Admin" ? true : false
-    console.log(email)
-    console.log(password)
+    if (!email || !password) {
+        res.status(400).json({
+            status: 'error',
+            message: 'Wrong query format',
+        })
+        return
+    }
+
+    const is_admin = email === 'Admin' ? true : false
     //Format the query.
     const query = is_admin
         ? `SELECT * FROM Admin WHERE username = '${email}' AND password = '${password}'`
@@ -53,7 +62,7 @@ login_router.get('/', async (req, res) => {
                 res.status(404).json({
                     status: 'fail',
                     data: {
-                        result_code: `${IdentityCodes.Visitor}`,
+                        result_code: IdentityCodes.Visitor,
                     },
                     message: "Can not find the user's information",
                 })
@@ -66,7 +75,7 @@ login_router.get('/', async (req, res) => {
                             res.status(200).json({
                                 status: 'success',
                                 data: {
-                                    result_code: `${IdentityCodes.Blocked}`,
+                                    result_code: IdentityCodes.Blocked,
                                     start_time: `${start_time.toDateString()},${start_time.toLocaleTimeString()}`,
                                     end_time: `${end_time.toDateString()},${end_time.toLocaleTimeString()}`,
                                 },
@@ -93,7 +102,7 @@ login_router.get('/', async (req, res) => {
                     res.status(200).json({
                         status: 'success',
                         data: {
-                            result_code: `${identity_code}`,
+                            result_code: identity_code,
                         },
                         message: 'Success Login',
                     })
