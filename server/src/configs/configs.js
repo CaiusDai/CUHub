@@ -6,7 +6,7 @@ const config = {
         Blocked: 3,
     },
     ErrorCodes: {
-        BadRequest: 0, // Bad request format.
+        InvalidRequest: 0, // E.g.: Create an Account that has been created before
         NotAuthenticated: 1, // Caused by visitor invalid access.
         NotAdmin: 2, // Caused by normal user attempting to do admin operation.
         InvalidAccess: 3, // Caused by normal user attempting to do something that he has no right to do.

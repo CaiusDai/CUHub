@@ -38,6 +38,9 @@ signup_router.post('/', async (req, res) => {
     if (is_valid == false) {
         res.status(HTTPCode.Ok).json({
             status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.InvalidRequest,
+            },
             message: 'Your email already exist, please reset the email',
         })
     }
