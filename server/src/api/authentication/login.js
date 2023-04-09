@@ -12,10 +12,14 @@ async function get_blocking_time(database, userid) {
         .then((result) => {
             if (result.rowCount == 0) {
                 return Promise.reject(
-                    `[Error] Can not find the nlocking record of ${userid}`
+                    `[Error] Can not find the blocking record of ${userid}`
                 )
             }
             const { start_at, end_at } = result.rows[0]
+            return {
+                start_time: new Date(start_at),
+                end_time: new Date(end_at),
+            }
             return {
                 start_time: new Date(start_at),
                 end_time: new Date(end_at),
@@ -32,9 +36,15 @@ login_router.get('/', async (req, res) => {
     //Get the input data from the request
     const email = req.query.email
     const password = req.query.password
+    if (!email || !password) {
+        res.status(400).json({
+            status: 'error',
+            message: 'Wrong query format',
+        })
+        return
+    }
+
     const is_admin = email === 'Admin' ? true : false
-    console.log(email)
-    console.log(password)
     //Format the query.
     const query = is_admin
         ? `SELECT * FROM Admin WHERE username = '${email}' AND password = '${password}'`
@@ -88,7 +98,7 @@ login_router.get('/', async (req, res) => {
                     res.status(config.HTTPCode.Ok).json({
                         status: 'success',
                         data: {
-                            result_code: `"${identity_code}"`,
+                            result_code: identity_code,
                         },
                         message: 'Success Login',
                     })
