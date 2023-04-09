@@ -15,7 +15,12 @@ const logout_router = require('./api/authentication/logout.js')
 const session_store = new session.MemoryStore()
 const app = express()
 const session_key = crypto.randomBytes(20).toString('hex')
-
+const cors_options = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type'],
+}
 // Session definition: One-day expire; In-memory storage
 app.use(
     session({
@@ -32,7 +37,7 @@ app.use(
 )
 
 app.use(express.json())
-app.use(cors())
+app.use(cors(cors_options))
 
 // Routers Setup:
 app.use('/api/login', login_router)
