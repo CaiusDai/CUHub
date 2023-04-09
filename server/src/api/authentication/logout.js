@@ -1,6 +1,6 @@
 // logout_router.js
 const express = require('express')
-const config = require('../../configs/configs')
+const config = require('../../configs/configs.js')
 
 const HTTPCodes = config.HTTPCode
 const logout_router = express.Router()
