@@ -2,16 +2,25 @@ const express = require('express')
 const session = require('express-session')
 const crypto = require('crypto')
 const cors = require('cors')
-// Router files:
+const config = require('./configs/configs')
+
+// Router files: (TODO: Better format)
 const login_router = require('./api/authentication/login.js')
 const signup_router = require('./api/authentication/signup.js')
+const block_router = require('./api/admin/block.js')
+const admin_router = require('./api/admin/admin.js')
+const logout_router = require('./api/authentication/logout.js')
 
 // Configuration variables:
 const session_store = new session.MemoryStore()
 const app = express()
-const PORT = process.env.PORT || 5000
 const session_key = crypto.randomBytes(20).toString('hex')
-
+const cors_options = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type'],
+}
 // Session definition: One-day expire; In-memory storage
 app.use(
     session({
@@ -28,13 +37,16 @@ app.use(
 )
 
 app.use(express.json())
-app.use(cors())
+app.use(cors(cors_options))
 
 // Routers Setup:
 app.use('/api/login', login_router)
+app.use('/api/logout', logout_router)
 app.use('/api/signup', signup_router)
+app.use('/api/admin/block', block_router)
+app.use('/api/admin', admin_router)
 
 // Server Start:
-app.listen(PORT, () => {
-    console.log(`[INFO] Server start to listen on port ${PORT}`)
+app.listen(config.ListenPort, () => {
+    console.log(`[INFO] Server start to listen on port ${config.ListenPort}`)
 })

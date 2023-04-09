@@ -10,36 +10,52 @@ const now = new Date()
 //I need backend to provide the mail address(id) and the start & end date of the blocking user.
 //You can look at blocking_list.js first.
 const orders = [
-    {
-        id: 'usermail@gmail.com',
-        createdAt: subDays(now, 21).getTime(),
-        status: 'delivered',
-        updatedAt: subDays(now, 7).getTime(),
-    },
-    {
-        id: '9265@xxx',
-        createdAt: subDays(now, 56).getTime(),
-        status: 'complete',
-        updatedAt: subDays(now, 54).getTime(),
-    },
-    {
-        id: '9266',
-        createdAt: subDays(now, 31).getTime(),
-        status: 'placed',
-        updatedAt: subDays(now, 43).getTime(),
-    },
-    {
-        id: '1090',
-        createdAt: subDays(now, 51).getTime(),
-        status: 'processed',
-        updatedAt: subDays(now, 13).getTime(),
-    },
-    {
-        id: '1111',
-        createdAt: subDays(now, 6).getTime(),
-        status: 'processed',
-        updatedAt: subDays(now, 54).getTime(),
-    },
+    fetch(`http://localhost:5000/api/admin/userlist/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    })
+        .then((response) => response.json())
+        .then((res) => {
+            // Format of resposne:
+            const stauts = res.status // status. 'success' for a success operation
+            const data = res.data
+            const message = res.message // Debug only
+            const emails = data.email
+            console.log(emails)
+        }),
+    // {
+    //     id: 'usermail@gmail.com',
+    //     createdAt: subDays(now, 21).getTime(),
+    //     status: 'delivered',
+    //     updatedAt: subDays(now, 7).getTime(),
+    // },
+    // {
+    //     id: '9265@xxx',
+    //     createdAt: subDays(now, 56).getTime(),
+    //     status: 'complete',
+    //     updatedAt: subDays(now, 54).getTime(),
+    // },
+    // {
+    //     id: '9266',
+    //     createdAt: subDays(now, 31).getTime(),
+    //     status: 'placed',
+    //     updatedAt: subDays(now, 43).getTime(),
+    // },
+    // {
+    //     id: '1090',
+    //     createdAt: subDays(now, 51).getTime(),
+    //     status: 'processed',
+    //     updatedAt: subDays(now, 13).getTime(),
+    // },
+    // {
+    //     id: '1111',
+    //     createdAt: subDays(now, 6).getTime(),
+    //     status: 'processed',
+    //     updatedAt: subDays(now, 54).getTime(),
+    // },
     // {
     //     id: '2475',
     //     createdAt: subDays(now, 17).getTime(),

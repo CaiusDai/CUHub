@@ -1,14 +1,7 @@
 const express = require('express')
 const { connect_db } = require('../../configs/db')
-
+const config = require('../../configs/configs')
 const login_router = express.Router()
-
-const IdentityCodes = {
-    Admin: 0,
-    NormalUser: 1,
-    Visitor: 2,
-    Blocked: 3,
-}
 
 async function get_blocking_time(database, userid) {
     const query = `SELECT start_at, end_at
@@ -40,7 +33,7 @@ login_router.get('/', async (req, res) => {
     const email = req.query.email
     const password = req.query.password
     if (!email || !password) {
-        res.status(400).json({
+        res.status(config.HTTPCode.BadRequest).json({
             status: 'error',
             message: 'Wrong query format',
         })
@@ -58,11 +51,10 @@ login_router.get('/', async (req, res) => {
         .query(query)
         .then((db_result) => {
             if (db_result.rowCount == 0) {
-                console.log('No such user or admin')
-                res.status(404).json({
+                res.status(config.HTTPCode.NotFound).json({
                     status: 'fail',
                     data: {
-                        result_code: IdentityCodes.Visitor,
+                        result_code: config.IdentityCodes.Visitor,
                     },
                     message: "Can not find the user's information",
                 })
@@ -72,10 +64,10 @@ login_router.get('/', async (req, res) => {
                     get_blocking_time(database, db_result.rows[0].user_id)
                         .then((result) => {
                             const { start_time, end_time } = result
-                            res.status(200).json({
+                            res.status(config.HTTPCode.Ok).json({
                                 status: 'success',
                                 data: {
-                                    result_code: IdentityCodes.Blocked,
+                                    result_code: config.IdentityCodes.Blocked,
                                     start_time: `${start_time.toDateString()},${start_time.toLocaleTimeString()}`,
                                     end_time: `${end_time.toDateString()},${end_time.toLocaleTimeString()}`,
                                 },
@@ -87,7 +79,7 @@ login_router.get('/', async (req, res) => {
                                 '[Error] When trying to read from the blocking list'
                             )
                             console.log(error)
-                            res.status(400).json({
+                            res.status(config.HTTPCode.BadRequest).json({
                                 status: 'error',
                                 message: 'Wrong query format',
                             })
@@ -95,11 +87,13 @@ login_router.get('/', async (req, res) => {
                 } else {
                     req.session.isAuthenticated = true
                     req.session.isAdmin = is_admin
-                    req.session.username = db_result.rows[0].username
+                    req.session.uid = is_admin
+                        ? db_result.rows[0].admin_id
+                        : db_result.rows[0].user_id
                     const identity_code = is_admin
-                        ? IdentityCodes.Admin
-                        : IdentityCodes.NormalUser
-                    res.status(200).json({
+                        ? config.IdentityCodes.Admin
+                        : config.IdentityCodes.NormalUser
+                    res.status(config.HTTPCode.Ok).json({
                         status: 'success',
                         data: {
                             result_code: identity_code,
@@ -111,7 +105,7 @@ login_router.get('/', async (req, res) => {
         })
         .catch((err) => {
             console.log(err)
-            res.status(400).json({
+            res.status(config.HTTPCode.BadRequest).json({
                 status: 'error',
                 message: 'Wrong query format',
             })
