@@ -2,13 +2,14 @@ const express = require('express')
 const session = require('express-session')
 const crypto = require('crypto')
 const cors = require('cors')
+const config = require('./configs/configs')
+
 // Router files:
 const login_router = require('./api/authentication/login.js')
 
 // Configuration variables:
 const session_store = new session.MemoryStore()
 const app = express()
-const PORT = process.env.PORT || 5000
 const session_key = crypto.randomBytes(20).toString('hex')
 
 // Session definition: One-day expire; In-memory storage
@@ -33,6 +34,6 @@ app.use(cors())
 app.use('/api/login', login_router)
 
 // Server Start:
-app.listen(PORT, () => {
-    console.log(`[INFO] Server start to listen on port ${PORT}`)
+app.listen(config.PORT, () => {
+    console.log(`[INFO] Server start to listen on port ${config.PORT}`)
 })
