@@ -10,6 +10,7 @@ import NotFoundPage from './Admin/admin-pages/404'
 import BlockinglistPage from './Admin/admin-pages/blocking_list'
 import ReportsPage from './Admin/admin-pages'
 import AllaccountslistPage from './Admin/admin-pages/all_accounts_list'
+import Logout from './Homepage/homepage-pages/logout'
 
 export const AppRouter = [
     {
@@ -30,6 +31,10 @@ export const AppRouter = [
             {
                 path: 'homepage/all_accounts_list',
                 element: <AllaccountslistPage />,
+            },
+            {
+                path: 'homepage/logout',
+                element: <Logout />,
             },
         ],
     },

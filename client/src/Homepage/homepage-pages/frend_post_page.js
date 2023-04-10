@@ -88,7 +88,7 @@ const FriendsPost = () => {
                             justifyContent="space-between"
                             spacing={3}
                         >
-                            <Typography variant="h4">All Post</Typography>
+                            <Typography variant="h4">Friends Post</Typography>
                         </Stack>
                         <div>
                             <Card>

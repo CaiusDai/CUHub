@@ -1,7 +1,7 @@
 import { BiHomeCircle } from 'react-icons/bi'
 import { IoPersonOutline } from 'react-icons/io5'
 import { IoMdListBox } from 'react-icons/io'
-import ExclamationTriangleIcon from '@heroicons/react/24/solid/ExclamationTriangleIcon'
+import ArrowLeftOnRectangleIcon from '@heroicons/react/24/solid/ArrowLeftOnRectangleIcon'
 import { SvgIcon } from '@mui/material'
 
 export const items = [
@@ -33,12 +33,12 @@ export const items = [
         label: 'Chat',
     },
     {
-        href: '/404',
+        href: '/homepage/logout',
         icon: (
             <SvgIcon>
-                <ExclamationTriangleIcon />
+                <ArrowLeftOnRectangleIcon />
             </SvgIcon>
         ),
-        label: 'Error',
+        label: 'Log out',
     },
 ]
