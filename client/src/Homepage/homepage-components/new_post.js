@@ -86,10 +86,11 @@ const NewPostForm = () => {
                 ]}
             >
                 <Select mode="multiple" placeholder="Please select tag choices">
-                    <Option value="Tree Hole">Tree Hole</Option>
-                    <Option value="Job Seeking">Job Seeking</Option>
-                    <Option value="Trading">Trading</Option>
-                    <Option value="Study">Study</Option>
+                    <Option value="treehole">Tree Hole</Option>
+                    <Option value="jobseeking">Job Seeking</Option>
+                    <Option value="trading">Trading</Option>
+                    <Option value="academic">Academic</Option>
+                    <Option value="information">Info</Option>
                 </Select>
             </Form.Item>
             <Form.Item>
