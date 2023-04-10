@@ -17,8 +17,11 @@ async function get_blocking_time(database, userid) {
             }
             const { start_at, end_at } = result.rows[0]
             return {
+               
                 start_time: new Date(start_at),
+               
                 end_time: new Date(end_at),
+           ,
             }
         })
         .catch((error) => {

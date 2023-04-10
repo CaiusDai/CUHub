@@ -6,7 +6,7 @@ const connect_db = async () => {
             user: 'postgres',
             host: 'localhost',
             database: 'cuhub',
-            password: '',
+            password: 'cuhub',
             idleTimeoutMillis: 30000,
             port: 5432,
         })
