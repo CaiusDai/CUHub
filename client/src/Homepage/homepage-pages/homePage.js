@@ -10,6 +10,8 @@ const now = new Date()
 
 // in this part, there is no input form the frontend,
 // all posts need to be returned from backend for further use
+const from_backend = () => {}
+
 const posts = [
     {
         id: 'usermail@gmail.com',

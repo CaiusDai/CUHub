@@ -36,9 +36,9 @@ const insert_admin = (username, password) => {
     return query_admin
 }
 
-const insert_announcement = (admin_id, content) => {
+const insert_announcement = (admin_id, content, title) => {
     const query_announcement = `INSERT INTO Announcement \
-                            VALUES(DEFAULT,${admin_id},'${content}',DEFAULT)`
+                            VALUES(DEFAULT,${admin_id},'${title}','${content}',DEFAULT)`
     return query_announcement
 }
 const insert_block = (user_id, admin_id, end_at) => {
@@ -203,17 +203,17 @@ async function insert_data() {
         await create_query_execute(
             database,
             'Announcement',
-            insert_announcement(1, 'I am god')
+            insert_announcement(1, 'I am god', 'Annoucement 1')
         )
         await create_query_execute(
             database,
             'Announcement',
-            insert_announcement(1, 'I am god too')
+            insert_announcement(1, 'I am god too', 'Annoucement 2')
         )
         await create_query_execute(
             database,
             'Announcement',
-            insert_announcement(1, 'I am god also')
+            insert_announcement(1, 'I am god also', 'Annoucement 3')
         )
 
         //Insert block
