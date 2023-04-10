@@ -20,7 +20,7 @@ const from_backend = () => {
                 const errorCode = result.data.error_code
                 // Do something
             } else if (status === 'error') {
-                // Caused by wrong format
+                // Wrong fetch format
                 const message = result.message
             } else {
                 const data = result.data
