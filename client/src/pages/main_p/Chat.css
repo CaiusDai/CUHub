@@ -2,7 +2,6 @@
     width: 350px;
     background-color: #fff;
     border-right: 1px solid #e5e5e5;
-    ;
 }
 
 .chat-container {
@@ -13,9 +12,6 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
-
-
-
 
 .chat {
     display: flex;
@@ -77,8 +73,6 @@
     margin-right: 10px;
 }
 
-
-
 .chat-title img {
     width: 20px;
     margin-left: auto;
@@ -94,7 +88,6 @@
     padding-bottom: 15px;
     border-bottom: 0.8px solid #292929;
     padding-left: 20px;
-    ;
 }
 
 .request-arrow {
@@ -109,8 +102,6 @@
     padding-bottom: 15px;
     border-bottom: 0.8px solid #292929;
 }
-
-
 
 .chat-messages {
     flex: 1;

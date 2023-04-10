@@ -1,45 +1,65 @@
-import { useState } from 'react';
-import { Input, Button, List } from 'antd';
-import './Chat.css';
-import { Layout, Menu, Avatar } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import { Link, useLocation, BrowserRouter as Router } from 'react-router-dom';
-import chatIcon from "../../graphs/chat.svg"
-import ChatWindow from './ChatWindow';
-import { Route, Routes } from 'react-router-dom';
+import { useState } from 'react'
+import { Input, Button, List } from 'antd'
+import './Chat.css'
+import { Layout, Avatar } from 'antd'
+import { SearchOutlined } from '@ant-design/icons'
+import { Link, useLocation, BrowserRouter as Router } from 'react-router-dom'
+import chatIcon from '../../graphs/chat.svg'
+// import ChatWindow from './ChatWindow'
+// import { Route, Routes } from 'react-router-dom'
 
 function Chat() {
-    const [messages, setMessages] = useState([]);
-    const [inputValue, setInputValue] = useState('');
+    const [messages, setMessages] = useState([])
+    const [inputValue, setInputValue] = useState('')
     // back-end support: user name, id, avatar
     const mockChats = [
-        { id: 1, name: 'User 1', avatar: 'https://randomuser.me/api/portraits/men/1.jpg' },
-        { id: 2, name: 'User 2', avatar: 'https://randomuser.me/api/portraits/men/2.jpg' },
-        { id: 3, name: 'User 3', avatar: 'https://randomuser.me/api/portraits/women/1.jpg' },
-        { id: 4, name: 'User 4', avatar: 'https://randomuser.me/api/portraits/women/2.jpg' },
-        { id: 5, name: 'User 5', avatar: 'https://randomuser.me/api/portraits/men/3.jpg' },
-
-    ];
-    const location = useLocation();
-    const userId = location.pathname.endsWith('/chat') ? null : location.pathname.split('/').pop();
-
+        {
+            id: 1,
+            name: 'User 1',
+            avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
+        },
+        {
+            id: 2,
+            name: 'User 2',
+            avatar: 'https://randomuser.me/api/portraits/men/2.jpg',
+        },
+        {
+            id: 3,
+            name: 'User 3',
+            avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
+        },
+        {
+            id: 4,
+            name: 'User 4',
+            avatar: 'https://randomuser.me/api/portraits/women/2.jpg',
+        },
+        {
+            id: 5,
+            name: 'User 5',
+            avatar: 'https://randomuser.me/api/portraits/men/3.jpg',
+        },
+    ]
+    const location = useLocation()
+        // const userId = location.pathname.endsWith('/chat')
+        ? null
+        : location.pathname.split('/').pop()
 
     const handleSend = () => {
         if (inputValue) {
-            setMessages([...messages, inputValue]);
-            setInputValue('');
+            setMessages([...messages, inputValue])
+            setInputValue('')
         }
-    };
+    }
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            handleSend();
-        }
-    };
+    // const handleKeyDown = (event) => {
+    //     if (event.key === 'Enter') {
+    //         handleSend()
+    //     }
+    // }
 
-    const handleInputChange = (event) => {
-        setInputValue(event.target.value);
-    };
+    // const handleInputChange = (event) => {
+    //     setInputValue(event.target.value)
+    // }
 
     return (
         <div className="chat-container">
@@ -51,7 +71,7 @@ function Chat() {
         }
         `}
             </style>
-            <Layout className='chatmiddle'>
+            <Layout className="chatmiddle">
                 <Layout.Sider width={350}>
                     <div className="chat">
                         <div className="chat-top fixed">
@@ -66,15 +86,21 @@ function Chat() {
                             <Input.Search
                                 placeholder="Search for people and group"
                                 className="chat-search"
-                                style={{ backgroundColor: "#f0f0f0" }}
+                                style={{ backgroundColor: '#f0f0f0' }}
                                 enterButton={
                                     <Button
-                                        icon={<SearchOutlined style={{ color: "#fff" }} />}
-                                        style={{ backgroundColor: "#1DA1F2", border: "none" }}
+                                        icon={
+                                            <SearchOutlined
+                                                style={{ color: '#fff' }}
+                                            />
+                                        }
+                                        style={{
+                                            backgroundColor: '#1DA1F2',
+                                            border: 'none',
+                                        }}
                                     />
                                 }
                             />
-
                         </div>
                         <div className="chat-top filler">
                             <div className="chat-title">
@@ -85,19 +111,34 @@ function Chat() {
                                 <span>Chat Requests</span>
                                 <div className="request-arrow">&gt;</div>
                             </div>
-                            <Input.Search placeholder="Search for people and group" className="chat-search" />
+                            <Input.Search
+                                placeholder="Search for people and group"
+                                className="chat-search"
+                            />
                         </div>
                         <div className="chat-users">
                             <List dataSource={mockChats}>
-                                {mockChats.map(user => (
+                                {mockChats.map((user) => (
                                     <Link key={user.id} to={`/chat/${user.id}`}>
                                         <List.Item>
                                             <List.Item.Meta
-                                                avatar={<Avatar src={user.avatar}>{user.name.charAt(0)}</Avatar>}
+                                                avatar={
+                                                    <Avatar src={user.avatar}>
+                                                        {user.name.charAt(0)}
+                                                    </Avatar>
+                                                }
                                                 title={
-                                                    <span style={{ display: 'flex', alignItems: 'center' }}>
+                                                    <span
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems:
+                                                                'center',
+                                                        }}
+                                                    >
                                                         <span>{user.name}</span>
-                                                        <span className="user-id">@{user.id}</span>
+                                                        <span className="user-id">
+                                                            @{user.id}
+                                                        </span>
                                                     </span>
                                                 }
                                             />
@@ -106,7 +147,6 @@ function Chat() {
                                 ))}
                             </List>
                         </div>
-
                     </div>
                 </Layout.Sider>
                 {/* <Layout.Content style={{ display: "flex", flexDirection: "row" }}>
@@ -117,9 +157,8 @@ function Chat() {
                     </div>
 
                 </Layout.Content> */}
-
-            </Layout >
-        </div >
-    );
+            </Layout>
+        </div>
+    )
 }
-export default Chat;
+export default Chat

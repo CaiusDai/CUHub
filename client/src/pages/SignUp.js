@@ -1,21 +1,18 @@
-
-import { Form, Input, Button } from 'antd';
-import 'antd/dist/reset.css';
-import './SignUp.css';
-import logo from '../graphs/logo.jpeg';
-import React, { useState } from 'react';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import axios from 'axios';
+import { Form, Input, Button } from 'antd'
+import 'antd/dist/reset.css'
+import './SignUp.css'
+import logo from '../graphs/logo.jpeg'
+import React, { useState } from 'react'
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
+import axios from 'axios'
 // import { signUpf } from './api';
 
-
-
 const SignUp = () => {
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false)
 
     const toggleShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
+        setShowPassword(!showPassword)
+    }
     // const onFinish = async (values) => {
     //     try {
     //         const result = await signUpf(values);
@@ -25,25 +22,29 @@ const SignUp = () => {
     //     }
     // };
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-    };
+        console.log('Received values of form: ', values)
+    }
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
+        console.log('Failed:', errorInfo)
+    }
 
     return (
-        <div className='wrapper'>
+        <div className="wrapper">
             <img src={logo} alt="Logo" className="logo" />
             <div className="form-wrapper">
                 <div className="form-container">
                     <h2>Sign Up in CUHub</h2>
-                    <p className='greytext'>Welcome!</p>
-                    <p className='greytext'>Please Enter Your Details.</p>
+                    <p className="greytext">Welcome!</p>
+                    <p className="greytext">Please Enter Your Details.</p>
                     <Form>
                         <div className="input-container">
                             <label htmlFor="email">Email:</label>
                             <Form.Item name="email">
-                                <Input type="email" id="email" placeholder='sample@gmail.com' />
+                                <Input
+                                    type="email"
+                                    id="email"
+                                    placeholder="sample@gmail.com"
+                                />
                             </Form.Item>
                         </div>
                         <div className="input-container">
@@ -60,9 +61,13 @@ const SignUp = () => {
                                     id="password"
                                     suffix={
                                         showPassword ? (
-                                            <EyeTwoTone onClick={toggleShowPassword} />
+                                            <EyeTwoTone
+                                                onClick={toggleShowPassword}
+                                            />
                                         ) : (
-                                            <EyeInvisibleOutlined onClick={toggleShowPassword} />
+                                            <EyeInvisibleOutlined
+                                                onClick={toggleShowPassword}
+                                            />
                                         )
                                     }
                                 />
@@ -73,15 +78,13 @@ const SignUp = () => {
                         </Button>
                     </Form>
                     <div className="login-wrapper">
-                        <i className='greytext'>Already has an account?</i>
-                        <a href='#'>Log in</a>
+                        <i className="greytext">Already has an account?</i>
+                        <a href="#">Log in</a>
                     </div>
                 </div>
-            </div >
+            </div>
         </div>
+    )
+}
 
-
-    );
-};
-
-export default SignUp;
+export default SignUp
