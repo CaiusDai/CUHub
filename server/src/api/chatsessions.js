@@ -6,7 +6,7 @@ const { connect_db } = require('../configs/db.js')
 const HTTPCodes = config.HTTPCode
 const chat_router = express.Router()
 
-chat_router.get('/', async (req, res) => {
+chat_router.get('/session', async (req, res) => {
     //Get user_id of current user
     const user_id = req.session.uid
     let result_array = []
@@ -104,7 +104,7 @@ chat_router.get('/', async (req, res) => {
         })
 })
 
-chat_router.post('/', async (req, res) => {
+chat_router.post('/session', async (req, res) => {
     //Get user_id of current user
     const user_id = req.session.uid
     const other_id = req.query.user_id
@@ -159,7 +159,7 @@ chat_router.post('/', async (req, res) => {
 })
 
 //Insert a new mesage into session
-chat_router.post('/specific', async (req, res) => {
+chat_router.post('/message', async (req, res) => {
     const user1_id = req.session.uid
     const user2_id = req.query.user_id //user2_id is the user that current user is chatting with
     const content = req.query.content
@@ -201,7 +201,7 @@ chat_router.post('/specific', async (req, res) => {
         })
 })
 
-chat_router.get('/specific', async (req, res) => {
+chat_router.get('/message', async (req, res) => {
     const user1_id = req.session.uid
     const user2_id = req.query.user_id //user2_id is the user that current user is chatting with
 
