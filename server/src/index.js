@@ -15,6 +15,8 @@ const admin_router = require('./api/admin/admin.js')
 const annoucement_router = require('./api/admin/annoucement')
 const logout_router = require('./api/authentication/logout.js')
 const example_router = require('./api/examples/upload')
+const chat_router = require('./api/chatsessions.js')
+const profile_router = require('./api/profile.js')
 const post_router = require('./api/posts/posts')
 
 // Configuration variables:
@@ -53,6 +55,8 @@ app.use('/api/signup', signup_router)
 app.use('/api/admin/block', block_router)
 app.use('/api/admin', admin_router)
 app.use('/api/example', example_router)
+app.use('/api/chat', chat_router)
+app.use('/api/profile',profile_router)
 app.use('/api/annoucements', annoucement_router)
 app.use('/api/posts', post_router)
 // Server Start:

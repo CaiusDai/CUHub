@@ -3,6 +3,7 @@ import { IoPersonOutline } from 'react-icons/io5'
 import { IoMdListBox } from 'react-icons/io'
 import ArrowLeftOnRectangleIcon from '@heroicons/react/24/solid/ArrowLeftOnRectangleIcon'
 import { SvgIcon } from '@mui/material'
+import { BsFillChatFill } from 'react-icons/bs'
 
 export const items = [
     {
@@ -27,10 +28,19 @@ export const items = [
         href: '/homepage/all_accounts_list',
         icon: (
             <SvgIcon>
-                <IoPersonOutline />
+                <BsFillChatFill />
             </SvgIcon>
         ),
         label: 'Chat',
+    },
+    {
+        href: '/homepage/profile',
+        icon: (
+            <SvgIcon>
+                <IoPersonOutline />
+            </SvgIcon>
+        ),
+        label: 'Profile',
     },
     {
         href: '/homepage/logout',
