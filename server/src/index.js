@@ -10,6 +10,7 @@ const signup_router = require('./api/authentication/signup.js')
 const block_router = require('./api/admin/block.js')
 const admin_router = require('./api/admin/admin.js')
 const logout_router = require('./api/authentication/logout.js')
+const chat_router = require('./api/chatsessions.js')
 
 // Configuration variables:
 const session_store = new session.MemoryStore()
@@ -43,8 +44,9 @@ app.use(cors(cors_options))
 app.use('/api/login', login_router)
 app.use('/api/logout', logout_router)
 app.use('/api/signup', signup_router)
-app.use('/api/admin/block', block_router)
+app.use('/api/block', block_router)
 app.use('/api/admin', admin_router)
+app.use('/api/chat', chat_router)
 
 // Server Start:
 app.listen(config.ListenPort, () => {

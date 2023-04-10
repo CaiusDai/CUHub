@@ -86,56 +86,57 @@ block_router.post('/', (req, res) => {
                     data: {
                         error_code: config.ErrorCodes.InvalidRequest,
                     },
-                    message: 'Blocking a user that had been blocked before'
+                    message: 'Blocking a user that had been blocked before',
                 })
                 return
             }
             //The user is unblocked now, doing blocking operation now
-            else
-            {
+            else {
                 //Then update the blocking status of the user
                 connect_db()
-                .then((database) => database.query(query_change_status))
-                .then((db_result) =>{
-                    console.log(db_result)
-                    //Then insert the record to blocking list
-                    connect_db()
-                    .then((database)=> database.query(query_insert_record))
-                    .then((db_result)=>{
-                        res.status(HTTPCodes.Ok).json({
-                            status: 'success',
-                            message: '[INFO] Insert a new block record completed',
-                        })
-
+                    .then((database) => database.query(query_change_status))
+                    .then(() => {
+                        //Then insert the record to blocking list
+                        connect_db()
+                            .then((database) =>
+                                database.query(query_insert_record)
+                            )
+                            .then(() => {
+                                res.status(HTTPCodes.Ok).json({
+                                    status: 'success',
+                                    message:
+                                        '[INFO] Insert a new block record completed',
+                                })
+                            })
+                            .catch((err) => {
+                                console.error(
+                                    `[Error] Failed to insert into blocking list.\n Error: ${err}`
+                                )
+                                res.status(HTTPCodes.BadRequest).json({
+                                    status: 'error',
+                                    message: '[Error] Invalid query format',
+                                })
+                            })
                     })
                     .catch((err) => {
                         console.error(
-                            `[Error] Failed to insert into blocking list.\n Error: ${err}`
+                            `[Error] Failed to update the blocking status of the user.\n Error: ${err}`
                         )
                         res.status(HTTPCodes.BadRequest).json({
                             status: 'error',
                             message: '[Error] Invalid query format',
                         })
                     })
-
-                })
-                .catch((err)=>{
-                    console.error(`[Error] Failed to update the blocking status of the user.\n Error: ${err}`)
-                    res.status(HTTPCodes.BadRequest).json({
-                        status: 'error',
-                        message: '[Error] Invalid query format',
-                    })
-
-                })
             }
         })
-        .catch((err) =>{
-            console.error(`[Error] Failed to check the blocking status of the user.\n Error: ${err}`)
+        .catch((err) => {
+            console.error(
+                `[Error] Failed to check the blocking status of the user.\n Error: ${err}`
+            )
             res.status(HTTPCodes.BadRequest).json({
                 status: 'error',
                 message: '[Error] Invalid query format',
             })
         })
-
 })
 module.exports = block_router
