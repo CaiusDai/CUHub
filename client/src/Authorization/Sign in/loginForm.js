@@ -14,10 +14,10 @@ const LoginForm = () => {
         console.log('Form submitted!')
         let result = false
         console.log(values)
-        const { username, password } = values
+        const { email, password } = values
         console.log(password)
         fetch(
-            `http://localhost:5000/api/login/?email=${username}&password=${password}`,
+            `http://localhost:5000/api/login/?email=${email}&password=${password}`,
             {
                 method: 'GET',
                 headers: {

@@ -156,7 +156,7 @@ const Page = () => {
                                                             <VscBlank />
                                                         </SvgIcon>
                                                         <SvgIcon>
-                                                            <HiOutlineCake/>
+                                                            <HiOutlineCake />
                                                         </SvgIcon>
                                                         YYYY-MM-DD
                                                         {/*Here I need the number of Following*/}

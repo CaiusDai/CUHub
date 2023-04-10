@@ -56,7 +56,7 @@ app.use('/api/admin/block', block_router)
 app.use('/api/admin', admin_router)
 app.use('/api/example', example_router)
 app.use('/api/chat', chat_router)
-app.use('/api/profile',profile_router)
+app.use('/api/profile', profile_router)
 app.use('/api/annoucements', annoucement_router)
 app.use('/api/posts', post_router)
 // Server Start:
