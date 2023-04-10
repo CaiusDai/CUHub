@@ -26,15 +26,16 @@ chat_router.get('/session', async (req, res) => {
 
         for (let index = 0; index < session_list.length; index++) {
             let result_one_user = {}
+            let query_get_username_photo
             //The current user is user1, user user2_id to get profile photo and username
             if (session_list[index].user1 === user_id) {
                 result_one_user.user1_id = session_list[index].user2
-                let query_get_username_photo = `SELECT username,profile_photo FROM Account,Profile WHERE Account.user_id = Profile.user_id AND Account.user_id =${session_list[index].user2}`
+                query_get_username_photo = `SELECT username,profile_photo FROM Account,Profile WHERE Account.user_id = Profile.user_id AND Account.user_id =${session_list[index].user2}`
             }
             //The current user is user2, in the contrary set the id as user1_id
             else {
                 result_one_user.user_id = session_list[index].user1
-                let query_get_username_photo = `SELECT username,profile_photo FROM Account,Profile WHERE Account.user_id = Profile.user_id AND Account.user_id = ${session_list[index].user1}`
+                query_get_username_photo = `SELECT username,profile_photo FROM Account,Profile WHERE Account.user_id = Profile.user_id AND Account.user_id = ${session_list[index].user1}`
             }
 
             let db_result = await database.query(query_get_username_photo)
@@ -44,7 +45,6 @@ chat_router.get('/session', async (req, res) => {
             result_array.push(result_one_user)
         }
 
-        console.log(result_array)
         //Send response
         res.status(HTTPCodes.Ok).json({
             status: 'success',
@@ -63,7 +63,6 @@ chat_router.get('/session', async (req, res) => {
 
 
     }
-
 
 
 })
@@ -176,15 +175,15 @@ chat_router.get('/message', async (req, res) => {
     let result_array = []
     const database = await connect_db()
 
-    //Get username and photo
+    //Get username and photo of other user
     try {
         const query_username_photo = `SELECT username,profile_photo FROM Account,Profile WHERE Account.user_id = Profile.user_id AND Account.user_id =${user2_id}`
-        const db_result = database.query(query_username_photo)
+        const db_result = await database.query(query_username_photo)
         photo = db_result.rows[0].profile_photo
         username = db_result.rows[0].username
     }
     catch (err) {
-        `[Error] is: ${err}`
+        `[Error] in first query is: ${err}`
         res.status(HTTPCodes.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
@@ -200,7 +199,7 @@ chat_router.get('/message', async (req, res) => {
     }
 
     catch (err) {
-        `[Error] is: ${err}`
+        `[Error] in second query is: ${err}`
         res.status(HTTPCodes.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
@@ -239,7 +238,7 @@ chat_router.get('/message', async (req, res) => {
     }
     catch (err) {
         console.log(
-            `[Error] is: ${err}`
+            `[Error] in final query is: ${err}`
         )
         res.status(HTTPCodes.BadRequest).json({
             status: 'error',
