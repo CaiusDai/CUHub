@@ -55,7 +55,7 @@ block_router.get('/', (req, res) => {
         })
 })
 
-block_router.post('/', (req, res) => {
+block_router.post('/', async (req, res) => {
     // Check identity:
     if (!req.session.isAdmin) {
         res.status(HTTPCodes.Unauthorized).json({
@@ -76,8 +76,9 @@ block_router.post('/', (req, res) => {
     const query_change_status = `UPDATE Account SET is_blocked = TRUE WHERE user_id = ${user_id}`
     const query_insert_record = `INSERT INTO Block VALUES(DEFAULT, ${user_id},${admin_id},DEFAULT, '${end_at}')`
     //First check the blocking status of the user, then update the account db, then add the blocking record to block db
-    connect_db()
-        .then((database) => database.query(query_check_status))
+    const database = await connect_db()
+    database
+        .query(query_check_status)
         .then((db_result) => {
             //If the user is under blocking now
             if (db_result.rows[0].is_blocked === true) {
@@ -93,14 +94,13 @@ block_router.post('/', (req, res) => {
             //The user is unblocked now, doing blocking operation now
             else {
                 //Then update the blocking status of the user
-                connect_db()
-                    .then((database) => database.query(query_change_status))
+                database
+                    .query(query_change_status)
                     .then(() => {
                         //Then insert the record to blocking list
-                        connect_db()
-                            .then((database) =>
-                                database.query(query_insert_record)
-                            )
+                        database
+                            .query(query_insert_record)
+
                             .then(() => {
                                 res.status(HTTPCodes.Ok).json({
                                     status: 'success',
