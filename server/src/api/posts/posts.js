@@ -229,7 +229,6 @@ post_router.post('/new', (req, res) => {
         return
     }
     const user_id = req.session.uid
-    console.log(req.body)
     const { postContent, tagChoices } = req.body
     const is_public = true
     const is_anonymous = false
@@ -237,7 +236,6 @@ post_router.post('/new', (req, res) => {
     const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft)
                    VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft})
                    RETURNING post_id`
-    console.log(query)
     connect_db()
         .then((database) => database.query(query))
         .then(() => {

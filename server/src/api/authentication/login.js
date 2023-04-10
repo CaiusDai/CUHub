@@ -33,7 +33,6 @@ login_router.get('/', async (req, res) => {
     //Get the input data from the request
     const email = req.query.email
     const password = req.query.password
-    console.log(`${email}-${password}`)
     if (!email || !password) {
         res.status(config.HTTPCode.BadRequest).json({
             status: 'error',
