@@ -2,67 +2,63 @@ import { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { subDays } from 'date-fns'
 import { Box, Card, Container, Divider, Stack, Typography } from '@mui/material'
-import { OrdersSearch } from 'src/admin-sections/orders/orders-search'
-import { OrdersTable } from 'src/admin-sections/orders/orders-table'
+import { PostTable } from 'src/Homepage/homepage-sections/post-table'
 
 const now = new Date()
 
-//I need backend to provide the mail address(id) and the start & end date of the blocking user.
-//You can refer to the examples already entered below, 
-//but of course I will replace them with real user data after you have provided me with the backend user data.
-const orders = [
+// in this part, there is no input form the frontend,
+// posts form people the user following need to be returned from backend for further use
+const following_posts = [
     {
         id: 'usermail@gmail.com',
-        createdAt: subDays(now, 21).getTime(),
-        updatedAt: subDays(now, 7).getTime(),
+        isLiked: true,
+        content: 'this is post 1',
     },
     {
         id: '9265@xxx',
         createdAt: subDays(now, 56).getTime(),
         status: 'complete',
         updatedAt: subDays(now, 54).getTime(),
+        isLiked: false,
     },
     {
         id: '9266',
         createdAt: subDays(now, 31).getTime(),
         status: 'placed',
         updatedAt: subDays(now, 43).getTime(),
+        isLiked: true,
     },
     {
         id: '1090',
         createdAt: subDays(now, 51).getTime(),
         status: 'processed',
         updatedAt: subDays(now, 13).getTime(),
+        isLiked: true,
     },
     {
         id: '1111',
         createdAt: subDays(now, 6).getTime(),
         status: 'processed',
         updatedAt: subDays(now, 54).getTime(),
+        isLiked: true,
     },
-    {
-        id: '2475',
-        createdAt: subDays(now, 17).getTime(),
-        status: 'complete',
-        updatedAt: subDays(now, 1).getTime(),
-    }
 ]
 
-const Page = () => {
-    const [mode, setMode] = useState('table')
-    const [query, setQuery] = useState('')
+const FriendsPost = () => {
+    // const [setMode] = useState('table')
+    // const [setQuery] = useState('')
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
 
-    const handleModeChange = useCallback((event, value) => {
-        if (value) {
-            setMode(value)
-        }
-    }, [])
+    // const handleModeChange = useCallback((event, value) => {
+    //   if (value) {
+    //     setMode(value)
+    //   }
+    // }, [])
 
-    const handleQueryChange = useCallback((value) => {
-        setQuery(value)
-    }, [])
+    // const handleQueryChange = useCallback((value) => {
+    //   setQuery(value)
+    // }, [])
 
     const handleChangePage = useCallback((event, value) => {
         setPage(value)
@@ -76,7 +72,7 @@ const Page = () => {
     return (
         <>
             <Helmet>
-                <title>Blocking List</title>
+                <title>Friends Post</title>
             </Helmet>
             <Box
                 sx={{
@@ -92,20 +88,14 @@ const Page = () => {
                             justifyContent="space-between"
                             spacing={3}
                         >
-                            <Typography variant="h4">Blocking List</Typography>
+                            <Typography variant="h4">Friends Post</Typography>
                         </Stack>
                         <div>
                             <Card>
-                                <OrdersSearch
-                                    mode={mode}
-                                    onModeChange={handleModeChange}
-                                    onQueryChange={handleQueryChange}
-                                    query={query}
-                                />
                                 <Divider />
-                                <OrdersTable
-                                    count={orders.length}
-                                    items={orders}
+                                <PostTable
+                                    count={following_posts.length}
+                                    items={following_posts}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
                                     onPageChange={handleChangePage}
@@ -122,4 +112,4 @@ const Page = () => {
     )
 }
 
-export default Page
+export default FriendsPost

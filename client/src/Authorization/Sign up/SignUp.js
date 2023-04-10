@@ -21,24 +21,44 @@ const SignUp = () => {
         console.log(username)
         console.log('the following is password')
         console.log(password)
-        // the input for backend is stored in email, username and password,
-        // please provide me a corresponding function that return result for further use
-        // the result need to have at least 3 states: email or username already been used, register successful, network err
-        const result = false
-        if (result) {
-            console.log('Sign Up successful!')
-            // window.location.href = '/homepage';
-        } else {
-            console.log('Sign In failed failed!')
-            alert(
-                'You are using a email or user name that has been used, please try again'
-            )
-            // display an error message to the user
-        }
+        let result = false
+        fetch(
+            `http://localhost:5000/api/signup/?username=${username}&password=${password}&email=${email}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+                //If sign up successfully, the backend return the response with status 'success', otherwise will send back 'fail'
+                //The fail will be returned while the input email already exist
+                const status = data.status
+                console.log(`The return result is: ${status}}`)
+
+                if (status === 'success') {
+                    result = true
+                }
+
+                // the input for backend is stored in email, username and password,
+                // please provide me a corresponding function that return result for further use
+                // the result need to have at least 3 states: email or username already been used, register successful, network err
+                if (result === true) {
+                    console.log('Sign Up successful!')
+                    // window.location.href = '/homepage';
+                } else {
+                    console.log('Sign In failed failed!')
+                    alert(
+                        'You are using a email that has been used, please try again'
+                    )
+                    // display an error message to the user
+                }
+            })
+            .catch((error) => console.error(error))
     }
-    // const onFinish = (values) => {
-    //     console.log('Received values of form: ', values);
-    // };
 
     return (
         <div

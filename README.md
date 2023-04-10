@@ -5,14 +5,17 @@ CUHub is an online platform that blends the functionalities of traditional socia
 # Setup Guidelines
 
 ## Frontend
+
 You should do the following operations in the folder `client`. **Do not do them in root**
 
 ### ReactFrameWork start up
+
 ```bash
 # After entering the client folder, user the following command to set up the framework
 # this command is used to install the node_modules required by frontend
 npm install
 ```
+
 ```bash
 # After installed modules, start the frontend with following command to check whether it works well
 npm start
@@ -46,7 +49,7 @@ Then, run the following commands in your working directory to set up package fil
 # You will have a package.json file after this step.
 npm init -y
 # Set up the express and pg modules
-npm i express pg express-session cors
+npm i express pg express-session cors multer
 ```
 
 ### Table Manipulation

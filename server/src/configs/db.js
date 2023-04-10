@@ -6,7 +6,8 @@ const connect_db = async () => {
             user: 'jeffery',
             host: 'localhost',
             database: 'cuhub',
-            password: '',
+            password: 'cuhub',
+            idleTimeoutMillis: 30000,
             port: 5432,
         })
         await pool.connect()
