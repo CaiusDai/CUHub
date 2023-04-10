@@ -11,41 +11,61 @@ const now = new Date()
 //You can refer to the examples already entered below,
 //but of course I will replace them with real user data after you have provided me with the backend user data.
 const orders = [
-    {
-        id: 'usermail@gmail.com',
-        createdAt: subDays(now, 21).getTime(),
-        updatedAt: subDays(now, 7).getTime(),
-    },
-    {
-        id: '9265@xxx',
-        createdAt: subDays(now, 56).getTime(),
-        status: 'complete',
-        updatedAt: subDays(now, 54).getTime(),
-    },
-    {
-        id: '9266',
-        createdAt: subDays(now, 31).getTime(),
-        status: 'placed',
-        updatedAt: subDays(now, 43).getTime(),
-    },
-    {
-        id: '1090',
-        createdAt: subDays(now, 51).getTime(),
-        status: 'processed',
-        updatedAt: subDays(now, 13).getTime(),
-    },
-    {
-        id: '1111',
-        createdAt: subDays(now, 6).getTime(),
-        status: 'processed',
-        updatedAt: subDays(now, 54).getTime(),
-    },
-    {
-        id: '2475',
-        createdAt: subDays(now, 17).getTime(),
-        status: 'complete',
-        updatedAt: subDays(now, 1).getTime(),
-    },
+    fetch(`http://localhost:5000/api/admin/block/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    })
+        .then((response) => response.json())
+        .then((res) => {
+            // Format of resposne:
+            const stauts = res.status // status. 'success' for a success operation
+            const data = res.data
+            const message = res.message // Debug only
+            const block_list = data.block_list // Array of {email,startAt,endAt}
+            // Example : for email1
+            const email1 = block_list[0].email
+            const startAt = block_list[0].startAt
+            const endAt = block_list[0].endAt
+            console.log(block_list)
+        }),
+    // {
+    //     id: 'usermail@gmail.com',
+    //     createdAt: subDays(now, 21).getTime(),
+    //     updatedAt: subDays(now, 7).getTime(),
+    // },
+    // {
+    //     id: '9265@xxx',
+    //     createdAt: subDays(now, 56).getTime(),
+    //     status: 'complete',
+    //     updatedAt: subDays(now, 54).getTime(),
+    // },
+    // {
+    //     id: '9266',
+    //     createdAt: subDays(now, 31).getTime(),
+    //     status: 'placed',
+    //     updatedAt: subDays(now, 43).getTime(),
+    // },
+    // {
+    //     id: '1090',
+    //     createdAt: subDays(now, 51).getTime(),
+    //     status: 'processed',
+    //     updatedAt: subDays(now, 13).getTime(),
+    // },
+    // {
+    //     id: '1111',
+    //     createdAt: subDays(now, 6).getTime(),
+    //     status: 'processed',
+    //     updatedAt: subDays(now, 54).getTime(),
+    // },
+    // {
+    //     id: '2475',
+    //     createdAt: subDays(now, 17).getTime(),
+    //     status: 'complete',
+    //     updatedAt: subDays(now, 1).getTime(),
+    // },
 ]
 
 const Page = () => {
