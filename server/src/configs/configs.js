@@ -22,6 +22,9 @@ const config = {
         login: `/api/authentication/login/`,
         logout: 'api/authentication/logout/',
     },
+    UploadPath: {
+        images: `${__dirname}/../../upload/images/`,
+    },
     ListenPort: process.env.PORT || 5000,
 }
 
