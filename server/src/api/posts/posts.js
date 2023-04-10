@@ -90,7 +90,6 @@ post_router.get('/friends', (req, res) => {
           p.num_dislike, 
           p.num_retweet, 
           p.num_comment, 
-          a.username AS creator, 
           NULL AS repost_creator_username, 
           a.username AS creator_username, 
           p.tags, 
@@ -100,19 +99,20 @@ post_router.get('/friends', (req, res) => {
         FROM 
           Post AS p 
           JOIN Account AS a ON a.user_id = p.user_id 
-          JOIN (
+          LEFT JOIN (
             SELECT 
               user2 
             FROM 
               FollowRelationship 
             WHERE 
               user1 = ${user_id} AND status = true
+            UNION 
+            SELECT 
+            ${user_id} AS user2
           ) AS f ON p.user_id = f.user2 
         WHERE 
           p.is_draft = false 
-      
         UNION 
-      
         SELECT 
           p.post_id, 
           p.content AS content, 
@@ -121,7 +121,6 @@ post_router.get('/friends', (req, res) => {
           p.num_dislike, 
           p.num_retweet, 
           p.num_comment, 
-          a.username AS creator, 
           a2.username AS repost_creator_username, 
           a.username AS creator_username, 
           p.tags, 
@@ -140,57 +139,34 @@ post_router.get('/friends', (req, res) => {
               FollowRelationship 
             WHERE 
               user1 = ${user_id} AND status = true
+            UNION 
+            SELECT 
+            ${user_id} AS user_id
           ) AS f ON (p.user_id = f.user2 OR r.user_id = f.user2)
         WHERE 
           p.is_draft = false 
-      
-        UNION 
-      
-        SELECT 
-          p.post_id, 
-          p.content, 
-          p.creation_time, 
-          p.num_like, 
-          p.num_dislike, 
-          p.num_retweet, 
-          p.num_comment, 
-          a.username AS creator, 
-          NULL AS repost_creator_username, 
-          a.username AS creator_username, 
-          p.tags, 
-          false AS is_repost, 
-          NULL AS repost_content,
-          false AS retweeted_by_user
-        FROM 
-          Post AS p 
-          JOIN Account AS a ON a.user_id = p.user_id 
-        WHERE 
-          p.is_draft = false 
-          AND p.user_id = ${user_id}
-      )
-      SELECT 
-        op.post_id, 
-        op.content, 
-        op.creation_time, 
-        op.num_like, 
-        op.num_dislike, 
-        op.num_retweet, 
-        op.num_comment, 
-        op.creator, 
-        op.repost_creator_username, 
-        op.creator_username, 
-        op.tags, 
-        op.is_repost, 
-        op.repost_content, 
-        COALESCE(pa.status = 'like', false) AS liked_by_user,
-        COALESCE(pa.status = 'dislike', false) AS disliked_by_user,
-        op.retweeted_by_user
-      FROM 
-        OriginalPosts AS op
-        LEFT JOIN PostAltitude AS pa ON op.post_id = pa.post_id AND pa.user_id = ${user_id}
-      ORDER BY 
-        creation_time DESC
-      
+    )
+    SELECT 
+      op.post_id, 
+      op.content, 
+      op.creation_time, 
+      op.num_like, 
+      op.num_dislike, 
+      op.num_retweet, 
+      op.num_comment, 
+      op.repost_creator_username, 
+      op.creator_username, 
+      op.tags, 
+      op.is_repost, 
+      op.repost_content, 
+      COALESCE(pa.status = 'like', false) AS liked_by_user,
+      COALESCE(pa.status = 'dislike', false) AS disliked_by_user,
+      op.retweeted_by_user
+    FROM 
+      OriginalPosts AS op
+      LEFT JOIN PostAltitude AS pa ON op.post_id = pa.post_id AND pa.user_id = ${user_id}
+    ORDER BY 
+      creation_time DESC
     `
     connect_db()
         .then((database) => database.query(query))
@@ -209,7 +185,7 @@ post_router.get('/friends', (req, res) => {
                     num_comments: post.num_comment,
                     creator: post.creator,
                     creator_username: post.creator_username,
-                    tags: post.tags,
+                    tag: post.tags,
                     is_liked: post.liked_by_user,
                     is_disliked: post.disliked_by_user,
                     is_retweeted: post.retweeted_by_user,
