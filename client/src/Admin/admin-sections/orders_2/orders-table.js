@@ -25,19 +25,21 @@ export const OrdersTable = (props) => {
 
     const navigate = useNavigate()
 
-    const handleBlockClick = (user_id) => {
-        console.log(`Navigated to block section of the account ${user_id}`)
-        navigate(`/admin/block_setting/${user_id}`)
+    const handleBlockClick = (user_email) => {
+        console.log(`Navigated to block section of the account ${user_email}`)
+        navigate(`/admin/block_setting/${user_email}`)
         // window.location.href = {'/homepage/particular_post/${postId}'}
     }
-    const handleViewinfoClick = (user_id) => {
-        console.log(`Navigated to view_info section of the account ${user_id}`)
-        navigate(`/admin/view_info/${user_id}`)
+    const handleViewinfoClick = (user_email) => {
+        console.log(
+            `Navigated to view_info section of the account ${user_email}`
+        )
+        navigate(`/admin/view_info/${user_email}`)
         // window.location.href = {'/homepage/particular_post/${postId}'}
     }
-    const handleDeleteClick = (user_id) => {
-        console.log(`Navigated to delete section of the account ${user_id}`)
-        navigate(`/admin/deleteconfirm/${user_id}`)
+    const handleDeleteClick = (user_email) => {
+        console.log(`Navigated to delete section of the account ${user_email}`)
+        navigate(`/admin/deleteconfirm/${user_email}`)
         // window.location.href = {'/homepage/particular_post/${postId}'}
     }
     return (
@@ -74,7 +76,7 @@ export const OrdersTable = (props) => {
                                             variant="contained"
                                             onClick={() =>
                                                 handleViewinfoClick(
-                                                    user_list.user_id
+                                                    user_list.email
                                                 )
                                             }
                                         >
@@ -88,7 +90,7 @@ export const OrdersTable = (props) => {
                                             variant="contained"
                                             onClick={() =>
                                                 handleBlockClick(
-                                                    user_list.user_id
+                                                    user_list.email
                                                 )
                                             }
                                         >
@@ -102,7 +104,7 @@ export const OrdersTable = (props) => {
                                             variant="contained"
                                             onClick={() =>
                                                 handleDeleteClick(
-                                                    user_list.user_id
+                                                    user_list.email
                                                 )
                                             }
                                         >
