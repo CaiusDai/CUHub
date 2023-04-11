@@ -54,9 +54,7 @@ profile_router.put('/',(req,res)=>{
     // const profile_photo = req.body.profile_photo//Needs to be solved using the way of uploading photo
     const interests = req.query.interests
     const user_id = req.session.uid
-    console.log(interests)
     const query_edit_profile = `UPDATE Profile SET major = '${major}', gender = '${gender}',birthday = ${birthday}, college = '${college}',interests = ARRAY${interests} WHERE user_id = ${user_id}`
-    console.log(query_edit_profile)
     connect_db()
         .then((database)=>{database.query(query_edit_profile)})
         .then((db_result)=>{
