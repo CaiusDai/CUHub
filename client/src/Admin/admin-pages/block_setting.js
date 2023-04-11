@@ -14,20 +14,19 @@ import { SvgIcon } from '@mui/material'
 import { VscBlank } from 'react-icons/vsc'
 
 const Page = () => {
-
     const onFinish = (values) => {
         console.log('Form submitted!')
         const { endTime } = values
         console.log('the following is endTime')
         console.log(endTime).catch((error) => console.error(error))
     }
-    const [message, setMessage] = useState('');
-                
+    const [message, setMessage] = useState('')
+
     const handleClick = () => {
-        setMessage('Confirmation Submitted!');
-    };
+        setMessage('Confirmation Submitted!')
+    }
     //below I need the email of the user.
-    const email ='xxx@gmail.com' 
+    const email = 'xxx@gmail.com'
     return (
         <>
             <Helmet>
@@ -90,8 +89,12 @@ const Page = () => {
                                                     >
                                                         Confirm
                                                     </Button>
-                                                    <SvgIcon><VscBlank /></SvgIcon>
-                                                    {message && <span>{message}</span>}
+                                                    <SvgIcon>
+                                                        <VscBlank />
+                                                    </SvgIcon>
+                                                    {message && (
+                                                        <span>{message}</span>
+                                                    )}
                                                 </Box>
                                             </Box>
                                         </Form>

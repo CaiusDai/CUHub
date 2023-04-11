@@ -14,12 +14,11 @@ import { SvgIcon } from '@mui/material'
 import { VscBlank } from 'react-icons/vsc'
 
 const Page = () => {
-    
-    const [message, setMessage] = useState('');
-                
+    const [message, setMessage] = useState('')
+
     const handleClick = () => {
-        setMessage('Confirmation Submitted!');
-    };
+        setMessage('Confirmation Submitted!')
+    }
     const onFinish = (values) => {
         console.log('Confirm to delete!')
     }
@@ -59,7 +58,10 @@ const Page = () => {
                                             style={{ minWidth: '300px' }}
                                         >
                                             <Box sx={{ maxWidth: 420 }}>
-                                            <h2>Do you want to Delete the account?</h2>
+                                                <h2>
+                                                    Do you want to Delete the
+                                                    account?
+                                                </h2>
                                                 <Stack spacing={3}>
                                                     <Typography variant="h6">
                                                         user's mail address:
@@ -76,8 +78,12 @@ const Page = () => {
                                                     >
                                                         Confirm
                                                     </Button>
-                                                    <SvgIcon><VscBlank /></SvgIcon>
-                                                    {message && <span>{message}</span>}
+                                                    <SvgIcon>
+                                                        <VscBlank />
+                                                    </SvgIcon>
+                                                    {message && (
+                                                        <span>{message}</span>
+                                                    )}
                                                 </Box>
                                             </Box>
                                         </Form>

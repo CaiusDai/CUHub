@@ -105,20 +105,20 @@ export const AppRouter = [
                 element: <AllaccountslistPage />,
             },
             {
-                path: 'admin/view_info',
-                element:<ViewInfoPage/>,
+                path: 'admin/view_info/:id',
+                element: <ViewInfoPage />,
             },
             {
-                path: 'admin/block_setting',
-                element:<BlockSettingPage/>
+                path: 'admin/block_setting/:id',
+                element: <BlockSettingPage />,
             },
             {
-                path: 'admin/unblockconfirm',
-                element:<UnblockConfirmPage/>,
+                path: 'admin/unblockconfirm/:id',
+                element: <UnblockConfirmPage />,
             },
             {
-                path :'admin/deleteconfirm',
-                element:<DeleteConfirmPage/>,
+                path: 'admin/deleteconfirm/:id',
+                element: <DeleteConfirmPage />,
             },
         ],
     },

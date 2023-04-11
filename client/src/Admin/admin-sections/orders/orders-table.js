@@ -14,8 +14,6 @@ import {
 import { Scrollbar } from 'src/Admin/admin-components/scrollbar'
 import { useNavigate } from 'react-router-dom'
 
-
-
 export const OrdersTable = (props) => {
     const {
         count = 0,
@@ -26,10 +24,10 @@ export const OrdersTable = (props) => {
         onRowsPerPageChange,
     } = props
     const navigate = useNavigate()
-    
+
     const handleUnblockClick = (user_email) => {
         console.log(`Navigated to unblock section of the account ${user_email}`)
-        navigate(`/admin/block_setting/${user_email}`)
+        navigate(`/admin/unblockconfirm/${user_email}`)
         // window.location.href = {'/homepage/particular_post/${postId}'}
     }
     return (

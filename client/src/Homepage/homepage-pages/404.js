@@ -30,10 +30,7 @@ const Page = () => (
                         },
                     }}
                 >
-                    <img
-                        src={notfoundimage}
-                        alt="not found"
-                    />
+                    <img src={notfoundimage} alt="not found" />
                 </Box>
                 <Typography align="center" sx={{ my: 2 }} variant="h3">
                     Nothing here!

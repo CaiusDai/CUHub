@@ -73,7 +73,7 @@ const Page = () => {
                                                 />
                                             </Stack>
                                             <Box sx={{ maxWidth: 600 }}>
-                                            <Stack spacing={1}>
+                                                <Stack spacing={1}>
                                                     <Typography variant="h4">
                                                         {username}
                                                     </Typography>
@@ -92,16 +92,18 @@ const Page = () => {
                                                             <VscBlank />
                                                         </SvgIcon>
                                                         <SvgIcon>
-                                                            <HiOutlineCake/>
+                                                            <HiOutlineCake />
                                                         </SvgIcon>
                                                         {birthday}
                                                     </Typography>
                                                     <Typography variant="h6">
-                                                        {followingnumber} Following
+                                                        {followingnumber}{' '}
+                                                        Following
                                                         <SvgIcon>
                                                             <VscBlank />
                                                         </SvgIcon>
-                                                        {followednumber} Followers
+                                                        {followednumber}{' '}
+                                                        Followers
                                                     </Typography>
                                                 </Stack>
                                             </Box>
@@ -115,7 +117,5 @@ const Page = () => {
             </Box>
         </>
     )
-
-
 }
 export default Page

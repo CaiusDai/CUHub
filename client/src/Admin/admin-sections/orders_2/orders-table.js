@@ -11,6 +11,7 @@ import {
     Button,
 } from '@mui/material'
 import { Scrollbar } from 'src/Admin/admin-components/scrollbar'
+import { useNavigate } from 'react-router-dom'
 
 export const OrdersTable = (props) => {
     const {
@@ -22,7 +23,23 @@ export const OrdersTable = (props) => {
         onRowsPerPageChange,
     } = props
 
+    const navigate = useNavigate()
 
+    const handleBlockClick = (user_id) => {
+        console.log(`Navigated to block section of the account ${user_id}`)
+        navigate(`/admin/block_setting/${user_id}`)
+        // window.location.href = {'/homepage/particular_post/${postId}'}
+    }
+    const handleViewinfoClick = (user_id) => {
+        console.log(`Navigated to view_info section of the account ${user_id}`)
+        navigate(`/admin/view_info/${user_id}`)
+        // window.location.href = {'/homepage/particular_post/${postId}'}
+    }
+    const handleDeleteClick = (user_id) => {
+        console.log(`Navigated to delete section of the account ${user_id}`)
+        navigate(`/admin/deleteconfirm/${user_id}`)
+        // window.location.href = {'/homepage/particular_post/${postId}'}
+    }
     return (
         <div>
             {/*<h1>{count}</h1>*/}
@@ -40,14 +57,14 @@ export const OrdersTable = (props) => {
                     <TableBody>
                         {items.map((user_list) => {
                             return (
-                                <TableRow key={ user_list.email }>
+                                <TableRow key={user_list.email}>
                                     <TableCell>
                                         <Link
                                             color="inherit"
                                             underline="none"
                                             variant="subtitle2"
                                         >
-                                            { user_list.email }
+                                            {user_list.email}
                                         </Link>
                                     </TableCell>
                                     <TableCell>
@@ -55,7 +72,11 @@ export const OrdersTable = (props) => {
                                             color="primary"
                                             size="large"
                                             variant="contained"
-                                            href="/admin/view_info"
+                                            onClick={() =>
+                                                handleViewinfoClick(
+                                                    user_list.user_id
+                                                )
+                                            }
                                         >
                                             View
                                         </Button>
@@ -65,7 +86,11 @@ export const OrdersTable = (props) => {
                                             color="primary"
                                             size="large"
                                             variant="contained"
-                                            href="/admin/block_setting"
+                                            onClick={() =>
+                                                handleBlockClick(
+                                                    user_list.user_id
+                                                )
+                                            }
                                         >
                                             Block
                                         </Button>
@@ -75,7 +100,11 @@ export const OrdersTable = (props) => {
                                             color="primary"
                                             size="large"
                                             variant="contained"
-                                            href="/admin/deleteconfirm"
+                                            onClick={() =>
+                                                handleDeleteClick(
+                                                    user_list.user_id
+                                                )
+                                            }
                                         >
                                             Delete
                                         </Button>
