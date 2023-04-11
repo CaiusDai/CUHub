@@ -12,6 +12,19 @@ const profile_router = express.Router()
 
 //Get personal profile, no input needed
 profile_router.get('/', (req, res) => {
+
+
+    if (!req.session.isAuthenticated) {
+        res.status(HTTPCode.Unauthorized).json({
+          status: 'fail',
+          data: {
+            error_code: config.ErrorCodes.Unauthorized,
+          },
+          message: 'Unauthenticated visit',
+        })
+        return
+      }
+    
     const user_id = req.session.uid
 
     const query_get_profile = `SELECT username,major,gender,birthday,college,interests,email FROM Profile,Account WHERE Profile.user_id = Account.user_id AND Profile.user_id = ${user_id}`
@@ -42,6 +55,19 @@ profile_router.get('/', (req, res) => {
 
 //Updating
 profile_router.put('/', (req, res) => {
+
+    if (!req.session.isAuthenticated) {
+        res.status(HTTPCode.Unauthorized).json({
+          status: 'fail',
+          data: {
+            error_code: config.ErrorCodes.Unauthorized,
+          },
+          message: 'Unauthenticated visit',
+        })
+        return
+      }
+
+
     const username = req.query.username
     const major = req.query.major
     const gender = req.query.gender
@@ -76,6 +102,19 @@ profile_router.put('/', (req, res) => {
 
 //View other profile, need other's user_id
 profile_router.get('/:user_id', (req, res) => {
+
+
+    if (!req.session.isAuthenticated) {
+        res.status(HTTPCode.Unauthorized).json({
+          status: 'fail',
+          data: {
+            error_code: config.ErrorCodes.Unauthorized,
+          },
+          message: 'Unauthenticated visit',
+        })
+        return
+      }
+      
     const user_id = req.params.user_id
 
     //Get username and profile photo of this user

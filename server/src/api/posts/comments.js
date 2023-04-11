@@ -9,6 +9,17 @@ const comment_router = express.Router()
 
 comment_router.get('/:post_id', async (req, res) => {
 
+    if (!req.session.isAuthenticated) {
+        res.status(HTTPCode.Unauthorized).json({
+          status: 'fail',
+          data: {
+            error_code: config.ErrorCodes.Unauthorized,
+          },
+          message: 'Unauthenticated visit',
+        })
+        return
+      }
+
     try {
         if (!req.session.isAuthenticated) {
             res.status(HTTPCode.Unauthorized).json({
