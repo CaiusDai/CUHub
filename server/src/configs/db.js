@@ -3,7 +3,7 @@ const Pool = require('pg').Pool
 const connect_db = async () => {
     try {
         const pool = new Pool({
-            user: 'jeffery',
+            user: 'postgres',
             host: 'localhost',
             database: 'cuhub',
             password: 'cuhub',
