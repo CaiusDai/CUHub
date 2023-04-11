@@ -4,54 +4,11 @@ import { subDays } from 'date-fns'
 import { Box, Card, Container, Divider, Stack, Typography } from '@mui/material'
 import { PostTable } from 'src/Homepage/homepage-sections/post-table'
 
-import NewPostForm from '../homepage-components/new_post'
-
 const now = new Date()
 
 // in this part, there is no input form the frontend,
-// all posts need to be returned from backend for further use
-const from_backend = () => {
-    fetch('http://localhost:5000/api/posts/all', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-    })
-        .then((response) => response.json())
-        .then((result) => {
-            const status = result.status
-            if (status === 'fail') {
-                const errorCode = result.data.error_code
-                // Do something
-            } else if (status === 'error') {
-                // Wrong fetch format
-                const message = result.message
-            } else {
-                const data = result.data
-                const posts = data.posts // Array of post
-                //Each post will have following fields:
-                // post_id:
-                // content:
-                // creation_time: Date,Time
-                // num_like:
-                // num_dislike:
-                // num_retweet:
-                // num_comment:
-                // is_anonymous:
-                // tag:
-                // creator_name: username
-                // creator_id:
-                // liked_by_user: boolean
-                // disliked_by_user: boolean
-                // Do something
-            }
-        })
-        .catch((error) => {
-            console.error('Error fetching all posts:', error)
-        })
-}
-const posts = [
+// posts form people the user following need to be returned from backend for further use
+const following_posts = [
     {
         id: 'usermail@gmail.com',
         isLiked: true,
@@ -92,7 +49,7 @@ const posts = [
     },
 ]
 
-const HomePage = () => {
+const FriendsPost = () => {
     // const [setMode] = useState('table')
     // const [setQuery] = useState('')
     const [page, setPage] = useState(0)
@@ -120,7 +77,7 @@ const HomePage = () => {
     return (
         <>
             <Helmet>
-                <title>All Post</title>
+                <title>Friends Post</title>
             </Helmet>
             <Box
                 sx={{
@@ -136,15 +93,14 @@ const HomePage = () => {
                             justifyContent="space-between"
                             spacing={3}
                         >
-                            <Typography variant="h4">All Post</Typography>
+                            <Typography variant="h4">Friends Post</Typography>
                         </Stack>
                         <div>
-                            <NewPostForm />
                             <Card>
                                 <Divider />
                                 <PostTable
-                                    count={posts.length}
-                                    items={posts}
+                                    count={following_posts.length}
+                                    items={following_posts}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
                                     onPageChange={handleChangePage}
@@ -161,4 +117,4 @@ const HomePage = () => {
     )
 }
 
-export default HomePage
+export default FriendsPost
