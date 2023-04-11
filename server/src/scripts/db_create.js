@@ -51,7 +51,6 @@ const query_announcement =
     'CREATE TABLE Announcement(\
         announcement_id SERIAL PRIMARY KEY,\
         admin_id INTEGER NOT NULL REFERENCES Admin ON DELETE RESTRICT,\
-        title TEXT NOT NULL,\
         content TEXT NOT NULL,\
         creation_time TIMESTAMP NOT NULL DEFAULT NOW())'
 
@@ -95,8 +94,7 @@ const query_post =
                             is_anonymous BOOLEAN NOT NULL,\
                             is_public BOOLEAN NOT NULL,\
                             is_draft BOOLEAN NOT NULL,\
-                            tags TAG DEFAULT 'normal',\
-                            CONSTRAINT anonymous_public_check CHECK ((NOT is_anonymous) OR is_public))"
+                            tags TAG DEFAULT 'normal')"
 
 const query_index_post = 'CREATE INDEX PostCreator ON Post(user_id)'
 
@@ -117,7 +115,6 @@ const query_repost =
         repost_id BIGSERIAL PRIMARY KEY,\
         comment TEXT,\
         original_post_id BIGINT NOT NULL REFERENCES Post,\
-        creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
         user_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT)'
 
 const query_index_repost = 'CREATE INDEX RepostBy ON Repost(user_id)'
