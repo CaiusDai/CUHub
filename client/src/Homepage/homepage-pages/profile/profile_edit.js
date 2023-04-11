@@ -164,7 +164,7 @@ const Page = () => {
                                                     </div>
                                                     <div className="input-container">
                                                         <label htmlFor="interest">
-                                                            Interest:
+                                                            Interest (Should be: interest1,interest2,interest3):
                                                         </label>
                                                         <Form.Item name="interest">
                                                             <Input
