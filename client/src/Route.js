@@ -34,8 +34,8 @@ export const AppRouter = [
                 element: <FriendsPost />,
             },
             {
-                path: 'homepage/all_accounts_list',
-                element: <AllaccountslistPage />,
+                path: 'homepage/chat',
+                element: <NotFoundPage />,
             },
             {
                 path: 'homepage/logout',

@@ -63,7 +63,8 @@ const NewPostForm = () => {
                     <Option value="Tree Hole">Tree Hole</Option>
                     <Option value="Job Seeking">Job Seeking</Option>
                     <Option value="Trading">Trading</Option>
-                    <Option value="Study">Study</Option>
+                    <Option value="Academic">Academic</Option>
+                    <Option value="Info">Info</Option>
                 </Select>
             </Form.Item>
             <Form.Item>
