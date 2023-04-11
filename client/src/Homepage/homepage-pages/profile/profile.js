@@ -24,6 +24,31 @@ const Page = () => {
             helpers.setSubmitting(false)
         },
     })
+    let username,email,major,college,birthday,interests,gender
+
+    fetch(
+        `http://localhost:5000/api/profile`,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        }
+    )
+        .then((response) => response.json())
+        .then((res)=>{
+            const data = res.data
+            //data.profile is in the format{username,major,gender,birthday,college,interests,email}
+            username = data.profile.username
+            email = data.profile.email
+            major = data.profile.major
+            college = data.profile.college
+            birthday = data.profile.birthday
+            interests = data.profile.interests
+            gender = data.profile.gender
+            
+        })
 
     return (
         <>

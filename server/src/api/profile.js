@@ -1,21 +1,21 @@
 const express = require('express')
 const config = require('../configs/configs.js')
-const bodyParser = require('body-parser')
+
 
 const { connect_db } = require('../configs/db.js')
 
 const HTTPCodes = config.HTTPCode
 const profile_router = express.Router()
 
-//Create instance of bodyParser
-const jsonParser = bodyParser.json()
-profile_router.use(jsonParser)
+// //Create instance of bodyParser
+// const jsonParser = bodyParser.json()
+// profile_router.use(jsonParser)
 
 //Get personal profile, no input needed
 profile_router.get('/', (req, res) => {
     const user_id = req.session.uid
 
-    const query_get_profile = `SELECT * FROM Profile WHERE user_id = ${user_id}`
+    const query_get_profile = `SELECT username,major,gender,birthday,college,interests,email FROM Profile,Account WHERE Profile.user_id = Account.user_id AND Profile.user_id = ${user_id}`
     //Get username and photo
     connect_db()
     .then((database)=>database.query(query_get_profile))
@@ -43,21 +43,20 @@ profile_router.get('/', (req, res) => {
 })
 
 //Updating
-profile_router.post('/',(req,res)=>{
+profile_router.put('/',(req,res)=>{
 
-    const username = req.body.username
-    const major = req.body.major
-    const gender = req.body.gender
-    const birthday = req.body.birthday
-    const college = req.body.college
-    const profile_photo = req.body.profile_photo//Needs to be solved using the way of uploading photo
-    const interests = req.body.interests
+
+    const username = req.query.username
+    const major = req.query.major
+    const gender = req.query.gender
+    const birthday = req.query.birthday
+    const college = req.query.college
+    // const profile_photo = req.body.profile_photo//Needs to be solved using the way of uploading photo
+    const interests = req.query.interests
     const user_id = req.session.uid
-    const query_edit_profile = `UPDATE Profile SET (username = ${username},\
-                                major = ${major}, gender = ${gender},\
-                                birthday = ${birthday}, college = ${college},\
-                                profile_photo = ${profile_photo}, interests = ${interests}),\
-                                WHERE user_id = ${user_id}`
+    console.log(interests)
+    const query_edit_profile = `UPDATE Profile SET major = '${major}', gender = '${gender}',birthday = ${birthday}, college = '${college}',interests = ARRAY${interests} WHERE user_id = ${user_id}`
+    console.log(query_edit_profile)
     connect_db()
         .then((database)=>{database.query(query_edit_profile)})
         .then((db_result)=>{
@@ -83,7 +82,7 @@ profile_router.get('/:user_id', (req, res) => {
     const user_id = req.params.user_id
 
     //Get username and profile photo of this user
-    const query_get_profile = `SELECT * FROM Profile WHERE user_id = ${user_id}`
+    const query_get_profile = `SELECT username,major,gender,birthday,college,interests FROM Profile WHERE user_id = ${user_id}`
     //Get username and photo
     connect_db()
     .then((database)=>database.query(query_get_profile))

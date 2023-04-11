@@ -31,6 +31,24 @@ const Page = () => {
         console.log(interest)
         console.log('the following is gender')
         console.log(gender)
+        fetch(
+            `http://localhost:5000/api/profile/?username=${username}&major=${major}&college=${college}&birthday=${birthday}&interests=${interest}&gender=${gender}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            }
+        )
+            .then((response) => response.json())
+            .then((data)=>{
+                //updating failed
+                if(data.status === 'fail')
+                {}
+                else if(data.status === 'success')
+                {}
+            })
     }
 
     return (
