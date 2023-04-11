@@ -13,6 +13,8 @@ import AllaccountslistPage from './Admin/admin-pages/all_accounts_list'
 import Logout from './Homepage/homepage-pages/logout'
 import ProfilePage from './Homepage/homepage-pages/profile/profile'
 import ProfileEditPage from './Homepage/homepage-pages/profile/profile_edit'
+import ChatPage from './Homepage/homepage-pages/Chat'
+import ChatWindow from './Homepage/homepage-pages/chat_p/ChatWindow'
 
 export const AppRouter = [
     {
@@ -31,8 +33,12 @@ export const AppRouter = [
                 element: <FriendsPost />,
             },
             {
-                path: 'homepage/all_accounts_list',
-                element: <AllaccountslistPage />,
+                path: 'homepage/chat',
+                element: <ChatPage />,
+            },
+            {
+                path: 'homepage/chat/:userId',
+                element: <ChatWindow />,
             },
             {
                 path: 'homepage/profile',

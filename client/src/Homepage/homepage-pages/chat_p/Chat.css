@@ -2,7 +2,6 @@
     width: 350px;
     background-color: #fff;
     border-right: 1px solid #e5e5e5;
-    ;
 }
 
 .chat-container {
@@ -13,9 +12,6 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
-
-
-
 
 .chat {
     display: flex;
@@ -48,7 +44,7 @@
 .chat-title {
     display: inline-flex;
     align-items: center;
-    border-bottom: 0.8px solid #292929;
+    /* border-bottom: 0.8px solid #292929; */
     margin-top: 25px;
     width: 100%;
     padding-bottom: 15px;
@@ -77,8 +73,6 @@
     margin-right: 10px;
 }
 
-
-
 .chat-title img {
     width: 20px;
     margin-left: auto;
@@ -88,13 +82,13 @@
 .chat-requests {
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
     margin-top: 15px;
     padding-bottom: 15px;
     border-bottom: 0.8px solid #292929;
     padding-left: 20px;
-    ;
+    font-weight: bold;
 }
 
 .request-arrow {
@@ -110,7 +104,9 @@
     border-bottom: 0.8px solid #292929;
 }
 
-
+.Input.Search input {
+    background-color: #9f3030 !important;
+}
 
 .chat-messages {
     flex: 1;
