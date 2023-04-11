@@ -81,11 +81,11 @@ const LoginForm = () => {
                 style={{ minWidth: '300px' }}
             >
                 <Form.Item
-                    name="username"
+                    name="email"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: 'Please input your Email!',
                         },
                     ]}
                 >
@@ -93,7 +93,7 @@ const LoginForm = () => {
                         prefix={
                             <UserOutlined className="site-form-item-icon" />
                         }
-                        placeholder="Username"
+                        placeholder="Email"
                     />
                 </Form.Item>
                 <Form.Item
