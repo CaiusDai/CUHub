@@ -53,18 +53,13 @@ chat_router.get('/session', async (req, res) => {
             },
             message: '[INFO] chat_list generated',
         })
-    }
-    catch (err) {
+    } catch (err) {
         console.log(`[ERROR] is :${err}`)
         res.status(HTTPCodes.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
         })
-
-
     }
-
-
 })
 
 chat_router.post('/session', async (req, res) => {
@@ -112,19 +107,14 @@ chat_router.post('/session', async (req, res) => {
                     message: '[INFO] You cant chat with the user',
                 })
             }
-
         }
-
-    }
-    catch (err) {
+    } catch (err) {
         console.log(`[ERROR] is :${err}`)
         res.status(HTTPCodes.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
         })
-
     }
-
 })
 
 //Insert a new mesage into session
@@ -136,9 +126,8 @@ chat_router.post('/message', async (req, res) => {
 
     const database = await connect_db()
 
-
     try {
-        //First get session_id 
+        //First get session_id
         const query_get_session = `SELECT session_id FROM ChatSession WHERE (user1 = ${user1_id} AND user2 = ${user2_id}) OR (user1 = ${user2_id} AND user2 = ${user1_id})`
         let db_result = await database.query(query_get_session)
         const session_id = db_result.rows[0].session_id
@@ -152,15 +141,12 @@ chat_router.post('/message', async (req, res) => {
             status: 'success',
             message: '[INFO] message inserted',
         })
-
-    }
-    catch (err) {
+    } catch (err) {
         console.log(`[Error] is: ${err}`)
         res.status(HTTPCodes.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
         })
-
     }
 })
 
@@ -181,9 +167,8 @@ chat_router.get('/message', async (req, res) => {
         const db_result = await database.query(query_username_photo)
         photo = db_result.rows[0].profile_photo
         username = db_result.rows[0].username
-    }
-    catch (err) {
-        `[Error] in first query is: ${err}`
+    } catch (err) {
+        ;`[Error] in first query is: ${err}`
         res.status(HTTPCodes.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
@@ -196,10 +181,8 @@ chat_router.get('/message', async (req, res) => {
         const query_photo_current = `SELECT profile_photo FROM Profile WHERE user_id = ${user1_id}`
         const db_result = await database.query(query_photo_current)
         photo_current = db_result.rows[0].profile_photo
-    }
-
-    catch (err) {
-        `[Error] in second query is: ${err}`
+    } catch (err) {
+        ;`[Error] in second query is: ${err}`
         res.status(HTTPCodes.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
@@ -233,13 +216,8 @@ chat_router.get('/message', async (req, res) => {
             },
             message: '[INFO] chat_list generated',
         })
-
-
-    }
-    catch (err) {
-        console.log(
-            `[Error] in final query is: ${err}`
-        )
+    } catch (err) {
+        console.log(`[Error] in final query is: ${err}`)
         res.status(HTTPCodes.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
