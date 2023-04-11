@@ -1,6 +1,6 @@
 const express = require('express')
 const { connect_db } = require('../../configs/db')
-const config = require('../../configs/configs')
+const config = require('../../configs/configs.js')
 const login_router = express.Router()
 
 async function get_blocking_time(database, userid) {
@@ -18,6 +18,7 @@ async function get_blocking_time(database, userid) {
             const { start_at, end_at } = result.rows[0]
             return {
                 start_time: new Date(start_at),
+
                 end_time: new Date(end_at),
             }
         })
