@@ -2,10 +2,10 @@ const express = require('express')
 const { connect_db } = require('../../configs/db')
 const config = require('../../configs/configs')
 const HTTPCode = config.HTTPCode
-const annoucement_router = express.Router()
+const announcement_router = express.Router()
 
-// Get all annoucements
-annoucement_router.get('/all', (req, res) => {
+// Get all announcements
+announcement_router.get('/all', (req, res) => {
     // Check identity:
     if (!req.session.isAuthenticated) {
         res.status(HTTPCode.Unauthorized).json({
@@ -36,11 +36,13 @@ annoucement_router.get('/all', (req, res) => {
                 data: {
                     announcements: announcements,
                 },
-                message: '[INFO] Sent all annoucements already',
+                message: '[INFO] Sent all announcements already',
             })
         })
         .catch((err) => {
-            console.error(`[Error] Failed to send annoucement.\n Error: ${err}`)
+            console.error(
+                `[Error] Failed to send announcement.\n Error: ${err}`
+            )
             res.status(HTTPCode.BadRequest).json({
                 status: 'error',
                 message: '[Error] Invalid query format',
@@ -48,4 +50,4 @@ annoucement_router.get('/all', (req, res) => {
         })
 })
 
-module.exports = annoucement_router
+module.exports = announcement_router
