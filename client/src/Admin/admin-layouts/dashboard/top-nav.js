@@ -1,5 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom'
 import { Avatar, Box, Stack } from '@mui/material'
+import adminavatar from '../../../Images/admintou.png'
+import cuhublogo from '../../../Images/logo.png'
 
 const TOP_NAV_HEIGHT = 64
 
@@ -32,15 +34,11 @@ export const TopNav = () => (
                         width: 24,
                     }}
                 >
-                    <Avatar
-                        src="/client/src/Images/icon.png"
-                        variant="rounded"
-                        size="large"
-                    />
+                    <Avatar src={cuhublogo} variant="rounded" size="large" />
                 </Box>
             </Stack>
             <Stack alignItems="center" direction="row" spacing={2}>
-                <Avatar src="/client/src/Images/icon.png" variant="rounded" />
+                <Avatar src={adminavatar} variant="rounded" />
             </Stack>
         </Stack>
     </Box>
