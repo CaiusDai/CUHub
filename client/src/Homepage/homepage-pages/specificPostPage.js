@@ -50,22 +50,27 @@ const post_comments = [
         reposted: false,
     },
 ]
+
+const post = [
+    {
+        id: 'usermail@gmail.com',
+        isLiked: true,
+        content: 'this is post content',
+        reposted: false,
+    },
+]
+
 const SpecificPostPage = () => {
     const { id } = useParams()
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
     console.log('the following is id for the page')
     console.log(id)
-    // with a particular id, I hope to get info about the post and render it here,
-    // the following is an example corresponding to the id above
-    const post = [
-        {
-            id: 'usermail@gmail.com',
-            isLiked: true,
-            content: 'this is post content',
-            reposted: false,
-        },
-    ]
+    /* After clicking the comment button, the user will enter a page for a specific page
+     *  frontend will request original content and corresponding comment and render it
+     *  here, the id property stand the original post id, and it is the input from frontend
+     *  post corresponding to this post id, and all comments related to this post is needed
+     *  you can take the post and post_comment variable above as an example*/
 
     const handleChangePage = useCallback((event, value) => {
         setPage(value)
@@ -111,7 +116,7 @@ const SpecificPostPage = () => {
                                     }
                                 />
                             </Card>
-                            <NewCommentForm />
+                            <NewCommentForm postId={id} />
                             <Card>
                                 <Divider />
                                 <CommentTable

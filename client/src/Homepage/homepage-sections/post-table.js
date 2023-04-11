@@ -39,6 +39,12 @@ export const PostTable = (props) => {
         // Create a copy of the items array
         const updatedPosts = [...posts]
 
+        // please do not change any code in this part and handle the like info update to backend
+        // . The Input for the backend is stored in postId, the update policy is depend on
+        // the isliked property, you can check it by updatedPosts[itemIndex].isLiked or your data in
+        // server. When it is originally false, plus the counter by one and set it to true. when it is
+        // originally true, do a cancel like work, no implicit return is needed.
+
         // Update the name property of the relevant item object
         updatedPosts[itemIndex].isLiked = !updatedPosts[itemIndex].isLiked
 
@@ -51,6 +57,12 @@ export const PostTable = (props) => {
 
         // Create a copy of the items array
         const updatedPosts = [...posts]
+
+        // please do not change any code in this part and handle the repost info update to backend
+        // . The Input for the backend is stored in postId, the update policy is depend on
+        // the isRepost property, you can check it by updatedPosts[itemIndex].reposted or your data in
+        // server. When it is originally false, plus the counter by one and set it to true, update post db.
+        // correspondingly, when it is true, do cancel repost job. no implicit return is needed.
 
         // Update the name property of the relevant item object
         updatedPosts[itemIndex].reposted = !updatedPosts[itemIndex].reposted

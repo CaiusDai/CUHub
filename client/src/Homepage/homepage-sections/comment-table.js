@@ -36,7 +36,7 @@ export const CommentTable = (props) => {
     const handleCommentClick = (commentId) => {
         // TODO: Implement logic to navigate to the comments section of a post
         console.log(`Navigated to comments section of post ${commentId}`)
-        const itemIndex = items.findIndex((post) => post.id === commentId)
+        const itemIndex = items.findIndex((comment) => comment.id === commentId)
 
         // Create a copy of the items array
         const updatedPosts = [...items]
@@ -48,14 +48,18 @@ export const CommentTable = (props) => {
         setIsCommentClicked(updatedPosts)
     }
 
-    const handleSubmit = (e, postId) => {
+    const handleSubmit = (e, commentId) => {
         e.preventDefault()
         const commentInput = e.target.elements.commentInput
         console.log(
-            `Submitted comment ${commentInput.value} for post ${postId}`
+            `Submitted comment ${commentInput.value} for comment ${commentId}`
         )
 
-        // TODO: Implement logic to add comment to the relevant post
+        // handle create a comment for a particular comment here, currently, frontend can only consider text comment
+        // , the input to backend is : commentInput (the text input
+        // from the user), commentId (id for the comment which the new comment belongs to)
+        // update backend post db, comment db correspondingly,
+        // no explicit return value is needed in frontend
         commentInput.value = ''
     }
 
@@ -69,29 +73,29 @@ export const CommentTable = (props) => {
                     }}
                 >
                     <TableBody>
-                        {items.map((post) => {
+                        {items.map((comment) => {
                             return (
-                                <TableRow key={post.id}>
+                                <TableRow key={comment.id}>
                                     <TableCell>
                                         <Avatar
-                                            src={post.authorAvatar}
-                                            alt={post.authorName}
+                                            src={comment.authorAvatar}
+                                            alt={comment.authorName}
                                         />
                                         <Card variant="outlined">
                                             <CardHeader
-                                                title={post.id}
+                                                title={comment.id}
                                                 subheader={`post category`}
                                             />
                                             <CardContent>
                                                 <Typography>
-                                                    {post.content}
+                                                    {comment.content}
                                                 </Typography>
                                             </CardContent>
-                                            {post.image && (
+                                            {comment.image && (
                                                 <CardMedia
                                                     component="img"
-                                                    image={post.image}
-                                                    alt={post.content}
+                                                    image={comment.image}
+                                                    alt={comment.content}
                                                     sx={{ height: 200 }}
                                                 />
                                             )}
@@ -101,18 +105,18 @@ export const CommentTable = (props) => {
                                                     aria-label="Comment"
                                                     onClick={() =>
                                                         handleCommentClick(
-                                                            post.id
+                                                            comment.id
                                                         )
                                                     }
                                                 >
                                                     <ChatIcon />
                                                 </IconButton>
-                                                {!post.NotCommenting && (
+                                                {!comment.NotCommenting && (
                                                     <form
                                                         onSubmit={(e) =>
                                                             handleSubmit(
                                                                 e,
-                                                                post.id
+                                                                comment.id
                                                             )
                                                         }
                                                     >
@@ -126,7 +130,7 @@ export const CommentTable = (props) => {
                                                             }}
                                                         >
                                                             <TextField
-                                                                id={`commentInput${post.id}`}
+                                                                id={`commentInput${comment.id}`}
                                                                 name="commentInput"
                                                                 variant="outlined"
                                                                 placeholder="Type your comment here"

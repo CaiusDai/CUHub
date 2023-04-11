@@ -45,6 +45,9 @@ const SearchPage = () => {
     const { searchContent } = useParams()
     console.log('the following is search content for the page')
     console.log(searchContent)
+    // This part carry out the Search component for CUHub
+    // The Input for the backend is stored in searchContent, which is the search input from the suer
+    // return all users corresponding to this searchContent and I will render it here.
     return <Table columns={columns} dataSource={data} />
 }
 

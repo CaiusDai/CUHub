@@ -2,14 +2,21 @@ import React, { useState } from 'react'
 import { Form, Input, Button } from 'antd'
 import { LockOutlined } from '@ant-design/icons'
 
-const NewCommentForm = () => {
+const NewCommentForm = (postId) => {
     const [form] = Form.useForm()
     const [submitting, setSubmitting] = useState(false)
 
     const handleSubmit = (values) => {
         setSubmitting(true)
         // Do something with the post content and tag choices here, like sending them to a server
+        console.log('the following is postid')
+        console.log(postId)
         const { postContent } = values
+        // handle create a comment for a particular post here, currently, frontend can only consider text comment
+        // , the input to backend is : postContent (the text input
+        // from the user), postId (id for the post which the comment belongs to)
+        // update backend post db, comment db correspondingly,
+        // no explicit return value is needed in frontend
         console.log('the following is postContent')
         console.log(postContent)
         // Reset the form after submission

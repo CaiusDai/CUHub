@@ -12,6 +12,11 @@ const NewPostForm = () => {
         setSubmitting(true)
         // Do something with the post content and tag choices here, like sending them to a server
         const { postContent, tagChoices } = values
+
+        // handle create a post here, currently, frontend can only consider text content, you can take it as
+        // every post do not have a image input currently, the input to backend is : postContent (the text input
+        // from the user), tagChoices (mandatory tag from user), update backend post db correspondingly,
+        // no explicit return value is needed in frontend
         console.log('the following is postContent')
         console.log(postContent)
         console.log('the following is tagChoices')
