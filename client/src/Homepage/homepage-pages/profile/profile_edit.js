@@ -32,9 +32,10 @@ const Page = () => {
         console.log('the following is gender')
         console.log(gender)
         fetch(
-            `http://localhost:5000/api/profile/?username=${username}&major=${major}&college=${college}&birthday=${birthday}&interests=${interest}&gender=${gender}`,
+            `http://localhost:5000/api/profile/`,
             {
                 method: 'PUT',
+                body: { username: username, major: major, college: college, birthday: birthday, interests: interest, gender: gender },
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -42,12 +43,10 @@ const Page = () => {
             }
         )
             .then((response) => response.json())
-            .then((data)=>{
+            .then((data) => {
                 //updating failed
-                if(data.status === 'fail')
-                {}
-                else if(data.status === 'success')
-                {}
+                if (data.status === 'fail') { }
+                else if (data.status === 'success') { }
             })
     }
 
@@ -119,7 +118,7 @@ const Page = () => {
                                                 college: 'oldone',
                                                 birthday: 'oldone',
                                                 interest: 'oldone',
-                                                gender: 'oldone' ,
+                                                gender: 'oldone',
                                             }}
                                             onFinish={onFinish}
                                             style={{ minWidth: '300px' }}
