@@ -20,7 +20,7 @@ search_router.get('/', async (req, res) => {
 
     try {
         //Get input from request body
-        const { searchContent } = req.body
+        const searchContent  = req.query.searchContent
 
         const database = await connect_db()
         const query_search = `SELECT * FROM Account WHERE username = '${searchContent}' AND is_blocked = FALSE`
@@ -29,7 +29,7 @@ search_router.get('/', async (req, res) => {
         //If no user found
         if (db_result.rowCount === 0) {
             res.status(HTTPCode.Ok).json({
-                status: 'success',
+                status: 'none',
                 data: {
                 },
                 message: "[INFO] No user found",

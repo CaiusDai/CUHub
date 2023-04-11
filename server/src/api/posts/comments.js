@@ -41,7 +41,7 @@ comment_router.get('/:post_id', async (req, res) => {
         res.status(HTTPCode.Ok).json({
             status: 'success',
             data: {
-                user_list: result_array
+                result_list: result_array
             },
             message: "[INFO] Return the comment list",
         })

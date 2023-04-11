@@ -27,7 +27,7 @@ export const CommentTable = (props) => {
     const {
         count = 0,
         items = [],
-        onPageChange = () => {},
+        onPageChange = () => { },
         page = 0,
         rowsPerPage = 0,
         onRowsPerPageChange,
@@ -55,7 +55,33 @@ export const CommentTable = (props) => {
             `Submitted comment ${commentInput.value} for comment ${commentId}`
         )
 
-        
+
+        fetch(
+            `http://localhost:5000/api/posts/comments/reply`,
+            {
+                method: 'POST',
+                body: {
+                    commentContent: commentInput,
+                    comment_id: commentId,
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.status === 'success') {
+                    //Success
+                    console.log(data.message)
+
+                }
+                else {
+                    //Something error in query or reply to himself
+                    console.log(data.message)
+                }
+            })
 
         // handle create a comment for a particular comment here, currently, frontend can only consider text comment
         // , the input to backend is : commentInput (the text input
