@@ -213,17 +213,17 @@ async function insert_data() {
         await create_query_execute(
             database,
             'Announcement',
-            insert_announcement(1, 'I am god', 'Annoucement 1')
+            insert_announcement(1, 'I am god', 'Announcement 1')
         )
         await create_query_execute(
             database,
             'Announcement',
-            insert_announcement(1, 'I am god too', 'Annoucement 2')
+            insert_announcement(1, 'I am god too', 'Announcement 2')
         )
         await create_query_execute(
             database,
             'Announcement',
-            insert_announcement(1, 'I am god also', 'Annoucement 3')
+            insert_announcement(1, 'I am god also', 'Announcement 3')
         )
 
         //Insert block
@@ -272,7 +272,7 @@ async function insert_data() {
                 false,
                 true,
                 false,
-                'normal'
+                'treehole'
             )
         )
 
@@ -292,7 +292,7 @@ async function insert_data() {
                 false,
                 true,
                 false,
-                'normal'
+                'academic'
             )
         )
         await util.timeoutPromise(1000)
@@ -311,7 +311,7 @@ async function insert_data() {
                 false,
                 true,
                 false,
-                'normal'
+                'trading'
             )
         )
 
