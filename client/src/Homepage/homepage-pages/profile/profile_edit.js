@@ -14,7 +14,6 @@ import { VscBlank } from 'react-icons/vsc'
 import { SvgIcon } from '@mui/material'
 import old from 'src/Images/useravatar.png'
 
-let oldusername='woshishabi' //eg
 let oldmajor
 let oldcollege
 let oldbirthday
@@ -26,10 +25,8 @@ const Page = () => {
     // Here the backend I store the update profile information.
     const onFinish = (values) => {
         console.log('Form submitted!')
-        let { username, major, college, birthday, gender } = values
+        let { major, college, birthday, gender } = values
         let interest = [values, values, values]
-        console.log('the following is username')
-        console.log(username)
         console.log('the following is major')
         console.log(major)
         console.log('the following is college')
@@ -105,7 +102,6 @@ const Page = () => {
                                         <Form
                                             name="profile_edit"
                                             initialValues={{
-                                                username: oldusername,
                                                 major: oldmajor,
                                                 college: oldcollege,
                                                 birthday: oldbirthday,
@@ -117,17 +113,6 @@ const Page = () => {
                                         >
                                             <Box sx={{ maxWidth: 420 }}>
                                                 <Stack spacing={3}>
-                                                    <div className="input-container">
-                                                        <label htmlFor="username">
-                                                            Username:
-                                                        </label>
-                                                        <Form.Item name="username">
-                                                            <Input
-                                                                type="text"
-                                                                id="username"
-                                                            />
-                                                        </Form.Item>
-                                                    </div>
                                                     <div className="input-container">
                                                         <label htmlFor="major">
                                                             Major:
