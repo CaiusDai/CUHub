@@ -12,6 +12,7 @@ import {
 } from '@mui/material'
 import { Scrollbar } from 'src/Admin/admin-components/scrollbar'
 import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const OrdersTable = (props) => {
     const {
