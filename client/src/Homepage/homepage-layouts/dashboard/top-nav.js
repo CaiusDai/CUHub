@@ -1,12 +1,17 @@
 import { Link as RouterLink } from 'react-router-dom'
-import { Avatar, Box, Stack } from '@mui/material'
-import { QueryField } from '../../homepage-components/query-field'
-import cuhublogo from '../../../Images/logo.png'
+import { Avatar, Box, Stack, TextField } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 const TOP_NAV_HEIGHT = 64
 
-export const TopNav = (props) => {
-    // const [searchQuery, setSearchQuery] = useState('');
-    const { onQueryChange, query } = props
+export const TopNav = () => {
+    const navigate = useNavigate()
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const commentInput = e.target.elements.commentInput
+        console.log(`Submitted comment ${commentInput.value} for post`)
+        navigate(`/search/${commentInput.value}`)
+    }
 
     // const handleSearchInputChange = (event) => {
     //   setSearchQuery(event.target.value);
@@ -43,7 +48,7 @@ export const TopNav = (props) => {
                             }}
                         >
                             <Avatar
-                                src={cuhublogo}
+                                src="/client/src/Images/icon.png"
                                 variant="rounded"
                                 size="large"
                             />
@@ -51,20 +56,24 @@ export const TopNav = (props) => {
                     </Stack>
                 </Box>
                 <Stack alignItems="center" direction="row" spacing={0}>
-                    <QueryField
-                        placeholder="Search..."
-                        onChange={onQueryChange}
-                        sx={{
-                            backgroundColor: 'grey.200',
-                            width: '100%',
-                            borderRadius: 16,
-                            flexGrow: 1,
-                            order: {
-                                xs: 1,
-                                sm: 2,
-                            },
-                        }}
-                        value={query}
+                    <form onSubmit={(e) => handleSubmit(e)}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <TextField
+                                id={`commentInput`}
+                                name="commentInput"
+                                variant="outlined"
+                                placeholder="Search user here"
+                                fullWidth
+                                margin="normal"
+                            />
+                        </div>
+                    </form>
                     />
                 </Stack>
             </Stack>

@@ -11,7 +11,6 @@ import {
     Table,
     TableBody,
     TableCell,
-    TablePagination,
     TableRow,
     Typography,
 } from '@mui/material'
@@ -22,28 +21,15 @@ import ChatIcon from '@mui/icons-material/Chat'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export const PostTable = (props) => {
+export const SinglePost = (props) => {
     const navigate = useNavigate()
-    const {
-        count = 0,
-        items = [],
-        onPageChange = () => {},
-        page = 0,
-        rowsPerPage = 0,
-        onRowsPerPageChange,
-    } = props
+    const { items = [] } = props
     const [posts, setPosts] = useState(items)
     const handleLikeClick = (postId) => {
         const itemIndex = posts.findIndex((post) => post.id === postId)
 
         // Create a copy of the items array
         const updatedPosts = [...posts]
-
-        // please do not change any code in this part and handle the like info update to backend
-        // . The Input for the backend is stored in postId, the update policy is depend on
-        // the isliked property, you can check it by updatedPosts[itemIndex].isLiked or your data in
-        // server. When it is originally false, plus the counter by one and set it to true. when it is
-        // originally true, do a cancel like work, no implicit return is needed.
 
         // Update the name property of the relevant item object
         updatedPosts[itemIndex].isLiked = !updatedPosts[itemIndex].isLiked
@@ -58,12 +44,6 @@ export const PostTable = (props) => {
         // Create a copy of the items array
         const updatedPosts = [...posts]
 
-        // please do not change any code in this part and handle the repost info update to backend
-        // . The Input for the backend is stored in postId, the update policy is depend on
-        // the isRepost property, you can check it by updatedPosts[itemIndex].reposted or your data in
-        // server. When it is originally false, plus the counter by one and set it to true, update post db.
-        // correspondingly, when it is true, do cancel repost job. no implicit return is needed.
-
         // Update the name property of the relevant item object
         updatedPosts[itemIndex].reposted = !updatedPosts[itemIndex].reposted
 
@@ -72,7 +52,6 @@ export const PostTable = (props) => {
     }
 
     const handleCommentClick = (postId) => {
-        // TODO: Implement logic to navigate to the comments section of a post
         console.log(`Navigated to comments section of post ${postId}`)
         navigate(`/homepage/particular_post/${postId}`)
         // window.location.href = {'/homepage/particular_post/${postId}'}
@@ -144,7 +123,7 @@ export const PostTable = (props) => {
                                                     <RepeatIcon />
                                                 </IconButton>
                                                 <IconButton
-                                                    color="default"
+                                                    color="primary"
                                                     aria-label="Comment"
                                                     onClick={() =>
                                                         handleCommentClick(
@@ -164,20 +143,11 @@ export const PostTable = (props) => {
                 </Table>
             </Scrollbar>
             <Divider />
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={count}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={onPageChange}
-                onRowsPerPageChange={onRowsPerPageChange}
-            />
         </div>
     )
 }
 
-PostTable.propTypes = {
+SinglePost.propTypes = {
     items: PropTypes.array,
     page: PropTypes.number,
     rowsPerPage: PropTypes.number,

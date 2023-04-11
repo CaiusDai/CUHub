@@ -10,11 +10,53 @@ const now = new Date()
 
 // in this part, there is no input form the frontend,
 // all posts need to be returned from backend for further use
+const from_backend = () => {
+    fetch('http://localhost:5000/api/posts/all', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            const status = result.status
+            if (status === 'fail') {
+                const errorCode = result.data.error_code
+                // Do something
+            } else if (status === 'error') {
+                // Wrong fetch format
+                const message = result.message
+            } else {
+                const data = result.data
+                const posts = data.posts // Array of post
+                //Each post will have following fields:
+                // post_id:
+                // content:
+                // creation_time: Date,Time
+                // num_like:
+                // num_dislike:
+                // num_retweet:
+                // num_comment:
+                // is_anonymous:
+                // tag:
+                // creator_name: username
+                // creator_id:
+                // liked_by_user: boolean
+                // disliked_by_user: boolean
+                // Do something
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching all posts:', error)
+        })
+}
 const posts = [
     {
         id: 'usermail@gmail.com',
         isLiked: true,
         content: 'this is post 1',
+        reposted: false,
     },
     {
         id: '9265@xxx',
@@ -22,6 +64,7 @@ const posts = [
         status: 'complete',
         updatedAt: subDays(now, 54).getTime(),
         isLiked: false,
+        reposted: false,
     },
     {
         id: '9266',
@@ -29,6 +72,7 @@ const posts = [
         status: 'placed',
         updatedAt: subDays(now, 43).getTime(),
         isLiked: true,
+        reposted: false,
     },
     {
         id: '1090',
@@ -36,6 +80,7 @@ const posts = [
         status: 'processed',
         updatedAt: subDays(now, 13).getTime(),
         isLiked: true,
+        reposted: false,
     },
     {
         id: '1111',
@@ -43,10 +88,11 @@ const posts = [
         status: 'processed',
         updatedAt: subDays(now, 54).getTime(),
         isLiked: true,
+        reposted: false,
     },
 ]
 
-const Main = () => {
+const HomePage = () => {
     // const [setMode] = useState('table')
     // const [setQuery] = useState('')
     const [page, setPage] = useState(0)
@@ -115,4 +161,4 @@ const Main = () => {
     )
 }
 
-export default Main
+export default HomePage
