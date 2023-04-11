@@ -16,7 +16,8 @@ import { SvgIcon } from '@mui/material'
 import backgroundimg from 'src/Images/bg.png'
 import useravatar from 'src/Images/useravatar.png'
 import white from 'src/Images/white.png'
-import { HiOutlineCake } from 'react-icons/hi'
+import { useState } from 'react'
+
 const Page = () => {
     const formik = useFormik({
         onSubmit: async (values, helpers) => {
@@ -24,6 +25,14 @@ const Page = () => {
             helpers.setSubmitting(false)
         },
     })
+
+    const handleClick = (e) => {
+        e.preventDefault()
+        setButtonText('Follow')
+        console.log('Unfollow request')
+    }
+
+    const [buttonText, setButtonText] = useState('Followed')
 
     return (
         <>
@@ -125,9 +134,9 @@ const Page = () => {
                                                         size="small"
                                                         type="button"
                                                         variant="outlined"
-                                                        href="/homepage/profile_edit"
+                                                        onClick={handleClick}
                                                     >
-                                                        Edit Profile
+                                                        {buttonText}
                                                     </Button>
                                                     <div></div>
                                                 </div>
@@ -152,14 +161,6 @@ const Page = () => {
                                                         </SvgIcon>
                                                         interest{' '}
                                                         {/*Here I need the interest*/}
-                                                        <SvgIcon>
-                                                            <VscBlank />
-                                                        </SvgIcon>
-                                                        <SvgIcon>
-                                                            <HiOutlineCake />
-                                                        </SvgIcon>
-                                                        YYYY-MM-DD
-                                                        {/*Here I need the number of Following*/}
                                                     </Typography>
                                                     <Typography variant="h6">
                                                         (number) Following{' '}

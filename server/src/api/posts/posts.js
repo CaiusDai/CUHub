@@ -4,6 +4,9 @@ const config = require('../../configs/configs')
 const util = require('../../util/utils')
 const HTTPCode = config.HTTPCode
 const post_router = express.Router()
+const comment_router = express.Router()
+
+post_router.use('/comments', comment_router)
 
 // Get all posts
 post_router.get('/all', (req, res) => {

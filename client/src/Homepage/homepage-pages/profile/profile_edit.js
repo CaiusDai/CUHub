@@ -101,7 +101,7 @@ const Page = () => {
                                                 college: 'oldone',
                                                 birthday: 'oldone',
                                                 interest: 'oldone',
-                                                gender: 'oldone' ,
+                                                gender: 'oldone',
                                             }}
                                             onFinish={onFinish}
                                             style={{ minWidth: '300px' }}
@@ -144,7 +144,8 @@ const Page = () => {
                                                     </div>
                                                     <div className="input-container">
                                                         <label htmlFor="birthday">
-                                                            Birthday (Should be: YYYY-MM-DD) :
+                                                            Birthday (Should be:
+                                                            YYYY-MM-DD) :
                                                         </label>
                                                         <Form.Item name="birthday">
                                                             <Input
@@ -166,7 +167,9 @@ const Page = () => {
                                                     </div>
                                                     <div className="input-container">
                                                         <label htmlFor="gender">
-                                                            Gender (Should be: Male/Female/Unknown) :
+                                                            Gender (Should be:
+                                                            Male/Female/Unknown)
+                                                            :
                                                         </label>
                                                         <Form.Item name="gender">
                                                             <Input
