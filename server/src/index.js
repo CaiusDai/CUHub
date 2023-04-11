@@ -16,7 +16,6 @@ const logout_router = require('./api/authentication/logout.js')
 const example_router = require('./api/examples/upload')
 const chat_router = require('./api/chatsessions.js')
 const profile_router = require('./api/profile.js')
-const { profile } = require('console')
 
 // Configuration variables:
 const session_store = new session.MemoryStore()
