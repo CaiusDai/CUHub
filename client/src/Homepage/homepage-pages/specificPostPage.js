@@ -2,106 +2,75 @@ import { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { subDays } from 'date-fns'
 import { Box, Card, Container, Divider, Stack, Typography } from '@mui/material'
-import { PostTable } from 'src/Homepage/homepage-sections/post-table'
-
+import { CommentTable } from '../homepage-sections/comment-table'
+import NewCommentForm from '../homepage-components/new_comment'
+import { useParams } from 'react-router-dom'
+import { SinglePost } from '../homepage-sections/single-post'
 const now = new Date()
 
 // in this part, there is no input form the frontend,
 // posts form people the user following need to be returned from backend for further use
-const from_backend = () => {
-    fetch('http://localhost:5000/api/posts/friends', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-    })
-        .then((response) => response.json())
-        .then((result) => {
-            const status = result.status
-            if (status === 'fail') {
-                const errorCode = result.data.error_code
-                // Do something
-            } else if (status === 'error') {
-                // Wrong fetch format
-                const message = result.message
-            } else {
-                const data = result.data
-                const posts = data.posts // Array of post
-                //Each post will have following fields:
-                // is_repost:
-                // repost_content: the content written by who reposted the post
-                // repost_creator_username:
-                // post_id:
-                // content: post content,
-                // creation_time: the creation time for the post/repost
-                // num_likes:
-                // num_dislikes:
-                // num_retweets:
-                // num_comments:
-                // creator_username: the creator of the post(or the original post)
-                // tag:
-                // is_liked:
-                // is_disliked:
-                // is_retweeted:
-                // Do something
-            }
-        })
-        .catch((error) => {
-            console.error("Error fetching friends' posts:", error)
-        })
-}
-const following_posts = [
+const post_comments = [
     {
         id: 'usermail@gmail.com',
-        isLiked: true,
-        content: 'this is post 1',
+        NotCommenting: true,
+        content: 'this is comment 1',
+        reposted: false,
     },
     {
         id: '9265@xxx',
         createdAt: subDays(now, 56).getTime(),
         status: 'complete',
         updatedAt: subDays(now, 54).getTime(),
-        isLiked: false,
+        NotCommenting: true,
+        reposted: false,
     },
     {
         id: '9266',
         createdAt: subDays(now, 31).getTime(),
         status: 'placed',
         updatedAt: subDays(now, 43).getTime(),
-        isLiked: true,
+        NotCommenting: true,
+        reposted: false,
     },
     {
         id: '1090',
         createdAt: subDays(now, 51).getTime(),
         status: 'processed',
         updatedAt: subDays(now, 13).getTime(),
-        isLiked: true,
+        NotCommenting: true,
+        reposted: false,
     },
     {
         id: '1111',
         createdAt: subDays(now, 6).getTime(),
         status: 'processed',
         updatedAt: subDays(now, 54).getTime(),
-        isLiked: true,
+        NotCommenting: true,
+        reposted: false,
     },
 ]
 
-const FriendsPost = () => {
-    // const [setMode] = useState('table')
-    // const [setQuery] = useState('')
+const post = [
+    {
+        id: 'usermail@gmail.com',
+        isLiked: true,
+        content: 'this is post content',
+        reposted: false,
+    },
+]
+
+const SpecificPostPage = () => {
+    const { id } = useParams()
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
-
-    // const handleModeChange = useCallback((event, value) => {
-    //   if (value) {
-    //     setMode(value)
-    //   }
-    // }, [])
-
-    // const handleQueryChange = useCallback((value) => {
-    //   setQuery(value)
-    // }, [])
+    console.log('the following is id for the page')
+    console.log(id)
+    /* After clicking the comment button, the user will enter a page for a specific page
+     *  frontend will request original content and corresponding comment and render it
+     *  here, the id property stand the original post id, and it is the input from frontend
+     *  post corresponding to this post id, and all comments related to this post is needed
+     *  you can take the post and post_comment variable above as an example*/
 
     const handleChangePage = useCallback((event, value) => {
         setPage(value)
@@ -115,7 +84,7 @@ const FriendsPost = () => {
     return (
         <>
             <Helmet>
-                <title>Friends Post</title>
+                <title>comment on post</title>
             </Helmet>
             <Box
                 sx={{
@@ -131,14 +100,28 @@ const FriendsPost = () => {
                             justifyContent="space-between"
                             spacing={3}
                         >
-                            <Typography variant="h4">Friends Post</Typography>
+                            <Typography variant="h4">Comments</Typography>
                         </Stack>
                         <div>
                             <Card>
                                 <Divider />
-                                <PostTable
-                                    count={following_posts.length}
-                                    items={following_posts}
+                                <SinglePost
+                                    count={post.length}
+                                    items={post}
+                                    page={page}
+                                    rowsPerPage={rowsPerPage}
+                                    onPageChange={handleChangePage}
+                                    onRowsPerPageChange={
+                                        handleChangeRowsPerPage
+                                    }
+                                />
+                            </Card>
+                            <NewCommentForm postId={id} />
+                            <Card>
+                                <Divider />
+                                <CommentTable
+                                    count={post_comments.length}
+                                    items={post_comments}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
                                     onPageChange={handleChangePage}
@@ -155,4 +138,4 @@ const FriendsPost = () => {
     )
 }
 
-export default FriendsPost
+export default SpecificPostPage

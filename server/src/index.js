@@ -12,10 +12,12 @@ const login_router = require('./api/authentication/login.js')
 const signup_router = require('./api/authentication/signup.js')
 const block_router = require('./api/admin/block.js')
 const admin_router = require('./api/admin/admin.js')
+const annoucement_router = require('./api/admin/annoucement')
 const logout_router = require('./api/authentication/logout.js')
 const example_router = require('./api/examples/upload')
 const chat_router = require('./api/chatsessions.js')
 const profile_router = require('./api/profile.js')
+const post_router = require('./api/posts/posts')
 
 // Configuration variables:
 const session_store = new session.MemoryStore()
@@ -55,7 +57,8 @@ app.use('/api/admin', admin_router)
 app.use('/api/example', example_router)
 app.use('/api/chat', chat_router)
 app.use('/api/profile',profile_router)
-
+app.use('/api/annoucements', annoucement_router)
+app.use('/api/posts', post_router)
 // Server Start:
 app.listen(config.ListenPort, () => {
     console.log(`[INFO] Server start to listen on port ${config.ListenPort}`)
