@@ -13,6 +13,9 @@ import SpecificPostPage from './Homepage/homepage-pages/specificPostPage'
 import SearchPage from './Homepage/homepage-pages/searchPage'
 import HomePage from './Homepage/homepage-pages/homePage'
 import FriendsPost from './Homepage/homepage-pages/frendsPostPage'
+import Logout from './Homepage/homepage-pages/logout'
+import ProfilePage from './Homepage/homepage-pages/profile/profile'
+import ProfileEditPage from './Homepage/homepage-pages/profile/profile_edit'
 
 export const AppRouter = [
     {
@@ -45,6 +48,18 @@ export const AppRouter = [
             {
                 path: 'search/:searchContent',
                 element: <SearchPage />,
+            },
+            {
+                path: 'homepage/profile',
+                element: <ProfilePage />,
+            },
+            {
+                path: 'homepage/profile_edit',
+                element: <ProfileEditPage />,
+            },
+            {
+                path: 'homepage/logout',
+                element: <Logout />,
             },
         ],
     },
