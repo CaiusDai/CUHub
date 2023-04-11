@@ -21,12 +21,7 @@ import UnfollowedProfilePage from './Homepage/homepage-pages/profile/unfollowed_
 import FollowedProfilePage from './Homepage/homepage-pages/profile/followed_profile'
 import UnblockConfirmPage from './Admin/admin-pages/unblockconfirm'
 import DeleteConfirmPage from './Admin/admin-pages/deleteconfirm'
-import ViewInfoPage from './Admin/admin-pages/view_info'
-import BlockSettingPage from './Admin/admin-pages/block_setting'
-import UnfollowedProfilePage from './Homepage/homepage-pages/profile/unfollowed_profile'
-import FollowedProfilePage from './Homepage/homepage-pages/profile/followed_profile'
-import UnblockConfirmPage from './Admin/admin-pages/unblockconfirm'
-import DeleteConfirmPage from './Admin/admin-pages/deleteconfirm'
+
 
 export const AppRouter = [
     {
