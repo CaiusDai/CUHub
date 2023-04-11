@@ -272,7 +272,7 @@ async function insert_data() {
                 false,
                 true,
                 false,
-                'normal'
+                'treehole'
             )
         )
 
@@ -292,7 +292,7 @@ async function insert_data() {
                 false,
                 true,
                 false,
-                'normal'
+                'academic'
             )
         )
         await util.timeoutPromise(1000)
@@ -311,7 +311,7 @@ async function insert_data() {
                 false,
                 true,
                 false,
-                'normal'
+                'trading'
             )
         )
 
