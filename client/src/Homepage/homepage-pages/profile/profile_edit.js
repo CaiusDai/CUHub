@@ -14,11 +14,20 @@ import { VscBlank } from 'react-icons/vsc'
 import { SvgIcon } from '@mui/material'
 import old from 'src/Images/useravatar.png'
 
+let oldusername='woshishabi' //eg
+let oldmajor
+let oldcollege
+let oldbirthday
+let oldgender
+let oldinterst=['chang','tiao','rap'] //eg
+
+//Here I need backend to give the initial value.
 const Page = () => {
     // Here the backend I store the update profile information.
     const onFinish = (values) => {
         console.log('Form submitted!')
-        const { username, major, college, birthday, interest, gender } = values
+        let { username, major, college, birthday, gender } = values
+        let interest = [values, values, values]
         console.log('the following is username')
         console.log(username)
         console.log('the following is major')
@@ -96,12 +105,12 @@ const Page = () => {
                                         <Form
                                             name="profile_edit"
                                             initialValues={{
-                                                username: 'oldone',
-                                                major: 'oldone',
-                                                college: 'oldone',
-                                                birthday: 'oldone',
-                                                interest: 'oldone',
-                                                gender: 'oldone',
+                                                username: oldusername,
+                                                major: oldmajor,
+                                                college: oldcollege,
+                                                birthday: oldbirthday,
+                                                interest: oldinterst,
+                                                gender: oldgender,
                                             }}
                                             onFinish={onFinish}
                                             style={{ minWidth: '300px' }}
@@ -116,7 +125,6 @@ const Page = () => {
                                                             <Input
                                                                 type="text"
                                                                 id="username"
-                                                                placeholder="oldusername"
                                                             />
                                                         </Form.Item>
                                                     </div>
