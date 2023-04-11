@@ -24,6 +24,7 @@ import DeleteConfirmPage from './Admin/admin-pages/deleteconfirm'
 import ChatPage from './Homepage/homepage-pages/Chat'
 import ChatWindow from './Homepage/homepage-pages/chat_p/ChatWindow'
 
+
 export const AppRouter = [
     {
         element: (
@@ -80,6 +81,18 @@ export const AppRouter = [
                 path: 'homepage/followed_profile',
                 element: <FollowedProfilePage />,
             },
+            {
+                path: 'homepage/logout',
+                element: <Logout />,
+            },
+            {
+                path: 'homepage/unfollowed_profile',
+                element: <UnfollowedProfilePage />,
+            },
+            {
+                path: 'homepage/followed_profile',
+                element: <FollowedProfilePage />,
+            },
         ],
     },
     {
@@ -110,19 +123,19 @@ export const AppRouter = [
                 element: <AllaccountslistPage />,
             },
             {
-                path: 'admin/view_info/:id',
+                path: 'admin/view_info/:email',
                 element: <ViewInfoPage />,
             },
             {
-                path: 'admin/block_setting/:id',
+                path: 'admin/block_setting/:email',
                 element: <BlockSettingPage />,
             },
             {
-                path: 'admin/unblockconfirm/:id',
+                path: 'admin/unblockconfirm/:email',
                 element: <UnblockConfirmPage />,
             },
             {
-                path: 'admin/deleteconfirm/:id',
+                path: 'admin/deleteconfirm/:email',
                 element: <DeleteConfirmPage />,
             },
         ],
