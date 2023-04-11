@@ -17,14 +17,21 @@ const from_backend = () => {
         .then((result) => {
             const status = result.status
             if (status === 'fail') {
+                console.log('get announcement failed')
                 const errorCode = result.data.error_code
+                console.log(errorCode)
                 // Do something
             } else if (status === 'error') {
                 // Wrong fetch format
+                console.log('error fetch format when getting announcement')
                 const message = result.message
+                console.log(message)
             } else {
                 const data = result.data
                 const announcements = data.announcements
+                console.log('the following is data for announcement')
+                console.log(data)
+                console.log(announcements)
                 // Do something
             }
         })
@@ -34,6 +41,40 @@ const from_backend = () => {
 }
 
 const AnnouncementDialog = () => {
+    console.log('code can enter here')
+    fetch('http://localhost:5000/api/announcements/all', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            const status = result.status
+            if (status === 'fail') {
+                console.log('get announcement failed')
+                const errorCode = result.data.error_code
+                console.log(errorCode)
+                // Do something
+            } else if (status === 'error') {
+                // Wrong fetch format
+                console.log('error fetch format when getting announcement')
+                const message = result.message
+                console.log(message)
+            } else {
+                const data = result.data
+                const announcements = data.announcements
+                console.log(announcements)
+                console.log('the following is data for announcement')
+                console.log(data)
+                // Do something
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching announcements:', error)
+        })
+
     return (
         <Card
             title={
