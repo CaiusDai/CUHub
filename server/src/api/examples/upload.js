@@ -28,7 +28,6 @@ upload_router.post('/uploads', image_upload.array('images', 10), (req, res) => {
     res.send('Image(s) uploaded')
 })
 
-
 // Example for uploading avatar:
 upload_router.post(
     '/upload_avatar',
