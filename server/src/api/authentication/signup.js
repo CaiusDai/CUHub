@@ -1,6 +1,6 @@
 const express = require('express')
 const { connect_db } = require('../../configs/db')
-const config = require('../../configs/configs')
+const config = require('../../configs/configs.js')
 const signup_router = express.Router()
 
 const HTTPCode = config.HTTPCode

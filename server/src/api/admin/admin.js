@@ -1,5 +1,5 @@
 const express = require('express')
-const config = require('../../configs/configs')
+const config = require('../../configs/configs.js')
 
 const HTTPCodes = config.HTTPCode
 const admin_router = express.Router()

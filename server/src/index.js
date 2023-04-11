@@ -1,7 +1,10 @@
+// Dependencies
 const express = require('express')
 const session = require('express-session')
 const crypto = require('crypto')
 const cors = require('cors')
+
+// Project variables
 const config = require('./configs/configs')
 
 // Router files: (TODO: Better format)
@@ -10,6 +13,9 @@ const signup_router = require('./api/authentication/signup.js')
 const block_router = require('./api/admin/block.js')
 const admin_router = require('./api/admin/admin.js')
 const logout_router = require('./api/authentication/logout.js')
+const example_router = require('./api/examples/upload')
+const chat_router = require('./api/chatsessions.js')
+const profile_router = require('./api/profile.js')
 
 // Configuration variables:
 const session_store = new session.MemoryStore()
@@ -21,6 +27,7 @@ const cors_options = {
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type'],
 }
+
 // Session definition: One-day expire; In-memory storage
 app.use(
     session({
@@ -45,6 +52,9 @@ app.use('/api/logout', logout_router)
 app.use('/api/signup', signup_router)
 app.use('/api/admin/block', block_router)
 app.use('/api/admin', admin_router)
+app.use('/api/example', example_router)
+app.use('/api/chat', chat_router)
+app.use('/api/profile',profile_router)
 
 // Server Start:
 app.listen(config.ListenPort, () => {
