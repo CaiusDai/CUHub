@@ -8,11 +8,10 @@ import NotFoundPage from './Admin/admin-pages/404'
 import BlockinglistPage from './Admin/admin-pages/blocking_list'
 import ReportsPage from './Admin/admin-pages'
 import AllaccountslistPage from './Admin/admin-pages/all_accounts_list'
-import LogoutPage from './Homepage/homepage-pages/logoutPage'
 import SpecificPostPage from './Homepage/homepage-pages/specificPostPage'
 import SearchPage from './Homepage/homepage-pages/searchPage'
 import HomePage from './Homepage/homepage-pages/homePage'
-import FriendsPost from './Homepage/homepage-pages/frendsPostPage'
+import FriendsPost from './Homepage/homepage-pages/frend_post_page'
 import Logout from './Homepage/homepage-pages/logout'
 import ProfilePage from './Homepage/homepage-pages/profile/profile'
 import ProfileEditPage from './Homepage/homepage-pages/profile/profile_edit'
@@ -39,7 +38,7 @@ export const AppRouter = [
             },
             {
                 path: 'homepage/logout',
-                element: <LogoutPage />,
+                element: <Logout />,
             },
             {
                 path: 'homepage/particular_post/:id',
@@ -56,10 +55,6 @@ export const AppRouter = [
             {
                 path: 'homepage/profile_edit',
                 element: <ProfileEditPage />,
-            },
-            {
-                path: 'homepage/logout',
-                element: <Logout />,
             },
         ],
     },
