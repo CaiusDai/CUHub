@@ -18,31 +18,31 @@ const NewPostForm = () => {
         // from the user), tagChoices (mandatory tag from user), update backend post db correspondingly,
         // no explicit return value is needed in frontend
         fetch('http://localhost:5000/api/posts/new', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body : JSON.stringify(values),
-        credentials: 'include',
-    })
-        .then((response) => response.json())
-        .then((result) => {
-            const status = result.status
-            if (status === 'fail') {
-                const errorCode = result.data.error_code
-                // Do something
-            } else if (status === 'error') {
-                // Wrong fetch format
-                const message = result.message
-            } else {
-                const data = result.data
-                const announcements = data.announcements
-                // Do something
-            }
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+            credentials: 'include',
         })
-        .catch((error) => {
-            console.error('Error fetching announcements:', error)
-        })
+            .then((response) => response.json())
+            .then((result) => {
+                const status = result.status
+                if (status === 'fail') {
+                    const errorCode = result.data.error_code
+                    // Do something
+                } else if (status === 'error') {
+                    // Wrong fetch format
+                    const message = result.message
+                } else {
+                    const data = result.data
+                    const announcements = data.announcements
+                    // Do something
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching announcements:', error)
+            })
         console.log('the following is postContent')
         console.log(postContent)
         console.log('the following is tagChoices')
