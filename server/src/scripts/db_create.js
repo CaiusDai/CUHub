@@ -51,6 +51,7 @@ const query_announcement =
     'CREATE TABLE Announcement(\
         announcement_id SERIAL PRIMARY KEY,\
         admin_id INTEGER NOT NULL REFERENCES Admin ON DELETE RESTRICT,\
+        title TEXT NOT NULL,\
         content TEXT NOT NULL,\
         creation_time TIMESTAMP NOT NULL DEFAULT NOW())'
 
