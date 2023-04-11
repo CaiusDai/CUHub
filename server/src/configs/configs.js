@@ -24,6 +24,7 @@ const config = {
     },
     UploadPath: {
         images: `${__dirname}/../../upload/images/`,
+        avatars: `${__dirname}/../../upload/images/avatars/`,
     },
     ListenPort: process.env.PORT || 5000,
 }
