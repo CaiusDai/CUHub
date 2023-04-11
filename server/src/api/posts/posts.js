@@ -4,6 +4,9 @@ const config = require('../../configs/configs')
 const util = require('../../util/utils')
 const HTTPCode = config.HTTPCode
 const post_router = express.Router()
+const comment_router = express.Router()
+
+post_router.use('/comments', comment_router)
 
 // Get all posts
 post_router.get('/all', (req, res) => {
@@ -207,4 +210,50 @@ post_router.get('/friends', (req, res) => {
             })
         })
 })
+
+// Create new Post
+post_router.post('/new', (req, res) => {
+    // Check identity:
+    if (!req.session.isAuthenticated || req.session.isAdmin) {
+        const error_code = req.session.isAuthenticated
+            ? config.ErrorCodes.InvalidAccess
+            : config.ErrorCodes.NotAuthenticated
+        res.status(HTTPCode.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: error_code,
+            },
+            message:
+                'Post can only be created by normal users that have signed in',
+        })
+        return
+    }
+    const user_id = req.session.uid
+    const { postContent, tagChoices } = req.body
+    const is_public = true
+    const is_anonymous = false
+    const is_draft = false
+    const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft)
+                   VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft})
+                   RETURNING post_id`
+    connect_db()
+        .then((database) => database.query(query))
+        .then(() => {
+            res.status(config.HTTPCode.Ok).json({
+                status: 'success',
+                data: {
+                    is_success: true,
+                },
+                message: 'Post Created',
+            })
+        })
+        .catch((err) => {
+            console.log(err)
+            res.status(config.HTTPCode.BadRequest).json({
+                status: 'error',
+                message: 'Wrong query format',
+            })
+        })
+})
+
 module.exports = post_router
