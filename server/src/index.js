@@ -15,6 +15,7 @@ const admin_router = require('./api/admin/admin.js')
 const logout_router = require('./api/authentication/logout.js')
 const example_router = require('./api/examples/upload')
 const chat_router = require('./api/chatsessions.js')
+const profile_router = require('./api/profile.js')
 
 // Configuration variables:
 const session_store = new session.MemoryStore()
@@ -53,6 +54,7 @@ app.use('/api/admin/block', block_router)
 app.use('/api/admin', admin_router)
 app.use('/api/example', example_router)
 app.use('/api/chat', chat_router)
+app.use('/api/profile',profile_router)
 
 // Server Start:
 app.listen(config.ListenPort, () => {
