@@ -16,8 +16,7 @@ import { SvgIcon } from '@mui/material'
 import backgroundimg from 'src/Images/bg.png'
 import useravatar from 'src/Images/useravatar.png'
 import white from 'src/Images/white.png'
-import { useState } from 'react';
-
+import { useState } from 'react'
 
 const Page = () => {
     const formik = useFormik({
@@ -28,12 +27,12 @@ const Page = () => {
     })
 
     const handleClick = (e) => {
-        e.preventDefault();
-        setButtonText('Pending');
-        console.log('Follow request');
-    };
+        e.preventDefault()
+        setButtonText('Pending')
+        console.log('Follow request')
+    }
 
-    const [buttonText, setButtonText] = useState('Follow');
+    const [buttonText, setButtonText] = useState('Follow')
 
     return (
         <>
@@ -135,7 +134,7 @@ const Page = () => {
                                                         size="small"
                                                         type="button"
                                                         variant="outlined"
-                                                        onClick={handleClick} 
+                                                        onClick={handleClick}
                                                     >
                                                         {buttonText}
                                                     </Button>
@@ -174,7 +173,6 @@ const Page = () => {
                                                     </Typography>
                                                 </Stack>
                                                 <Box sx={{ mt: 3 }}>
-                                                    
                                                     <Button
                                                         color="primary"
                                                         size="large"
@@ -183,7 +181,7 @@ const Page = () => {
                                                     >
                                                         Post
                                                     </Button>
-                                                    
+
                                                     <SvgIcon>
                                                         <VscBlank />
                                                     </SvgIcon>
