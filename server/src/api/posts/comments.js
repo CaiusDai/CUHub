@@ -4,21 +4,19 @@ const config = require('../../configs/configs')
 const HTTPCode = config.HTTPCode
 const comment_router = express.Router()
 
-
 //Get all comments of a specific post
 
 comment_router.get('/:post_id', async (req, res) => {
-
     if (!req.session.isAuthenticated) {
         res.status(HTTPCode.Unauthorized).json({
-          status: 'fail',
-          data: {
-            error_code: config.ErrorCodes.Unauthorized,
-          },
-          message: 'Unauthenticated visit',
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
         })
         return
-      }
+    }
 
     try {
         if (!req.session.isAuthenticated) {
@@ -52,42 +50,32 @@ comment_router.get('/:post_id', async (req, res) => {
         res.status(HTTPCode.Ok).json({
             status: 'success',
             data: {
-                result_list: result_array
+                result_list: result_array,
             },
-            message: "[INFO] Return the comment list",
+            message: '[INFO] Return the comment list',
         })
         return
-
-
-    }
-    catch (err) {
+    } catch (err) {
         console.error(`[Error] Failed to get comments.\n Error: ${err}`)
         res.status(HTTPCode.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
         })
-
     }
-
-
-
-
 })
 
 //Add comment to a post
 comment_router.post('/', async (req, res) => {
-
     if (!req.session.isAuthenticated) {
         res.status(HTTPCode.Unauthorized).json({
-          status: 'fail',
-          data: {
-            error_code: config.ErrorCodes.Unauthorized,
-          },
-          message: 'Unauthenticated visit',
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
         })
         return
-      }
-
+    }
 
     //Get input from query
     const { commentContent, post_id } = req.body
@@ -102,16 +90,13 @@ comment_router.post('/', async (req, res) => {
         const db_result = await database.query(query_get_id)
         const user_id_other = db_result.rows[0].user_id
         //If the user comment his own post
-        if(user_id === user_id_other)
-        {
+        if (user_id === user_id_other) {
             res.status(HTTPCode.BadRequest).json({
                 status: 'fail',
                 message: '[Error] You can not reply to yourself',
             })
             return
-            
         }
-
 
         const query_all = `UPDATE Post SET num_comment = num_comment + 1 WHERE post_id = ${post_id};INSERT INTO Comment VALUES(DEFAULT,${user_id},${post_id},${user_id_other},'${commentContent}',DEFAULT)`
 
@@ -119,25 +104,20 @@ comment_router.post('/', async (req, res) => {
 
         res.status(HTTPCode.Ok).json({
             status: 'success',
-            data: {
-            },
-            message: "[INFO] Adding new comment successfully",
+            data: {},
+            message: '[INFO] Adding new comment successfully',
         })
-
-    }
-    catch (err) {
+    } catch (err) {
         console.error(`[Error] Failed to adding comment.\n Error: ${err}`)
         res.status(HTTPCode.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
         })
     }
-
 })
 
 //Add comment to a comment
 comment_router.post('/reply', async (req, res) => {
-
     if (!req.session.isAuthenticated) {
         res.status(HTTPCode.Unauthorized).json({
             status: 'fail',
@@ -163,14 +143,12 @@ comment_router.post('/reply', async (req, res) => {
         const user_id_other = db_result.rows[0].user_id
 
         //If the user comment on his own comments
-        if(user_id_other === user_id)
-        {
+        if (user_id_other === user_id) {
             res.status(HTTPCode.BadRequest).json({
                 status: 'fail',
                 message: '[Error] You can not reply to yourself',
             })
             return
-
         }
 
         const query_insert_and_add_number = `UPDATE Post SET num_comment = num_comment + 1 WHERE post_id = ${post_id};INSERT INTO Comment VALUES(DEFAULT,${user_id},${post_id},${user_id_other},'${commentContent}',DEFAULT)`
@@ -178,22 +156,16 @@ comment_router.post('/reply', async (req, res) => {
 
         res.status(HTTPCode.Ok).json({
             status: 'success',
-            data: {
-            },
-            message: "[INFO] Adding new comment to comment successfully",
+            data: {},
+            message: '[INFO] Adding new comment to comment successfully',
         })
-
-    }
-    catch (err) {
+    } catch (err) {
         console.error(`[Error] Failed to adding comment.\n Error: ${err}`)
         res.status(HTTPCode.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
         })
     }
-
 })
-
-
 
 module.exports = comment_router

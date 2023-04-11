@@ -1,5 +1,5 @@
 const express = require('express')
-const config = require('../configs/configs.js')
+const config = require('../configs/configs')
 
 const { connect_db } = require('../configs/db.js')
 
@@ -12,19 +12,17 @@ const profile_router = express.Router()
 
 //Get personal profile, no input needed
 profile_router.get('/', (req, res) => {
-
-
     if (!req.session.isAuthenticated) {
-        res.status(HTTPCode.Unauthorized).json({
-          status: 'fail',
-          data: {
-            error_code: config.ErrorCodes.Unauthorized,
-          },
-          message: 'Unauthenticated visit',
+        res.status(HTTPCodes.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
         })
         return
-      }
-    
+    }
+
     const user_id = req.session.uid
 
     const query_get_profile = `SELECT username,major,gender,birthday,college,interests,email FROM Profile,Account WHERE Profile.user_id = Account.user_id AND Profile.user_id = ${user_id}`
@@ -55,20 +53,17 @@ profile_router.get('/', (req, res) => {
 
 //Updating
 profile_router.put('/', (req, res) => {
-
     if (!req.session.isAuthenticated) {
-        res.status(HTTPCode.Unauthorized).json({
-          status: 'fail',
-          data: {
-            error_code: config.ErrorCodes.Unauthorized,
-          },
-          message: 'Unauthenticated visit',
+        res.status(HTTPCodes.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
         })
         return
-      }
+    }
 
-
-    const username = req.query.username
     const major = req.query.major
     const gender = req.query.gender
     const birthday = req.query.birthday
@@ -81,7 +76,7 @@ profile_router.put('/', (req, res) => {
         .then((database) => {
             database.query(query_edit_profile)
         })
-        .then((db_result) => {
+        .then(() => {
             res.status(HTTPCodes.Ok).json({
                 status: 'success',
                 message: '[INFO] Edit profile successfully',
@@ -102,19 +97,17 @@ profile_router.put('/', (req, res) => {
 
 //View other profile, need other's user_id
 profile_router.get('/:user_id', (req, res) => {
-
-
     if (!req.session.isAuthenticated) {
-        res.status(HTTPCode.Unauthorized).json({
-          status: 'fail',
-          data: {
-            error_code: config.ErrorCodes.Unauthorized,
-          },
-          message: 'Unauthenticated visit',
+        res.status(HTTPCodes.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
         })
         return
-      }
-      
+    }
+
     const user_id = req.params.user_id
 
     //Get username and profile photo of this user

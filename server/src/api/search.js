@@ -1,12 +1,10 @@
 const express = require('express')
 const { connect_db } = require('../configs/db')
 const config = require('../configs/configs')
-const util = require('../util/utils')
 const HTTPCode = config.HTTPCode
 const search_router = express.Router()
 
 search_router.get('/', async (req, res) => {
-
     if (!req.session.isAuthenticated) {
         res.status(HTTPCode.Unauthorized).json({
             status: 'fail',
@@ -20,7 +18,7 @@ search_router.get('/', async (req, res) => {
 
     try {
         //Get input from request body
-        const searchContent  = req.query.searchContent
+        const searchContent = req.query.searchContent
 
         const database = await connect_db()
         const query_search = `SELECT * FROM Account WHERE username = '${searchContent}' AND is_blocked = FALSE`
@@ -30,9 +28,8 @@ search_router.get('/', async (req, res) => {
         if (db_result.rowCount === 0) {
             res.status(HTTPCode.Ok).json({
                 status: 'none',
-                data: {
-                },
-                message: "[INFO] No user found",
+                data: {},
+                message: '[INFO] No user found',
             })
             return
         }
@@ -50,25 +47,19 @@ search_router.get('/', async (req, res) => {
             res.status(HTTPCode.Ok).json({
                 status: 'success',
                 data: {
-                    user_list: result_array
+                    user_list: result_array,
                 },
-                message: "[INFO] Return the user list",
+                message: '[INFO] Return the user list',
             })
             return
-
         }
-
-    }
-    catch (err) {
+    } catch (err) {
         console.error(`[Error] Failed to search user.\n Error: ${err}`)
         res.status(HTTPCode.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
         })
     }
-
 })
-
-
 
 module.exports = search_router

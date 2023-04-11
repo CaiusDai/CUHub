@@ -60,7 +60,7 @@ app.use('/api/chat', chat_router)
 app.use('/api/profile', profile_router)
 app.use('/api/annoucements', annoucement_router)
 app.use('/api/posts', post_router)
-app.use('/api/search',search_router)
+app.use('/api/search', search_router)
 // Server Start:
 app.listen(config.ListenPort, () => {
     console.log(`[INFO] Server start to listen on port ${config.ListenPort}`)
