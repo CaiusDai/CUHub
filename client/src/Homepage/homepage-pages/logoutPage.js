@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'antd'
 
-const Logout = () => {
+const LogoutPage = () => {
     // const history = useHistory();
 
     const handleLogout = () => {
@@ -24,4 +24,4 @@ const Logout = () => {
     )
 }
 
-export default Logout
+export default LogoutPage

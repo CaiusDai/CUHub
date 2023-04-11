@@ -14,16 +14,16 @@ import {
     TablePagination,
     TableRow,
     Typography,
+    TextField,
 } from '@mui/material'
 import { Scrollbar } from 'src/Admin/admin-components/scrollbar'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import RepeatIcon from '@mui/icons-material/Repeat'
 import ChatIcon from '@mui/icons-material/Chat'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import SendIcon from '@mui/icons-material/Send'
 
-export const PostTable = (props) => {
-    const navigate = useNavigate()
+export const CommentTable = (props) => {
+    // const [isCommentClicked, setIsCommentClicked] = useState(false);
+
     const {
         count = 0,
         items = [],
@@ -32,38 +32,31 @@ export const PostTable = (props) => {
         rowsPerPage = 0,
         onRowsPerPageChange,
     } = props
-    const [posts, setPosts] = useState(items)
-    const handleLikeClick = (postId) => {
-        const itemIndex = posts.findIndex((post) => post.id === postId)
-
-        // Create a copy of the items array
-        const updatedPosts = [...posts]
-
-        // Update the name property of the relevant item object
-        updatedPosts[itemIndex].isLiked = !updatedPosts[itemIndex].isLiked
-
-        // Update the state with the updated items array
-        setPosts(updatedPosts)
-    }
-
-    const handleRepostClick = (postId) => {
-        const itemIndex = posts.findIndex((post) => post.id === postId)
-
-        // Create a copy of the items array
-        const updatedPosts = [...posts]
-
-        // Update the name property of the relevant item object
-        updatedPosts[itemIndex].reposted = !updatedPosts[itemIndex].reposted
-
-        // Update the state with the updated items array
-        setPosts(updatedPosts)
-    }
-
-    const handleCommentClick = (postId) => {
+    const [setIsCommentClicked] = useState(items)
+    const handleCommentClick = (commentId) => {
         // TODO: Implement logic to navigate to the comments section of a post
-        console.log(`Navigated to comments section of post ${postId}`)
-        navigate(`/homepage/particular_post/${postId}`)
-        // window.location.href = {'/homepage/particular_post/${postId}'}
+        console.log(`Navigated to comments section of post ${commentId}`)
+        const itemIndex = items.findIndex((post) => post.id === commentId)
+
+        // Create a copy of the items array
+        const updatedPosts = [...items]
+
+        // Update the name property of the relevant item object
+        updatedPosts[itemIndex].NotCommenting =
+            !updatedPosts[itemIndex].NotCommenting
+
+        setIsCommentClicked(updatedPosts)
+    }
+
+    const handleSubmit = (e, postId) => {
+        e.preventDefault()
+        const commentInput = e.target.elements.commentInput
+        console.log(
+            `Submitted comment ${commentInput.value} for post ${postId}`
+        )
+
+        // TODO: Implement logic to add comment to the relevant post
+        commentInput.value = ''
     }
 
     return (
@@ -104,35 +97,7 @@ export const PostTable = (props) => {
                                             )}
                                             <CardActions>
                                                 <IconButton
-                                                    color={
-                                                        post.isLiked
-                                                            ? 'default'
-                                                            : 'primary'
-                                                    }
-                                                    aria-label="Like"
-                                                    onClick={() =>
-                                                        handleLikeClick(post.id)
-                                                    }
-                                                >
-                                                    <FavoriteIcon />
-                                                </IconButton>
-                                                <IconButton
-                                                    color={
-                                                        post.reposted
-                                                            ? 'primary'
-                                                            : 'default'
-                                                    }
-                                                    aria-label="Repost"
-                                                    onClick={() =>
-                                                        handleRepostClick(
-                                                            post.id
-                                                        )
-                                                    }
-                                                >
-                                                    <RepeatIcon />
-                                                </IconButton>
-                                                <IconButton
-                                                    color="default"
+                                                    color="primary"
                                                     aria-label="Comment"
                                                     onClick={() =>
                                                         handleCommentClick(
@@ -142,6 +107,41 @@ export const PostTable = (props) => {
                                                 >
                                                     <ChatIcon />
                                                 </IconButton>
+                                                {!post.NotCommenting && (
+                                                    <form
+                                                        onSubmit={(e) =>
+                                                            handleSubmit(
+                                                                e,
+                                                                post.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <div
+                                                            style={{
+                                                                display: 'flex',
+                                                                flexDirection:
+                                                                    'row',
+                                                                alignItems:
+                                                                    'center',
+                                                            }}
+                                                        >
+                                                            <TextField
+                                                                id={`commentInput${post.id}`}
+                                                                name="commentInput"
+                                                                variant="outlined"
+                                                                placeholder="Type your comment here"
+                                                                fullWidth
+                                                                margin="normal"
+                                                            />
+                                                            <IconButton
+                                                                type="submit"
+                                                                aria-label="send"
+                                                            >
+                                                                <SendIcon />
+                                                            </IconButton>
+                                                        </div>
+                                                    </form>
+                                                )}
                                             </CardActions>
                                         </Card>
                                     </TableCell>
@@ -165,7 +165,7 @@ export const PostTable = (props) => {
     )
 }
 
-PostTable.propTypes = {
+CommentTable.propTypes = {
     items: PropTypes.array,
     page: PropTypes.number,
     rowsPerPage: PropTypes.number,

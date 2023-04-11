@@ -1,5 +1,3 @@
-import Main from './Homepage/homepage-pages/homePage'
-import FriendsPost from './Homepage/homepage-pages/frend_post_page'
 import React from 'react'
 import LoginForm from './Authorization/Sign in/loginForm'
 import SignUp from './Authorization/Sign up/SignUp'
@@ -10,7 +8,11 @@ import NotFoundPage from './Admin/admin-pages/404'
 import BlockinglistPage from './Admin/admin-pages/blocking_list'
 import ReportsPage from './Admin/admin-pages'
 import AllaccountslistPage from './Admin/admin-pages/all_accounts_list'
-import Logout from './Homepage/homepage-pages/logout'
+import LogoutPage from './Homepage/homepage-pages/logoutPage'
+import SpecificPostPage from './Homepage/homepage-pages/specificPostPage'
+import SearchPage from './Homepage/homepage-pages/searchPage'
+import HomePage from './Homepage/homepage-pages/homePage'
+import FriendsPost from './Homepage/homepage-pages/frendsPostPage'
 
 export const AppRouter = [
     {
@@ -22,7 +24,7 @@ export const AppRouter = [
         children: [
             {
                 path: 'homepage',
-                element: <Main />,
+                element: <HomePage />,
             },
             {
                 path: 'homepage/friend_post',
@@ -34,7 +36,15 @@ export const AppRouter = [
             },
             {
                 path: 'homepage/logout',
-                element: <Logout />,
+                element: <LogoutPage />,
+            },
+            {
+                path: 'homepage/particular_post/:id',
+                element: <SpecificPostPage />,
+            },
+            {
+                path: 'search/:searchContent',
+                element: <SearchPage />,
             },
         ],
     },

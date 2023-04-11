@@ -13,6 +13,7 @@ const following_posts = [
         id: 'usermail@gmail.com',
         isLiked: true,
         content: 'this is post 1',
+        reposted: false,
     },
     {
         id: '9265@xxx',
@@ -20,6 +21,7 @@ const following_posts = [
         status: 'complete',
         updatedAt: subDays(now, 54).getTime(),
         isLiked: false,
+        reposted: false,
     },
     {
         id: '9266',
@@ -27,6 +29,7 @@ const following_posts = [
         status: 'placed',
         updatedAt: subDays(now, 43).getTime(),
         isLiked: true,
+        reposted: false,
     },
     {
         id: '1090',
@@ -34,6 +37,7 @@ const following_posts = [
         status: 'processed',
         updatedAt: subDays(now, 13).getTime(),
         isLiked: true,
+        reposted: false,
     },
     {
         id: '1111',
@@ -41,6 +45,7 @@ const following_posts = [
         status: 'processed',
         updatedAt: subDays(now, 54).getTime(),
         isLiked: true,
+        reposted: false,
     },
 ]
 

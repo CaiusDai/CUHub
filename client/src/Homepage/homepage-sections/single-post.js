@@ -11,7 +11,6 @@ import {
     Table,
     TableBody,
     TableCell,
-    TablePagination,
     TableRow,
     Typography,
 } from '@mui/material'
@@ -22,16 +21,9 @@ import ChatIcon from '@mui/icons-material/Chat'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export const PostTable = (props) => {
+export const SinglePost = (props) => {
     const navigate = useNavigate()
-    const {
-        count = 0,
-        items = [],
-        onPageChange = () => {},
-        page = 0,
-        rowsPerPage = 0,
-        onRowsPerPageChange,
-    } = props
+    const { items = [] } = props
     const [posts, setPosts] = useState(items)
     const handleLikeClick = (postId) => {
         const itemIndex = posts.findIndex((post) => post.id === postId)
@@ -60,7 +52,6 @@ export const PostTable = (props) => {
     }
 
     const handleCommentClick = (postId) => {
-        // TODO: Implement logic to navigate to the comments section of a post
         console.log(`Navigated to comments section of post ${postId}`)
         navigate(`/homepage/particular_post/${postId}`)
         // window.location.href = {'/homepage/particular_post/${postId}'}
@@ -132,7 +123,7 @@ export const PostTable = (props) => {
                                                     <RepeatIcon />
                                                 </IconButton>
                                                 <IconButton
-                                                    color="default"
+                                                    color="primary"
                                                     aria-label="Comment"
                                                     onClick={() =>
                                                         handleCommentClick(
@@ -152,20 +143,11 @@ export const PostTable = (props) => {
                 </Table>
             </Scrollbar>
             <Divider />
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={count}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={onPageChange}
-                onRowsPerPageChange={onRowsPerPageChange}
-            />
         </div>
     )
 }
 
-PostTable.propTypes = {
+SinglePost.propTypes = {
     items: PropTypes.array,
     page: PropTypes.number,
     rowsPerPage: PropTypes.number,
