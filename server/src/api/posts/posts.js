@@ -210,7 +210,19 @@ post_router.get('/friends', (req, res) => {
 
 //User likes a post
 post_router.post('/like', async (req, res) => {
-  const {post_id} = req.body
+
+  if (!req.session.isAuthenticated) {
+    res.status(HTTPCode.Unauthorized).json({
+      status: 'fail',
+      data: {
+        error_code: config.ErrorCodes.Unauthorized,
+      },
+      message: 'Unauthenticated visit',
+    })
+    return
+  }
+
+  const { post_id } = req.body
   const user_id = req.session.uid
 
   //Connect dabase
@@ -218,6 +230,7 @@ post_router.post('/like', async (req, res) => {
 
   try {
     //First check is_liked status, then do updating operation
+
     const query_check_status = `SELECT status FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id}`
     let db_result = await database.query(query_check_status)
 
@@ -285,6 +298,94 @@ post_router.post('/like', async (req, res) => {
     })
 
   }
+
+})
+
+post_router.post('/repost', async (req, res) => {
+
+  // if (!req.session.isAuthenticated) {
+  //   res.status(HTTPCode.Unauthorized).json({
+  //     status: 'fail',
+  //     data: {
+  //       error_code: config.ErrorCodes.Unauthorized,
+  //     },
+  //     message: 'Unauthenticated visit',
+  //   })
+  //   return
+  // }
+
+
+  //Get data and connect database
+  const { post_id } = req.body
+  const user_id = req.session.uid
+  const database = await connect_db()
+
+
+  try {
+
+    //Check if the user repost his own post
+    const query_check_valid = `SELECT user_id FROM Post WHERE post_id = ${post_id}`
+    const check_result = await database.query(query_check_valid)
+
+    //user_id of the post owner is same as the current user, he repost his own post
+    if (check_result.rows[0].user_id === user_id) {
+      res.status(HTTPCode.BadRequest).json({
+        status: 'error',
+        message: '[Error] You cant repost your own posts',
+      })
+      return
+    }
+    
+    console.log("1")
+
+    //First check status of repost
+    const query_check_status = `SELECT * FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
+    const db_result = await database.query(query_check_status)
+
+    //If not exist
+    if (db_result.rowCount === 0) {
+      const query_insert_repost = `INSERT INTO Repost VALUES(DEFAULT, NULL, ${post_id},${user_id})`
+      await database.query(query_insert_repost)
+      console.log("2")
+
+      res.status(HTTPCode.Ok).json({
+        status: 'success',
+        data: {
+          result: 'reposted'
+        },
+        message: "[INFO] Repost successfully",
+      })
+      return
+
+    }
+
+    //If existed, cancel the repost
+    else {
+      const query_delete_repost = `DELETE FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${this.user_id}`
+      await database.query(query_delete_repost)
+      console.log("3")
+
+      res.status(HTTPCode.Ok).json({
+        status: 'success',
+        data: {
+          result: 'canceled'
+        },
+        message: "[INFO] Cancel repost successfully",
+      })
+      return
+    }
+
+  }
+
+  catch (err) {
+    console.error(`[Error] Failed to repost.\n Error: ${err}`)
+    res.status(HTTPCode.BadRequest).json({
+      status: 'error',
+      message: '[Error] Invalid query format',
+    })
+
+  }
+
 
 })
 

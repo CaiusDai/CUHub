@@ -55,6 +55,8 @@ export const CommentTable = (props) => {
             `Submitted comment ${commentInput.value} for comment ${commentId}`
         )
 
+        
+
         // handle create a comment for a particular comment here, currently, frontend can only consider text comment
         // , the input to backend is : commentInput (the text input
         // from the user), commentId (id for the comment which the new comment belongs to)

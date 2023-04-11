@@ -39,6 +39,35 @@ export const PostTable = (props) => {
         // Create a copy of the items array
         const updatedPosts = [...posts]
 
+        fetch(
+            `http://localhost:5000/api/posts/like`,
+            {
+                method: 'POST',
+                body: {post_id: postId},
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                if(data.status === 'success')
+                {
+                    //The current status is liked
+                    if(data.data.result === 'liked')
+                    {}
+                    //The current status is canceled, the current user have no altitude on the post
+                    else if (data.data.result === 'canceled')
+                    {}
+                    
+                }
+                else
+                {
+                    //Something error in query
+                }
+            })
+
         // please do not change any code in this part and handle the like info update to backend
         // . The Input for the backend is stored in postId, the update policy is depend on
         // the isliked property, you can check it by updatedPosts[itemIndex].isLiked or your data in
@@ -60,7 +89,7 @@ export const PostTable = (props) => {
 
 
         fetch(
-            `http://localhost:5000/api/posts/like`,
+            `http://localhost:5000/api/posts/repost`,
             {
                 method: 'POST',
                 body: {post_id: postId},
@@ -75,7 +104,7 @@ export const PostTable = (props) => {
                 if(data.status === 'success')
                 {
                     //The current status is liked
-                    if(data.data.result === 'liked')
+                    if(data.data.result === 'reposted')
                     {}
                     //The current status is canceled, the current user have no altitude on the post
                     else if (data.data.result === 'canceled')
