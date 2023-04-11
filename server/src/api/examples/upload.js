@@ -28,7 +28,10 @@ upload_router.post('/uploads', upload.array('images', 10), (req, res) => {
 
 // Example for sending images:
 upload_router.get('/download', (req, res) => {
-    const imagePath = path.join(__dirname, '../../../upload/images/1681118427552.png')
+    const imagePath = path.join(
+        __dirname,
+        '../../../upload/images/1681118427552.png'
+    )
     res.status(200).sendFile(
         imagePath,
         {

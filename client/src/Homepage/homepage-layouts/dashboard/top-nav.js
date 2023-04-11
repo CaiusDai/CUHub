@@ -1,6 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom'
 import { Avatar, Box, Stack } from '@mui/material'
 import { QueryField } from '../../homepage-components/query-field'
+import cuhublogo from '../../../Images/logo.png'
 const TOP_NAV_HEIGHT = 64
 
 export const TopNav = (props) => {
@@ -42,7 +43,7 @@ export const TopNav = (props) => {
                             }}
                         >
                             <Avatar
-                                src="/client/src/Images/icon.png"
+                                src={cuhublogo}
                                 variant="rounded"
                                 size="large"
                             />

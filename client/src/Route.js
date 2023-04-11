@@ -11,6 +11,8 @@ import BlockinglistPage from './Admin/admin-pages/blocking_list'
 import ReportsPage from './Admin/admin-pages'
 import AllaccountslistPage from './Admin/admin-pages/all_accounts_list'
 import Logout from './Homepage/homepage-pages/logout'
+import ProfilePage from './Homepage/homepage-pages/profile/profile'
+import ProfileEditPage from './Homepage/homepage-pages/profile/profile_edit'
 
 export const AppRouter = [
     {
@@ -31,6 +33,14 @@ export const AppRouter = [
             {
                 path: 'homepage/all_accounts_list',
                 element: <AllaccountslistPage />,
+            },
+            {
+                path: 'homepage/profile',
+                element: <ProfilePage />,
+            },
+            {
+                path: 'homepage/profile_edit',
+                element: <ProfileEditPage />,
             },
             {
                 path: 'homepage/logout',
