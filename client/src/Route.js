@@ -21,6 +21,8 @@ import UnfollowedProfilePage from './Homepage/homepage-pages/profile/unfollowed_
 import FollowedProfilePage from './Homepage/homepage-pages/profile/followed_profile'
 import UnblockConfirmPage from './Admin/admin-pages/unblockconfirm'
 import DeleteConfirmPage from './Admin/admin-pages/deleteconfirm'
+import ChatPage from './Homepage/homepage-pages/Chat'
+import ChatWindow from './Homepage/homepage-pages/chat_p/ChatWindow'
 
 export const AppRouter = [
     {
@@ -40,7 +42,11 @@ export const AppRouter = [
             },
             {
                 path: 'homepage/chat',
-                element: <NotFoundPage />,
+                element: <ChatPage />,
+            },
+            {
+                path: 'homepage/chat/:userId',
+                element: <ChatWindow />,
             },
             {
                 path: 'homepage/logout',
