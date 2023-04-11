@@ -1,5 +1,5 @@
 const express = require('express')
-const config = require('../../configs/configs')
+const config = require('../../configs/configs.js')
 
 const HTTPCodes = config.HTTPCode
 const admin_router = express.Router()
@@ -18,7 +18,7 @@ admin_router.get('/userlist', (req, res) => {
         return
     }
     // Send user list
-    const query = 'SELECT email FROM Account'
+    const query = 'SELECT user_id, email FROM Account'
     connect_db()
         .then((database) => {
             return database.query(query)
@@ -27,7 +27,7 @@ admin_router.get('/userlist', (req, res) => {
             res.status(HTTPCodes.Ok).json({
                 status: 'success',
                 data: {
-                    email_list: db_result.rows,
+                    user_list: db_result.rows,
                 },
                 message: '[INFO] Generated User information',
             })
