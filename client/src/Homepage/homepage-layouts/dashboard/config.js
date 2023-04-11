@@ -25,7 +25,7 @@ export const items = [
         label: 'Friends post',
     },
     {
-        href: '/homepage/all_accounts_list',
+        href: '/homepage/chat',
         icon: (
             <SvgIcon>
                 <BsFillChatFill />
