@@ -1,16 +1,14 @@
 import { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { subDays } from 'date-fns'
 import { Box, Card, Container, Divider, Stack, Typography } from '@mui/material'
 import { OrdersSearch } from 'src/Admin/admin-sections/orders/orders-search'
 import { OrdersTable } from 'src/Admin/admin-sections/orders/orders-table'
 
-const now = new Date()
-
 //I need backend to provide the mail address(id) and the start & end date of the blocking user.
 //You can refer to the examples already entered below,
 //but of course I will replace them with real user data after you have provided me with the backend user data.
-const orders = [
+let block_list
+
     fetch(`http://localhost:5000/api/admin/block/`, {
         method: 'GET',
         headers: {
@@ -24,13 +22,13 @@ const orders = [
             const stauts = res.status // status. 'success' for a success operation
             const data = res.data
             const message = res.message // Debug only
-            const block_list = data.block_list // Array of {email,startAt,endAt}
+            block_list = data.block_list // Array of {email,startAt,endAt}
             // Example : for email1
-            const email1 = block_list[0].email
-            const startAt = block_list[0].startAt
-            const endAt = block_list[0].endAt
+            // const email1 = block_list[0].email
+            // const startAt = block_list[0].startAt
+            // const endAt = block_list[0].endAt
             console.log(block_list)
-        }),
+        })
     // {
     //     id: 'usermail@gmail.com',
     //     createdAt: subDays(now, 21).getTime(),
@@ -66,7 +64,7 @@ const orders = [
     //     status: 'complete',
     //     updatedAt: subDays(now, 1).getTime(),
     // },
-]
+
 
 const Page = () => {
     const [mode, setMode] = useState('table')
@@ -98,6 +96,7 @@ const Page = () => {
             <Helmet>
                 <title>Blocking List</title>
             </Helmet>
+            {/*<h1>{block_list.length}</h1>*/}
             <Box
                 sx={{
                     flexGrow: 1,
@@ -124,8 +123,8 @@ const Page = () => {
                                 />
                                 <Divider />
                                 <OrdersTable
-                                    count={orders.length}
-                                    items={orders}
+                                    count={block_list.length}
+                                    items={block_list}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
                                     onPageChange={handleChangePage}

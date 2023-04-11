@@ -13,6 +13,12 @@ import AllaccountslistPage from './Admin/admin-pages/all_accounts_list'
 import Logout from './Homepage/homepage-pages/logout'
 import ProfilePage from './Homepage/homepage-pages/profile/profile'
 import ProfileEditPage from './Homepage/homepage-pages/profile/profile_edit'
+import ViewInfoPage from './Admin/admin-pages/view_info'
+import BlockSettingPage from './Admin/admin-pages/block_setting'
+import UnfollowedProfilePage from './Homepage/homepage-pages/profile/unfollowed_profile'
+import FollowedProfilePage from './Homepage/homepage-pages/profile/followed_profile'
+import UnblockConfirmPage from './Admin/admin-pages/unblockconfirm'
+import DeleteConfirmPage from './Admin/admin-pages/deleteconfirm'
 
 export const AppRouter = [
     {
@@ -46,6 +52,14 @@ export const AppRouter = [
                 path: 'homepage/logout',
                 element: <Logout />,
             },
+            {
+                path: 'homepage/unfollowed_profile',
+                element: <UnfollowedProfilePage />,
+            },
+            {
+                path: 'homepage/followed_profile',
+                element: <FollowedProfilePage />,
+            },
         ],
     },
     {
@@ -74,6 +88,22 @@ export const AppRouter = [
             {
                 path: 'admin/all_accounts_list',
                 element: <AllaccountslistPage />,
+            },
+            {
+                path: 'admin/view_info',
+                element:<ViewInfoPage/>,
+            },
+            {
+                path: 'admin/block_setting',
+                element:<BlockSettingPage/>
+            },
+            {
+                path: 'admin/unblockconfirm',
+                element:<UnblockConfirmPage/>,
+            },
+            {
+                path :'admin/deleteconfirm',
+                element:<DeleteConfirmPage/>,
             },
         ],
     },

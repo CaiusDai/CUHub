@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { format } from 'date-fns'
 import {
     Divider,
     Link,
@@ -13,6 +12,9 @@ import {
     Button,
 } from '@mui/material'
 import { Scrollbar } from 'src/Admin/admin-components/scrollbar'
+import { useNavigate } from 'react-router-dom'
+
+
 
 export const OrdersTable = (props) => {
     const {
@@ -23,9 +25,16 @@ export const OrdersTable = (props) => {
         rowsPerPage = 0,
         onRowsPerPageChange,
     } = props
-
+    const navigate = useNavigate()
+    
+    const handleUnblockClick = (user_email) => {
+        console.log(`Navigated to unblock section of the account ${user_email}`)
+        navigate(`/admin/block_setting/${user_email}`)
+        // window.location.href = {'/homepage/particular_post/${postId}'}
+    }
     return (
         <div>
+            {/*<h1>{count}</h1>*/}
             <Scrollbar>
                 <Table sx={{ minWidth: 800 }}>
                     <TableHead>
@@ -38,24 +47,16 @@ export const OrdersTable = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {items.map((order) => {
-                            const startDate = format(
-                                order.createdAt,
-                                'MMM.dd yyyy'
-                            )
-                            const endDate = format(
-                                order.updatedAt,
-                                'MMM.dd yyyy'
-                            )
+                        {items.map((block_list) => {
                             return (
-                                <TableRow key={order.id}>
+                                <TableRow key={block_list.email}>
                                     <TableCell>
                                         <Link
                                             color="inherit"
                                             underline="none"
                                             variant="subtitle2"
                                         >
-                                            {order.id}
+                                            {block_list.email}
                                         </Link>
                                     </TableCell>
                                     <TableCell>
@@ -63,16 +64,21 @@ export const OrdersTable = (props) => {
                                             color="inherit"
                                             variant="inherit"
                                         >
-                                            {startDate}
+                                            {block_list.startAt}
                                         </Typography>
                                     </TableCell>
-                                    <TableCell>{endDate}</TableCell>
+                                    <TableCell>{block_list.endAt}</TableCell>
                                     <TableCell>
                                         <Button
                                             color="primary"
                                             appearance="blue"
                                             size="large"
                                             variant="contained"
+                                            onClick={() =>
+                                                handleUnblockClick(
+                                                    block_list.email
+                                                )
+                                            }
                                         >
                                             Unblock
                                         </Button>

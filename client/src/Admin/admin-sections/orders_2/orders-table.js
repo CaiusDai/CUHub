@@ -22,8 +22,10 @@ export const OrdersTable = (props) => {
         onRowsPerPageChange,
     } = props
 
+
     return (
         <div>
+            {/*<h1>{count}</h1>*/}
             <Scrollbar>
                 <Table sx={{ minWidth: 800 }}>
                     <TableHead>
@@ -36,16 +38,16 @@ export const OrdersTable = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {items.map((order) => {
+                        {items.map((user_list) => {
                             return (
-                                <TableRow key={order.id}>
+                                <TableRow key={ user_list.email }>
                                     <TableCell>
                                         <Link
                                             color="inherit"
                                             underline="none"
                                             variant="subtitle2"
                                         >
-                                            {order.id}
+                                            { user_list.email }
                                         </Link>
                                     </TableCell>
                                     <TableCell>
@@ -53,6 +55,7 @@ export const OrdersTable = (props) => {
                                             color="primary"
                                             size="large"
                                             variant="contained"
+                                            href="/admin/view_info"
                                         >
                                             View
                                         </Button>
@@ -62,6 +65,7 @@ export const OrdersTable = (props) => {
                                             color="primary"
                                             size="large"
                                             variant="contained"
+                                            href="/admin/block_setting"
                                         >
                                             Block
                                         </Button>
@@ -71,6 +75,7 @@ export const OrdersTable = (props) => {
                                             color="primary"
                                             size="large"
                                             variant="contained"
+                                            href="/admin/deleteconfirm"
                                         >
                                             Delete
                                         </Button>
