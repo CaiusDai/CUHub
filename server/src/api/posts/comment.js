@@ -6,7 +6,7 @@ const HTTPCode = config.HTTPCode
 const comment_router = express.Router()
 
 
-//Adding a new comment on specific post
+//Get all comments of a specific post
 
 comment_router.get('/:post_id', async (req, res) => {
 
@@ -64,21 +64,19 @@ comment_router.get('/:post_id', async (req, res) => {
 
 })
 
-
-
 //Add comment to a post
 comment_router.post('/', async (req, res) => {
 
-    if (!req.session.isAuthenticated) {
-        res.status(HTTPCode.Unauthorized).json({
-          status: 'fail',
-          data: {
-            error_code: config.ErrorCodes.Unauthorized,
-          },
-          message: 'Unauthenticated visit',
-        })
-        return
-      }
+    // if (!req.session.isAuthenticated) {
+    //     res.status(HTTPCode.Unauthorized).json({
+    //       status: 'fail',
+    //       data: {
+    //         error_code: config.ErrorCodes.Unauthorized,
+    //       },
+    //       message: 'Unauthenticated visit',
+    //     })
+    //     return
+    //   }
 
 
     //Get input from query

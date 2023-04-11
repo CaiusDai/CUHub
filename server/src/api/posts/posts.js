@@ -4,7 +4,7 @@ const config = require('../../configs/configs')
 const util = require('../../util/utils')
 const HTTPCode = config.HTTPCode
 const post_router = express.Router()
-const comment_router = express.Router()
+const comment_router = require('./comments')
 
 post_router.use('/comments', comment_router)
 
@@ -239,12 +239,13 @@ post_router.post('/like', async (req, res) => {
 
     //No record found
     if (db_result.rowCount === 0) {
-      //Insert into postaltitude table first
-      const query_insert_record = `INSERT INTO PostAltitude VALUES(${user_id},${post_id},'like')`
-      await database.query(query_insert_record)
-      //Then update num_of_like in post table
-      const query_add_number = `UPDATE Post SET num_like = num_like + 1 WHERE post_id = ${post_id}`
-      await database.query(query_add_number)
+      // //Insert into postaltitude table first
+      // const query_insert_record = `INSERT INTO PostAltitude VALUES(${user_id},${post_id},'like')`
+      // await database.query(query_insert_record)
+      // //Then update num_of_like in post table
+      // const query_add_number = `UPDATE Post SET num_like = num_like + 1 WHERE post_id = ${post_id}`
+      const query_insert_and_add_number = `INSERT INTO PostAltitude VALUES(${user_id},${post_id},'like');UPDATE Post SET num_like = num_like + 1 WHERE post_id = ${post_id}`
+      await database.query(query_insert_and_add_number)
 
       res.status(HTTPCode.Ok).json({
         status: 'success',
@@ -258,11 +259,12 @@ post_router.post('/like', async (req, res) => {
 
     //The user have liked the post before, cancel the like and update post table
     else if (db_result.rows[0].status === 'like') {
-      const query_delete_record = `DELETE FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id}`
-      await database.query(query_delete_record)
-      //Then update num_like in post table
-      const query_minus_number = `UPDATE Post SET num_like = num_like - 1 WHERE post_id = ${post_id}`
-      await database.query(query_minus_number)
+      // const query_delete_record = `DELETE FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id}`
+      // await database.query(query_delete_record)
+      // //Then update num_like in post table
+      // const query_minus_number = `UPDATE Post SET num_like = num_like - 1 WHERE post_id = ${post_id}`
+      const query_delete_and_minus_number = `DELETE FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id};UPDATE Post SET num_like = num_like - 1 WHERE post_id = ${post_id}`
+      await database.query(query_delete_and_minus_number)
       res.status(HTTPCode.Ok).json({
         status: 'success',
         data: {
@@ -275,11 +277,12 @@ post_router.post('/like', async (req, res) => {
 
     //The user have disliked the post before, update the record and then update post table
     else if (db_result.rows[0].status == 'dislike') {
-      const query_update_record = `UPDATE PostAltitude SET status = 'like' WHERE post_id = ${post_id} AND user_id = ${user_id}`
-      await database.query(query_update_record)
-      //Then update num_like and num_dislike in post table
-      const query_update_number = `UPDATE Post SET num_like = num_like + 1 ,num_dislke = num_dislike - 1 WHERE post_id = ${post_id}`
-      await database.query(query_update_number)
+      // const query_update_record = `UPDATE PostAltitude SET status = 'like' WHERE post_id = ${post_id} AND user_id = ${user_id}`
+      // await database.query(query_update_record)
+      // //Then update num_like and num_dislike in post table
+      // const query_update_number = `UPDATE Post SET num_like = num_like + 1 ,num_dislke = num_dislike - 1 WHERE post_id = ${post_id}`
+      const query_update_all = `UPDATE PostAltitude SET status = 'like' WHERE post_id = ${post_id} AND user_id = ${user_id};UPDATE Post SET num_like = num_like + 1 ,num_dislke = num_dislike - 1 WHERE post_id = ${post_id}`
+      await database.query(query_update_all)
 
       res.status(HTTPCode.Ok).json({
         status: 'success',
@@ -306,16 +309,16 @@ post_router.post('/like', async (req, res) => {
 
 post_router.post('/repost', async (req, res) => {
 
-  // if (!req.session.isAuthenticated) {
-  //   res.status(HTTPCode.Unauthorized).json({
-  //     status: 'fail',
-  //     data: {
-  //       error_code: config.ErrorCodes.Unauthorized,
-  //     },
-  //     message: 'Unauthenticated visit',
-  //   })
-  //   return
-  // }
+  if (!req.session.isAuthenticated) {
+    res.status(HTTPCode.Unauthorized).json({
+      status: 'fail',
+      data: {
+        error_code: config.ErrorCodes.Unauthorized,
+      },
+      message: 'Unauthenticated visit',
+    })
+    return
+  }
 
 
   //Get data and connect database
@@ -347,7 +350,7 @@ post_router.post('/repost', async (req, res) => {
 
     //If not exist
     if (db_result.rowCount === 0) {
-      const query_insert_repost = `INSERT INTO Repost VALUES(DEFAULT, NULL, ${post_id},${user_id})`
+      const query_insert_repost = `INSERT INTO Repost VALUES(DEFAULT, NULL, ${post_id},DEFAULT,${user_id})`
       await database.query(query_insert_repost)
       console.log("2")
 
@@ -364,7 +367,7 @@ post_router.post('/repost', async (req, res) => {
 
     //If existed, cancel the repost
     else {
-      const query_delete_repost = `DELETE FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${this.user_id}`
+      const query_delete_repost = `DELETE FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
       await database.query(query_delete_repost)
       console.log("3")
 
