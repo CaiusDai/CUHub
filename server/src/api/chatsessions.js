@@ -9,7 +9,7 @@ const chat_router = express.Router()
 chat_router.get('/session', async (req, res) => {
     //Get user_id of current user
     const user_id = req.session.uid
-    let result_array = []
+    let result_array = {}
     const database = await connect_db()
 
     try {
@@ -158,7 +158,7 @@ chat_router.get('/message', async (req, res) => {
     let photo
     let username
     let photo_current
-    let result_array = []
+    let result_array = {}
     const database = await connect_db()
 
     //Get username and photo of other user

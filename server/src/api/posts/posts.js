@@ -4,7 +4,7 @@ const config = require('../../configs/configs')
 const util = require('../../util/utils')
 const HTTPCode = config.HTTPCode
 const post_router = express.Router()
-const comment_router = express.Router()
+const comment_router = require('./comments')
 
 post_router.use('/comments', comment_router)
 
@@ -211,49 +211,171 @@ post_router.get('/friends', (req, res) => {
         })
 })
 
-// Create new Post
-post_router.post('/new', (req, res) => {
-    // Check identity:
-    if (!req.session.isAuthenticated || req.session.isAdmin) {
-        const error_code = req.session.isAuthenticated
-            ? config.ErrorCodes.InvalidAccess
-            : config.ErrorCodes.NotAuthenticated
+//User likes a post
+post_router.post('/like', async (req, res) => {
+    if (!req.session.isAuthenticated) {
         res.status(HTTPCode.Unauthorized).json({
             status: 'fail',
             data: {
-                error_code: error_code,
+                error_code: config.ErrorCodes.Unauthorized,
             },
-            message:
-                'Post can only be created by normal users that have signed in',
+            message: 'Unauthenticated visit',
         })
         return
     }
+
+    const { post_id } = req.body
     const user_id = req.session.uid
-    const { postContent, tagChoices } = req.body
-    const is_public = true
-    const is_anonymous = false
-    const is_draft = false
-    const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft)
-                   VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft})
-                   RETURNING post_id`
-    connect_db()
-        .then((database) => database.query(query))
-        .then(() => {
-            res.status(config.HTTPCode.Ok).json({
+
+    //Connect dabase
+    const database = await connect_db()
+
+    try {
+        //First check is_liked status, then do updating operation
+
+        const query_check_status = `SELECT status FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id}`
+        let db_result = await database.query(query_check_status)
+
+        //No record found
+        if (db_result.rowCount === 0) {
+            // //Insert into postaltitude table first
+            // const query_insert_record = `INSERT INTO PostAltitude VALUES(${user_id},${post_id},'like')`
+            // await database.query(query_insert_record)
+            // //Then update num_of_like in post table
+            // const query_add_number = `UPDATE Post SET num_like = num_like + 1 WHERE post_id = ${post_id}`
+            const query_insert_and_add_number = `INSERT INTO PostAltitude VALUES(${user_id},${post_id},'like');UPDATE Post SET num_like = num_like + 1 WHERE post_id = ${post_id}`
+            await database.query(query_insert_and_add_number)
+
+            res.status(HTTPCode.Ok).json({
                 status: 'success',
                 data: {
-                    is_success: true,
+                    result: 'liked',
                 },
-                message: 'Post Created',
+                message: '[INFO] Update like status successfully',
             })
+            return
+        }
+
+        //The user have liked the post before, cancel the like and update post table
+        else if (db_result.rows[0].status === 'like') {
+            // const query_delete_record = `DELETE FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id}`
+            // await database.query(query_delete_record)
+            // //Then update num_like in post table
+            // const query_minus_number = `UPDATE Post SET num_like = num_like - 1 WHERE post_id = ${post_id}`
+            const query_delete_and_minus_number = `DELETE FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id};UPDATE Post SET num_like = num_like - 1 WHERE post_id = ${post_id}`
+            await database.query(query_delete_and_minus_number)
+            res.status(HTTPCode.Ok).json({
+                status: 'success',
+                data: {
+                    result: 'canceled',
+                },
+                message: '[INFO] Update like status successfully',
+            })
+            return
+        }
+
+        //The user have disliked the post before, update the record and then update post table
+        else if (db_result.rows[0].status == 'dislike') {
+            // const query_update_record = `UPDATE PostAltitude SET status = 'like' WHERE post_id = ${post_id} AND user_id = ${user_id}`
+            // await database.query(query_update_record)
+            // //Then update num_like and num_dislike in post table
+            // const query_update_number = `UPDATE Post SET num_like = num_like + 1 ,num_dislke = num_dislike - 1 WHERE post_id = ${post_id}`
+            const query_update_all = `UPDATE PostAltitude SET status = 'like' WHERE post_id = ${post_id} AND user_id = ${user_id};UPDATE Post SET num_like = num_like + 1 ,num_dislke = num_dislike - 1 WHERE post_id = ${post_id}`
+            await database.query(query_update_all)
+
+            res.status(HTTPCode.Ok).json({
+                status: 'success',
+                data: {
+                    result: 'liked',
+                },
+                message: '[INFO] Update like status successfully',
+            })
+            return
+        }
+    } catch (err) {
+        console.error(`[Error] Failed to update status.\n Error: ${err}`)
+        res.status(HTTPCode.BadRequest).json({
+            status: 'error',
+            message: '[Error] Invalid query format',
         })
-        .catch((err) => {
-            console.log(err)
-            res.status(config.HTTPCode.BadRequest).json({
+    }
+})
+
+post_router.post('/repost', async (req, res) => {
+    if (!req.session.isAuthenticated) {
+        res.status(HTTPCode.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
+        })
+        return
+    }
+
+    //Get data and connect database
+    const { post_id } = req.body
+    const user_id = req.session.uid
+    const database = await connect_db()
+
+    try {
+        //Check if the user repost his own post
+        const query_check_valid = `SELECT user_id FROM Post WHERE post_id = ${post_id}`
+        const check_result = await database.query(query_check_valid)
+
+        //user_id of the post owner is same as the current user, he repost his own post
+        if (check_result.rows[0].user_id === user_id) {
+            res.status(HTTPCode.BadRequest).json({
                 status: 'error',
-                message: 'Wrong query format',
+                message: '[Error] You cant repost your own posts',
             })
+            return
+        }
+
+        console.log('1')
+
+        //First check status of repost
+        const query_check_status = `SELECT * FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
+        const db_result = await database.query(query_check_status)
+
+        //If not exist
+        if (db_result.rowCount === 0) {
+            const query_insert_repost = `INSERT INTO Repost VALUES(DEFAULT, NULL, ${post_id},DEFAULT,${user_id})`
+            await database.query(query_insert_repost)
+            console.log('2')
+
+            res.status(HTTPCode.Ok).json({
+                status: 'success',
+                data: {
+                    result: 'reposted',
+                },
+                message: '[INFO] Repost successfully',
+            })
+            return
+        }
+
+        //If existed, cancel the repost
+        else {
+            const query_delete_repost = `DELETE FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
+            await database.query(query_delete_repost)
+            console.log('3')
+
+            res.status(HTTPCode.Ok).json({
+                status: 'success',
+                data: {
+                    result: 'canceled',
+                },
+                message: '[INFO] Cancel repost successfully',
+            })
+            return
+        }
+    } catch (err) {
+        console.error(`[Error] Failed to repost.\n Error: ${err}`)
+        res.status(HTTPCode.BadRequest).json({
+            status: 'error',
+            message: '[Error] Invalid query format',
         })
+    }
 })
 
 module.exports = post_router
