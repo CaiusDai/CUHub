@@ -34,14 +34,16 @@ export const PostTable = (props) => {
     } = props
     const [posts, setPosts] = useState(items)
     const handleLikeClick = (postId) => {
-        const itemIndex = posts.findIndex((post) => post.id === postId)
-
+        const itemIndex = posts.findIndex((post) => post.post_id === postId)
+        console.log('the following is postId for like')
+        console.log(postId)
+        const parameter = { post_id: postId }
         // Create a copy of the items array
         const updatedPosts = [...posts]
 
         fetch(`http://localhost:5000/api/posts/like`, {
             method: 'POST',
-            body: { post_id: postId },
+            body: JSON.stringify(parameter),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -68,20 +70,21 @@ export const PostTable = (props) => {
         // originally true, do a cancel like work, no implicit return is needed.
 
         // Update the name property of the relevant item object
-        updatedPosts[itemIndex].isLiked = !updatedPosts[itemIndex].isLiked
+        updatedPosts[itemIndex].is_liked = !updatedPosts[itemIndex].is_liked
 
         // Update the state with the updated items array
         setPosts(updatedPosts)
     }
 
     const handleRepostClick = (postId) => {
-        const itemIndex = posts.findIndex((post) => post.id === postId)
+        const itemIndex = posts.findIndex((post) => post.post_id === postId)
 
         // Create a copy of the items array
         const updatedPosts = [...posts]
 
         //Interface from back-end
         const parameters = { post_id: postId }
+        console.log(postId)
 
         fetch(`http://localhost:5000/api/posts/repost`, {
             method: 'POST',
@@ -110,8 +113,10 @@ export const PostTable = (props) => {
         // server. When it is originally false, plus the counter by one and set it to true, update post db.
         // correspondingly, when it is true, do cancel repost job. no implicit return is needed.
 
+        console.log(updatedPosts)
         // Update the name property of the relevant item object
-        updatedPosts[itemIndex].reposted = !updatedPosts[itemIndex].reposted
+        updatedPosts[itemIndex].disliked_by_user =
+            !updatedPosts[itemIndex].disliked_by_user
 
         // Update the state with the updated items array
         setPosts(updatedPosts)
@@ -163,27 +168,29 @@ export const PostTable = (props) => {
                                             <CardActions>
                                                 <IconButton
                                                     color={
-                                                        post.isLiked
-                                                            ? 'default'
-                                                            : 'primary'
+                                                        post.is_liked
+                                                            ? 'primary'
+                                                            : 'default'
                                                     }
                                                     aria-label="Like"
                                                     onClick={() =>
-                                                        handleLikeClick(post.id)
+                                                        handleLikeClick(
+                                                            post.post_id
+                                                        )
                                                     }
                                                 >
                                                     <FavoriteIcon />
                                                 </IconButton>
                                                 <IconButton
                                                     color={
-                                                        post.reposted
+                                                        post.disliked_by_user
                                                             ? 'primary'
                                                             : 'default'
                                                     }
                                                     aria-label="Repost"
                                                     onClick={() =>
                                                         handleRepostClick(
-                                                            post.id
+                                                            post.post_id
                                                         )
                                                     }
                                                 >
@@ -194,7 +201,7 @@ export const PostTable = (props) => {
                                                     aria-label="Comment"
                                                     onClick={() =>
                                                         handleCommentClick(
-                                                            post.id
+                                                            post.post_id
                                                         )
                                                     }
                                                 >

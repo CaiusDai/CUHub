@@ -48,7 +48,7 @@ const SignUp = () => {
                 // the result need to have at least 3 states: email or username already been used, register successful, network err
                 if (result === true) {
                     console.log('Sign Up successful!')
-                    // window.location.href = '/homepage';
+                    window.location.href = '/'
                 } else {
                     console.log('Sign In failed failed!')
                     alert(

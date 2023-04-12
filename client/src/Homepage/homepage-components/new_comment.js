@@ -12,9 +12,10 @@ const NewCommentForm = (postId) => {
         console.log('the following is postid')
         console.log(postId)
         const { postContent } = values
+        const post_id = postId.postId
 
         //Interface from back-end
-        const parameters = { commentContent: postContent, post_id: postId }
+        const parameters = { commentContent: postContent, post_id: post_id }
 
         fetch(`http://localhost:5000/api/posts/comments`, {
             method: 'POST',
