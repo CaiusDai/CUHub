@@ -72,12 +72,9 @@ const SpecificPostPage = () => {
      *  post corresponding to this post id, and all comments related to this post is needed
      *  you can take the post and post_comment variable above as an example*/
 
-    fetch(
-        `http://localhost:5000/api/posts/${id}`,
+    fetch(`http://localhost:5000/api/posts/comments/${id}`,
         {
             method: 'GET',
-            body: {
-            },
             headers: {
                 'Content-Type': 'application/json',
             },

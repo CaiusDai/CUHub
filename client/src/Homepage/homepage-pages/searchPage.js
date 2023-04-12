@@ -53,7 +53,6 @@ const SearchPage = () => {
         `http://localhost:5000/api/search/?searchContent=${searchContent}`,
         {
             method: 'GET',
-            body: {},
             headers: {
                 'Content-Type': 'application/json',
             },
