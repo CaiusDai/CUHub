@@ -18,7 +18,7 @@ let oldmajor
 let oldcollege
 let oldbirthday
 let oldgender
-let oldinterst=['chang','tiao','rap'] //eg
+let oldinterst = ['chang', 'tiao', 'rap'] //eg
 
 //Here I need backend to give the initial value.
 const Page = () => {
@@ -149,7 +149,8 @@ const Page = () => {
                                                     </div>
                                                     <div className="input-container">
                                                         <label htmlFor="interest">
-                                                            Interest (Should be: interest1,interest2,interest3):
+                                                            Interest (Should be:
+                                                            interest1,interest2,interest3):
                                                         </label>
                                                         <Form.Item name="interest">
                                                             <Input

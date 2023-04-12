@@ -10,9 +10,7 @@
     margin-right: auto;
     /* padding: 20px; */
     /* max-width: calc(100% - 700px); */
-
 }
-
 
 /* .top {
     display: inline-flex;
@@ -51,8 +49,6 @@
     margin-left: 20px;
 }
 
-
-
 .messages {
     display: flex;
     flex-direction: column;
@@ -85,15 +81,13 @@
 }
 
 .message-left .message-content {
-    background-color: #1DA1F2;
+    background-color: #1da1f2;
     color: #fff;
 }
-
 
 .avatar {
     margin-right: 8px;
 }
-
 
 /* .footer {
     bottom: 0px;
@@ -113,9 +107,8 @@
     left: 0;
 }
 
-
 .footer-icon {
-    color: #1DA1F2;
+    color: #1da1f2;
     font-size: 24px;
 }
 
@@ -125,7 +118,7 @@
 }
 
 .footer-button {
-    background-color: #1DA1F2;
+    background-color: #1da1f2;
     color: #fff;
     border-radius: 50%;
     width: 50px;

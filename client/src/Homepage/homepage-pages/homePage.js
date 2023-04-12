@@ -42,6 +42,8 @@ const HomePage = () => {
                     console.log(message)
                 } else {
                     const data = result.data
+                    console.log("the following is post for main page")
+                    console.log(result.data)
                     setPostToDisplay(data.posts) // Update postToDisplay using the state setter
                     setIsLoading(false) // Set loading state to false
                     //Each post will have following fields:
@@ -70,7 +72,8 @@ const HomePage = () => {
         // Render a loading message while the posts are being retrieved
         return <div>Loading posts...</div>
     }
-
+    // console.log("the following is post for main page")
+    // console.log(postToDisplay)
     return (
         <>
             <Helmet>
