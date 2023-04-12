@@ -70,10 +70,6 @@ export const AppRouter = [
                 element: <ProfileEditPage />,
             },
             {
-                path: 'homepage/logout',
-                element: <Logout />,
-            },
-            {
                 path: 'homepage/unfollowed_profile',
                 element: <UnfollowedProfilePage />,
             },
