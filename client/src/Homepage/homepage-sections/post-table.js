@@ -87,12 +87,14 @@ export const PostTable = (props) => {
         // Create a copy of the items array
         const updatedPosts = [...posts]
 
+        //Interface from back-end
+        const parameters = {post_id: postId}
 
         fetch(
             `http://localhost:5000/api/posts/repost`,
             {
                 method: 'POST',
-                body: {post_id: postId},
+                body: JSON.stringify(parameters),
                 headers: {
                     'Content-Type': 'application/json',
                 },

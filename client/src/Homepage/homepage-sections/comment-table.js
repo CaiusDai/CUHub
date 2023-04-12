@@ -55,15 +55,16 @@ export const CommentTable = (props) => {
             `Submitted comment ${commentInput.value} for comment ${commentId}`
         )
 
-
+        //Interface from back-end
+        const parameters = {
+            commentContent: commentInput,
+            comment_id: commentId,
+        }
         fetch(
             `http://localhost:5000/api/posts/comments/reply`,
             {
                 method: 'POST',
-                body: {
-                    commentContent: commentInput,
-                    comment_id: commentId,
-                },
+                body: JSON.stringify(parameters),
                 headers: {
                     'Content-Type': 'application/json',
                 },
