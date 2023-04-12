@@ -25,7 +25,11 @@ profile_router.get('/me', (req, res) => {
 
     const user_id = req.session.uid
 
-    const query_get_profile = `SELECT username,major,gender,birthday,college,interests,email FROM Profile,Account WHERE Profile.user_id = Account.user_id AND Profile.user_id = ${user_id}`
+    const query_get_profile = `SELECT username,major,gender,TO_CHAR(birthday,'yyyy-mm-dd') AS birthday,
+                                college,interests,email,profile_photo,num_of_follower,num_of_following
+                                 FROM Profile,Account 
+                                 WHERE Profile.user_id = Account.user_id
+                                 AND Profile.user_id = ${user_id}`
     //Get username and photo
     connect_db()
         .then((database) => database.query(query_get_profile))
@@ -64,7 +68,7 @@ profile_router.put('/', (req, res) => {
         return
     }
 
-    const {username,major,gender,birthday,college,interests} = req.body
+    const { username, major, gender, birthday, college, interests } = req.body
     console.log(major)
     console.log(gender)
     console.log(birthday)
@@ -75,7 +79,9 @@ profile_router.put('/', (req, res) => {
     const user_id = req.session.uid
     const query_edit_profile = `UPDATE Profile SET major = '${major}', gender = '${gender}',birthday = '${birthday}', college = '${college}',interests = ARRAY['${interests[0]}','${interests[1]}','${interests[2]}'] WHERE user_id = ${user_id}`
     connect_db()
-        .then((database) => {database.query(query_edit_profile)})
+        .then((database) => {
+            database.query(query_edit_profile)
+        })
         .catch((err) => {
             console.log(
                 '[ERROR]: error in updating profile, the error is: ',
@@ -88,11 +94,11 @@ profile_router.put('/', (req, res) => {
             return
         })
 
-        res.status(HTTPCodes.Ok).json({
-            status: 'success',
-            message: '[INFO] Edit profile successfully',
-        })
-            //No data returned
+    res.status(HTTPCodes.Ok).json({
+        status: 'success',
+        message: '[INFO] Edit profile successfully',
+    })
+    //No data returned
 })
 
 //View other profile, need other's user_id

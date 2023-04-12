@@ -120,8 +120,8 @@ chat_router.post('/session', async (req, res) => {
 //Insert a new mesage into session
 chat_router.post('/message', async (req, res) => {
     const user1_id = req.session.uid
-    const {user2_id,content,sender_id} = req.body //user2_id is the user that current user is chatting with
-    // const user2_id = req.query.user_id 
+    const { user2_id, content, sender_id } = req.body //user2_id is the user that current user is chatting with
+    // const user2_id = req.query.user_id
     // const content = req.query.content
     // const sender_id = req.query.sender_id
 

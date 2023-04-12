@@ -19,6 +19,7 @@ const chat_router = require('./api/chatsessions.js')
 const profile_router = require('./api/profile.js')
 const post_router = require('./api/posts/posts')
 const search_router = require('./api/search')
+const image_router = require('./api/images')
 
 // Configuration variables:
 const session_store = new session.MemoryStore()
@@ -61,6 +62,8 @@ app.use('/api/profiles', profile_router)
 app.use('/api/announcements', announcement_router)
 app.use('/api/posts', post_router)
 app.use('/api/search', search_router)
+app.use('/api/images', image_router)
+
 // Server Start:
 app.listen(config.ListenPort, () => {
     console.log(`[INFO] Server start to listen on port ${config.ListenPort}`)
