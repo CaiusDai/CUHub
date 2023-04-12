@@ -34,7 +34,7 @@ export const PostTable = (props) => {
     } = props
     const [posts, setPosts] = useState(items)
     const handleLikeClick = (postId) => {
-        const itemIndex = posts.findIndex((post) => post.id === postId)
+        const itemIndex = posts.findIndex((post) => post.post_id === postId)
 
         // Create a copy of the items array
         const updatedPosts = [...posts]
@@ -75,7 +75,7 @@ export const PostTable = (props) => {
         // originally true, do a cancel like work, no implicit return is needed.
 
         // Update the name property of the relevant item object
-        updatedPosts[itemIndex].isLiked = !updatedPosts[itemIndex].isLiked
+        updatedPosts[itemIndex].is_liked = !updatedPosts[itemIndex].is_liked
 
         // Update the state with the updated items array
         setPosts(updatedPosts)
@@ -177,13 +177,13 @@ export const PostTable = (props) => {
                                             <CardActions>
                                                 <IconButton
                                                     color={
-                                                        post.isLiked
+                                                        post.is_liked
                                                             ? 'default'
                                                             : 'primary'
                                                     }
                                                     aria-label="Like"
                                                     onClick={() =>
-                                                        handleLikeClick(post.id)
+                                                        handleLikeClick(post.post_id)
                                                     }
                                                 >
                                                     <FavoriteIcon />
@@ -208,7 +208,7 @@ export const PostTable = (props) => {
                                                     aria-label="Comment"
                                                     onClick={() =>
                                                         handleCommentClick(
-                                                            post.id
+                                                            post.post_id
                                                         )
                                                     }
                                                 >
