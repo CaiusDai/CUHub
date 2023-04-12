@@ -1,5 +1,5 @@
 const express = require('express')
-const config = require('../configs/configs.js')
+const config = require('../configs/configs')
 
 const { connect_db } = require('../configs/db.js')
 
@@ -12,6 +12,17 @@ const profile_router = express.Router()
 
 //Get personal profile, no input needed
 profile_router.get('/', (req, res) => {
+    if (!req.session.isAuthenticated) {
+        res.status(HTTPCodes.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
+        })
+        return
+    }
+
     const user_id = req.session.uid
 
     const query_get_profile = `SELECT username,major,gender,birthday,college,interests,email FROM Profile,Account WHERE Profile.user_id = Account.user_id AND Profile.user_id = ${user_id}`
@@ -42,26 +53,28 @@ profile_router.get('/', (req, res) => {
 
 //Updating
 profile_router.put('/', (req, res) => {
-    const username = req.query.username
-    const major = req.query.major
-    const gender = req.query.gender
-    const birthday = req.query.birthday
-    const college = req.query.college
+    if (!req.session.isAuthenticated) {
+        res.status(HTTPCodes.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
+        })
+        return
+    }
+
+    const {major,gender,birthday,college,interests} = req.body
+    console.log(major)
+    console.log(gender)
+    console.log(birthday)
+    console.log(college)
+    console.log(interests)
     // const profile_photo = req.body.profile_photo//Needs to be solved using the way of uploading photo
-    const interests = req.query.interests
     const user_id = req.session.uid
-    const query_edit_profile = `UPDATE Profile SET major = '${major}', gender = '${gender}',birthday = ${birthday}, college = '${college}',interests = ARRAY${interests} WHERE user_id = ${user_id}`
+    const query_edit_profile = `UPDATE Profile SET major = '${major}', gender = '${gender}',birthday = '${birthday}', college = '${college}',interests = ARRAY['${interests[0]}','${interests[1]}','${interests[2]}'] WHERE user_id = ${user_id}`
     connect_db()
-        .then((database) => {
-            database.query(query_edit_profile)
-        })
-        .then((db_result) => {
-            res.status(HTTPCodes.Ok).json({
-                status: 'success',
-                message: '[INFO] Edit profile successfully',
-                //No data returned
-            })
-        })
+        .then((database) => {database.query(query_edit_profile)})
         .catch((err) => {
             console.log(
                 '[ERROR]: error in updating profile, the error is: ',
@@ -71,11 +84,29 @@ profile_router.put('/', (req, res) => {
                 status: 'fail',
                 message: '[INFO] Fail to update profile',
             })
+            return
         })
+
+        res.status(HTTPCodes.Ok).json({
+            status: 'success',
+            message: '[INFO] Edit profile successfully',
+        })
+            //No data returned
 })
 
 //View other profile, need other's user_id
 profile_router.get('/:user_id', (req, res) => {
+    if (!req.session.isAuthenticated) {
+        res.status(HTTPCodes.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
+        })
+        return
+    }
+
     const user_id = req.params.user_id
 
     //Get username and profile photo of this user

@@ -1,6 +1,8 @@
 import { Link as RouterLink } from 'react-router-dom'
 import { Avatar, Box, Stack, TextField } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import cuhublogo from '../../../Images/icon.png'
+
 const TOP_NAV_HEIGHT = 64
 
 export const TopNav = () => {
@@ -48,7 +50,7 @@ export const TopNav = () => {
                             }}
                         >
                             <Avatar
-                                src="/client/src/Images/icon.png"
+                                src={cuhublogo}
                                 variant="rounded"
                                 size="large"
                             />
@@ -74,7 +76,6 @@ export const TopNav = () => {
                             />
                         </div>
                     </form>
-                    />
                 </Stack>
             </Stack>
         </Box>

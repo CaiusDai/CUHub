@@ -15,6 +15,7 @@ import { SvgIcon } from '@mui/material'
 import useravatar from 'src/Images/useravatar.png'
 import white from 'src/Images/white.png'
 import { HiOutlineCake } from 'react-icons/hi'
+import { useParams } from 'react-router-dom'
 
 const Page = () => {
     const formik = useFormik({
@@ -24,8 +25,8 @@ const Page = () => {
         },
     })
     //here i need the corresponding user information
+    const { email } = useParams()
     let username = 'backend support'
-    let email = 'backend support'
     let major = 'backend support'
     let college = 'backend support'
     let interest = 'backend support'

@@ -2,6 +2,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Box, Button, Container, Typography } from '@mui/material'
 import notfoundimage from 'src/Images/illustration-not-found.svg'
+
 const Page = () => (
     <>
         <Helmet>
@@ -30,6 +31,7 @@ const Page = () => (
                         },
                     }}
                 >
+                    <img src={notfoundimage} alt="not found" />
                     <img src={notfoundimage} alt="not found" />
                 </Box>
                 <Typography align="center" sx={{ my: 2 }} variant="h3">

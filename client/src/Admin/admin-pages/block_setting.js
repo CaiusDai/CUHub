@@ -12,6 +12,7 @@ import { Form, Input } from 'antd'
 import React, { useState } from 'react'
 import { SvgIcon } from '@mui/material'
 import { VscBlank } from 'react-icons/vsc'
+import { useParams } from 'react-router-dom'
 
 const Page = () => {
     const onFinish = (values) => {
@@ -26,7 +27,8 @@ const Page = () => {
         setMessage('Confirmation Submitted!')
     }
     //below I need the email of the user.
-    const email = 'xxx@gmail.com'
+    const { email } = useParams()
+
     return (
         <>
             <Helmet>

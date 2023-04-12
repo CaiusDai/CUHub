@@ -78,7 +78,7 @@ block_router.post('/', async (req, res) => {
     //First check the blocking status of the user, then update the account db, then add the blocking record to block db
     const database = await connect_db()
     try {
-        let db_result = await database.query(query_change_status)
+        let db_result = await database.query(query_check_status)
         if (db_result.rows[0].is_blocked === true) {
             res.status(HTTPCodes.BadRequest).json({
                 status: 'fail',
