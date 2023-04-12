@@ -34,7 +34,39 @@ function ChatWindow() {
             avatar: 'https://randomuser.me/api/portraits/men/3.jpg',
         },
     ]
-    // back-end support: provide the current user's id and the corresponding three columns
+
+    fetch(
+        `http://localhost:5000/api/chat/message/?user_id=${userId}`,
+        {
+            method: 'GET',
+            body: {
+            },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        }
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === 'success') {
+                //Success
+                console.log(data.message)
+                const user_information = data.data.result_photos// The format is user_information.id, user_information.photo_other, user_information.username,user_information.photo_current
+                const chat_history = data.data.chat_list // The format is chat_history[0].sender_id, chat_history[0].content, chat_history[0].message_id
+                //Retrieve each user by using the format: results[0].id , results[0].name, results[0].avatar actually same as mockChats
+            }
+            //Current user have no chat session with others
+            else if (data.status === 'fail') {
+                console.log(data.message)
+            }
+            else {
+                //Something error in query or reply to himself
+                console.log(data.message)
+            }
+        })
+
+    //interface end here
     const thisuser = [
         {
             id: 0,
@@ -67,6 +99,35 @@ function ChatWindow() {
             setInputValue('')
         }
     }
+    //Interface start here
+    const newMessage = { user_id: userId, content: inputValue }
+    fetch(
+        `http://localhost:5000/api/chat/message`,
+        {
+            method: 'POST',
+            body: JSON.stringify(newMessage),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        }
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === 'success') {
+                //Success
+                console.log(data.message)
+            }
+            //Unauthorized
+            else if (data.status === 'fail') {
+                console.log(data.message)
+            }
+            else {
+                //Something error in query
+                console.log(data.message)
+            }
+        })
+
     // this is for back end
     // const handleSend = async () => {
     //     if (inputValue) {
