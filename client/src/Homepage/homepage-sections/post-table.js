@@ -150,7 +150,7 @@ export const PostTable = (props) => {
                     <TableBody>
                         {items.map((post) => {
                             return (
-                                <TableRow key={post.id}>
+                                <TableRow key={post.post_id}>
                                     <TableCell>
                                         <Avatar
                                             src={post.authorAvatar}
@@ -158,8 +158,8 @@ export const PostTable = (props) => {
                                         />
                                         <Card variant="outlined">
                                             <CardHeader
-                                                title={post.id}
-                                                subheader={`post category`}
+                                                title={post.creator_name}
+                                                subheader={post.tag}
                                             />
                                             <CardContent>
                                                 <Typography>
