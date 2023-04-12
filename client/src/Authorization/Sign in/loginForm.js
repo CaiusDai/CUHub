@@ -14,10 +14,10 @@ const LoginForm = () => {
         console.log('Form submitted!')
         let result = false
         console.log(values)
-        const { username, password } = values
+        const { email, password } = values
         console.log(password)
         fetch(
-            `http://localhost:5000/api/login/?email=${username}&password=${password}`,
+            `http://localhost:5000/api/login/?email=${email}&password=${password}`,
             {
                 method: 'GET',
                 headers: {
@@ -81,11 +81,11 @@ const LoginForm = () => {
                 style={{ minWidth: '300px' }}
             >
                 <Form.Item
-                    name="username"
+                    name="email"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: 'Please input your Email!',
                         },
                     ]}
                 >
@@ -93,7 +93,7 @@ const LoginForm = () => {
                         prefix={
                             <UserOutlined className="site-form-item-icon" />
                         }
-                        placeholder="Username"
+                        placeholder="Email"
                     />
                 </Form.Item>
                 <Form.Item

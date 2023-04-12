@@ -77,10 +77,9 @@ block_router.post('/', async (req, res) => {
     const query_insert_record = `INSERT INTO Block VALUES(DEFAULT, ${user_id},${admin_id},DEFAULT, '${end_at}')`
     //First check the blocking status of the user, then update the account db, then add the blocking record to block db
     const database = await connect_db()
-    try{
-        let db_result = await database.query(query_change_status)
-        if(db_result.rows[0].is_blocked === true)
-        {
+    try {
+        let db_result = await database.query(query_check_status)
+        if (db_result.rows[0].is_blocked === true) {
             res.status(HTTPCodes.BadRequest).json({
                 status: 'fail',
                 data: {
@@ -89,34 +88,22 @@ block_router.post('/', async (req, res) => {
                 message: 'Blocking a user that had been blocked before',
             })
             return
-
-        }
-        else
-        {
+        } else {
             //Update status in account and add the block record to block
             await database.query(query_change_status)
             await database.query(query_insert_record)
             res.status(HTTPCodes.Ok).json({
                 status: 'success',
-                message:
-                    '[INFO] Insert a new block record completed',
+                message: '[INFO] Insert a new block record completed',
             })
             return
-
-
         }
-    }
-    catch(err)
-    {
-        console.error(
-            `[Error] Failed to adding block record.\n Error: ${err}`
-        )
+    } catch (err) {
+        console.error(`[Error] Failed to adding block record.\n Error: ${err}`)
         res.status(HTTPCodes.BadRequest).json({
             status: 'error',
             message: '[Error] Invalid query format',
         })
-
     }
-
 })
 module.exports = block_router

@@ -16,7 +16,8 @@ import { SvgIcon } from '@mui/material'
 import backgroundimg from 'src/Images/bg.png'
 import useravatar from 'src/Images/useravatar.png'
 import white from 'src/Images/white.png'
-import { HiOutlineCake } from 'react-icons/hi'
+import { useState } from 'react'
+
 const Page = () => {
     const formik = useFormik({
         onSubmit: async (values, helpers) => {
@@ -24,31 +25,14 @@ const Page = () => {
             helpers.setSubmitting(false)
         },
     })
-    let username,email,major,college,birthday,interests,gender
 
-    fetch(
-        `http://localhost:5000/api/profile`,
-        {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        }
-    )
-        .then((response) => response.json())
-        .then((res)=>{
-            const data = res.data
-            //data.profile is in the format{username,major,gender,birthday,college,interests,email}
-            username = data.profile.username
-            email = data.profile.email
-            major = data.profile.major
-            college = data.profile.college
-            birthday = data.profile.birthday
-            interests = data.profile.interests
-            gender = data.profile.gender
-            
-        })
+    const handleClick = (e) => {
+        e.preventDefault()
+        setButtonText('Pending')
+        console.log('Follow request')
+    }
+
+    const [buttonText, setButtonText] = useState('Follow')
 
     return (
         <>
@@ -150,9 +134,9 @@ const Page = () => {
                                                         size="small"
                                                         type="button"
                                                         variant="outlined"
-                                                        href="/homepage/profile_edit"
+                                                        onClick={handleClick}
                                                     >
-                                                        Edit Profile
+                                                        {buttonText}
                                                     </Button>
                                                     <div></div>
                                                 </div>
@@ -177,14 +161,6 @@ const Page = () => {
                                                         </SvgIcon>
                                                         interest{' '}
                                                         {/*Here I need the interest*/}
-                                                        <SvgIcon>
-                                                            <VscBlank />
-                                                        </SvgIcon>
-                                                        <SvgIcon>
-                                                            <HiOutlineCake />
-                                                        </SvgIcon>
-                                                        YYYY-MM-DD
-                                                        {/*Here I need the number of Following*/}
                                                     </Typography>
                                                     <Typography variant="h6">
                                                         (number) Following{' '}
