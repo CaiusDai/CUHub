@@ -19,33 +19,20 @@ comment_router.get('/:post_id', async (req, res) => {
     }
 
     try {
-        if (!req.session.isAuthenticated) {
-            res.status(HTTPCode.Unauthorized).json({
-                status: 'fail',
-                data: {
-                    error_code: config.ErrorCodes.Unauthorized,
-                },
-                message: 'Unauthenticated visit',
-            })
-            return
-        }
-
         //Get data from request
         const post_id = req.params.post_id
         const database = await connect_db()
-        const result_array = []
+        let result_array = {}
 
-        //First get profile
+        //First get post
         const query_get_post = `SELECT * FROM Post WHERE post_id = ${post_id}`
         let db_result = await database.query(query_get_post)
         result_array.post = db_result.rows[0]
 
         //Then get comments
-        const query_get_comment = `SELECT * FROM Comment WHERE post_id = ${post_id} ORDER BY comment_id ASEC`
+        const query_get_comment = `SELECT * FROM Comment WHERE post_id = ${post_id} ORDER BY comment_id ASC`
         db_result = await database.query(query_get_comment)
-        result_array.comments = db_result.rows.map((row) => {
-            return row
-        })
+        result_array.comments = db_result.rows
 
         res.status(HTTPCode.Ok).json({
             status: 'success',
