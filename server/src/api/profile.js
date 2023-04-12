@@ -64,25 +64,17 @@ profile_router.put('/', (req, res) => {
         return
     }
 
-    const major = req.query.major
-    const gender = req.query.gender
-    const birthday = req.query.birthday
-    const college = req.query.college
+    const {major,gender,birthday,college,interests} = req.body
+    console.log(major)
+    console.log(gender)
+    console.log(birthday)
+    console.log(college)
+    console.log(interests)
     // const profile_photo = req.body.profile_photo//Needs to be solved using the way of uploading photo
-    const interests = req.query.interests
     const user_id = req.session.uid
-    const query_edit_profile = `UPDATE Profile SET major = '${major}', gender = '${gender}',birthday = ${birthday}, college = '${college}',interests = ARRAY${interests} WHERE user_id = ${user_id}`
+    const query_edit_profile = `UPDATE Profile SET major = '${major}', gender = '${gender}',birthday = '${birthday}', college = '${college}',interests = ARRAY['${interests[0]}','${interests[1]}','${interests[2]}'] WHERE user_id = ${user_id}`
     connect_db()
-        .then((database) => {
-            database.query(query_edit_profile)
-        })
-        .then(() => {
-            res.status(HTTPCodes.Ok).json({
-                status: 'success',
-                message: '[INFO] Edit profile successfully',
-                //No data returned
-            })
-        })
+        .then((database) => {database.query(query_edit_profile)})
         .catch((err) => {
             console.log(
                 '[ERROR]: error in updating profile, the error is: ',
@@ -92,7 +84,14 @@ profile_router.put('/', (req, res) => {
                 status: 'fail',
                 message: '[INFO] Fail to update profile',
             })
+            return
         })
+
+        res.status(HTTPCodes.Ok).json({
+            status: 'success',
+            message: '[INFO] Edit profile successfully',
+        })
+            //No data returned
 })
 
 //View other profile, need other's user_id
