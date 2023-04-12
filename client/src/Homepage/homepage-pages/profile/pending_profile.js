@@ -16,7 +16,11 @@ import { SvgIcon } from '@mui/material'
 import backgroundimg from 'src/Images/bg.png'
 import useravatar from 'src/Images/useravatar.png'
 import white from 'src/Images/white.png'
-import { HiOutlineCake } from 'react-icons/hi'
+import { useState } from 'react'
+
+let isFollowed = 2
+let count = 0
+
 const Page = () => {
     const formik = useFormik({
         onSubmit: async (values, helpers) => {
@@ -24,6 +28,28 @@ const Page = () => {
             helpers.setSubmitting(false)
         },
     })
+
+    const followstatus = (count) => {
+        if (count % 2 === 0) {
+            isFollowed = 2
+        } else {
+            isFollowed = 0
+        }
+    }
+
+    const [buttonText, setButtonText] = useState('Pending')
+
+    const handleClick = () => {
+        count++
+        if (buttonText === 'Pending') {
+            setButtonText('Unfollow')
+        } else {
+            setButtonText('Pending')
+        }
+        console.log(count)
+        followstatus(count)
+        console.log({ isFollowed })
+    }
 
     return (
         <>
@@ -36,10 +62,10 @@ const Page = () => {
                     py: 0,
                 }}
             >
-                <Container maxWidth="xl">
+               <Container maxWidth="xl">
                     <Stack spacing={3} >
-                        <div >{/*1 */}
-                            <Grid container spacing={3} >
+                        <div style={{height:'100%',width:'100%'}}>{/*1 */}
+                            <Grid container spacing={3} style={{height:'100%',width:'100%'}}>
                                 <Grid style={{height:'100%',width:'100%'}}>{/*2*/}
                                     <Card sx={{ p: 3 }} style={{height:'100%',width:'100%'}}>
                                         <form onSubmit={formik.handleSubmit} style={{height:'100%',width:'100%'}}>
@@ -58,13 +84,12 @@ const Page = () => {
                                                     width: 20,
                                                 }}
                                             />
-                                            <Stack style={{height:'100%',width:'100%'}}
+                                            <Stack
                                                 alignItems="center"
                                                 direction="row"
                                                 spacing={4}
                                                 sx={{ mb: 3 }}
                                             >
-                                                
                                                 <Avatar
                                                     src={useravatar}
                                                     sx={{
@@ -73,64 +98,15 @@ const Page = () => {
                                                     }}
                                                 />
                                                 <div>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
                                                     <Button
                                                         color="primary"
                                                         size="small"
                                                         type="button"
                                                         variant="outlined"
-                                                        href="/homepage/profile_edit"
+                                                        onClick={handleClick}
                                                     >
-                                                        Edit Profile
+                                                        {buttonText}
                                                     </Button>
-                                                    <div></div>
                                                 </div>
                                             </Stack>
                                             <Box sx={{ maxWidth: 600 }}>
@@ -147,20 +123,12 @@ const Page = () => {
                                                         Major (College Name){' '}
                                                         {/*Here I need the major anf college name*/}
                                                     </Typography>
-                                                    <Typography variant="h6" alignContent={'space-between'}>
+                                                    <Typography variant="h6">
                                                         <SvgIcon>
                                                             <AiOutlineHeart />
                                                         </SvgIcon>
                                                         interest{' '}
                                                         {/*Here I need the interest*/}
-                                                        <SvgIcon>
-                                                            <VscBlank />
-                                                        </SvgIcon>
-                                                        <SvgIcon>
-                                                            <HiOutlineCake />
-                                                        </SvgIcon>
-                                                        YYYY-MM-DD
-                                                        {/*Here I need the number of Following*/}
                                                     </Typography>
                                                     <Typography variant="h6">
                                                         (number) Following{' '}
@@ -181,7 +149,6 @@ const Page = () => {
                                                     >
                                                         Post
                                                     </Button>
-
                                                     <SvgIcon>
                                                         <VscBlank />
                                                     </SvgIcon>

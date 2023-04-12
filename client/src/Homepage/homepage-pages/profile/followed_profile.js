@@ -46,12 +46,12 @@ const Page = () => {
                 }}
             >
                 <Container maxWidth="xl">
-                    <Stack spacing={3}>
-                        <div>
-                            <Grid container spacing={3}>
-                                <Grid xs={12} md={8}>
-                                    <Card sx={{ p: 3 }}>
-                                        <form onSubmit={formik.handleSubmit}>
+                    <Stack spacing={3} >
+                        <div style={{height:'100%',width:'100%'}}>{/*1 */}
+                            <Grid container spacing={3} style={{height:'100%',width:'100%'}}>
+                                <Grid style={{height:'100%',width:'100%'}}>{/*2*/}
+                                    <Card sx={{ p: 3 }} style={{height:'100%',width:'100%'}}>
+                                        <form onSubmit={formik.handleSubmit} style={{height:'100%',width:'100%'}}>
                                             <img
                                                 style={{
                                                     maxWidth: 600,
@@ -181,7 +181,9 @@ const Page = () => {
                                                     >
                                                         Post
                                                     </Button>
-
+                                                    <SvgIcon>
+                                                        <VscBlank />
+                                                    </SvgIcon>
                                                     <SvgIcon>
                                                         <VscBlank />
                                                     </SvgIcon>
