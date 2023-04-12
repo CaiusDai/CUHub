@@ -10,38 +10,6 @@ function ChatPage() {
     const [messages, setMessages] = useState([])
     const [inputValue, setInputValue] = useState('')
     // back-end support: user name, id, avatar
-
-
-    fetch(
-        `http://localhost:5000/api/chat/session`,
-        {
-            method: 'GET',
-            body: {
-            },
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        }
-    )
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.status === 'success') {
-                //Success
-                console.log(data.message)
-                const results = data.data.user_list//The user_list of users chatted with current user
-
-                //Retrieve each user by using the format: results[0].id , results[0].name, results[0].avatar actually same as mockChats
-            }
-            //Current user have no chat session with others
-            else if (data.status === 'fail') {
-                console.log(data.message)
-            }
-            else {
-                //Something error in query or reply to himself
-                console.log(data.message)
-            }
-        })
     const mockChats = [
         {
             id: 1,
@@ -186,6 +154,7 @@ function ChatPage() {
                             {userId != null ? <ChatWindow userId={userId} /> : <img src={chatIcon} alt="Chat Icon" />}
                         </div>
                     </div>
+
                 </Layout.Content> */}
             </Layout>
         </div>
