@@ -73,7 +73,7 @@ const SpecificPostPage = () => {
      *  you can take the post and post_comment variable above as an example*/
 
     fetch(
-        `http://localhost:5000/api/posts/:${id}`,
+        `http://localhost:5000/api/posts/${id}`,
         {
             method: 'GET',
             body: {
