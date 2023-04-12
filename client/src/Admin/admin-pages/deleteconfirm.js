@@ -12,6 +12,7 @@ import { Form } from 'antd'
 import React, { useState } from 'react'
 import { SvgIcon } from '@mui/material'
 import { VscBlank } from 'react-icons/vsc'
+import { useParams } from 'react-router-dom'
 
 const Page = () => {
     const [message, setMessage] = useState('')
@@ -23,7 +24,7 @@ const Page = () => {
         console.log('Confirm to delete!')
     }
     //below I need the email of the user.
-    let email = 'xx@gamil.com'
+    const { email } = useParams()
 
     return (
         <>

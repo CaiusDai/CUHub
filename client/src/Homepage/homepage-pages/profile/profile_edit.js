@@ -14,13 +14,19 @@ import { VscBlank } from 'react-icons/vsc'
 import { SvgIcon } from '@mui/material'
 import old from 'src/Images/useravatar.png'
 
+let oldmajor
+let oldcollege
+let oldbirthday
+let oldgender
+let oldinterst=['chang','tiao','rap'] //eg
+
+//Here I need backend to give the initial value.
 const Page = () => {
     // Here the backend I store the update profile information.
     const onFinish = (values) => {
         console.log('Form submitted!')
-        const { username, major, college, birthday, interest, gender } = values
-        console.log('the following is username')
-        console.log(username)
+        let { major, college, birthday, gender } = values
+        let interest = [values, values, values]
         console.log('the following is major')
         console.log(major)
         console.log('the following is college')
@@ -96,30 +102,17 @@ const Page = () => {
                                         <Form
                                             name="profile_edit"
                                             initialValues={{
-                                                username: 'oldone',
-                                                major: 'oldone',
-                                                college: 'oldone',
-                                                birthday: 'oldone',
-                                                interest: 'oldone',
-                                                gender: 'oldone',
+                                                major: oldmajor,
+                                                college: oldcollege,
+                                                birthday: oldbirthday,
+                                                interest: oldinterst,
+                                                gender: oldgender,
                                             }}
                                             onFinish={onFinish}
                                             style={{ minWidth: '300px' }}
                                         >
                                             <Box sx={{ maxWidth: 420 }}>
                                                 <Stack spacing={3}>
-                                                    <div className="input-container">
-                                                        <label htmlFor="username">
-                                                            Username:
-                                                        </label>
-                                                        <Form.Item name="username">
-                                                            <Input
-                                                                type="text"
-                                                                id="username"
-                                                                placeholder="oldusername"
-                                                            />
-                                                        </Form.Item>
-                                                    </div>
                                                     <div className="input-container">
                                                         <label htmlFor="major">
                                                             Major:
@@ -156,7 +149,7 @@ const Page = () => {
                                                     </div>
                                                     <div className="input-container">
                                                         <label htmlFor="interest">
-                                                            Interest:
+                                                            Interest (Should be: interest1,interest2,interest3):
                                                         </label>
                                                         <Form.Item name="interest">
                                                             <Input
