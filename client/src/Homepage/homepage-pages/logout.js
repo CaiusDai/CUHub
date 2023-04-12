@@ -1,8 +1,10 @@
 import React from 'react'
 import { Button } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 const Logout = () => {
     // const history = useHistory();
+    const navigate = useNavigate()
     const handleLogout = () => {
         console.log('the following command will be carried out')
         // your logout logic here
@@ -18,11 +20,15 @@ const Logout = () => {
             .then((res) => {
                 const status = res.status
                 if (status === 'fail') {
+                    console.log('not authenticated')
                     // Not authenticated
                 } else if (status === 'error') {
                     // Invalid fetch format
+                    console.log('invalid fetch format')
                 } else {
                     //Success
+                    navigate(`/`)
+                    console.log('invalid fetch format')
                 }
             })
         // redirect to login page

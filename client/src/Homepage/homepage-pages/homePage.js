@@ -1,112 +1,16 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { subDays } from 'date-fns'
 import { Box, Card, Container, Divider, Stack, Typography } from '@mui/material'
 import { PostTable } from 'src/Homepage/homepage-sections/post-table'
 
 import NewPostForm from '../homepage-components/new_post'
 
-const now = new Date()
-
-// in this part, there is no input form the frontend,
-// all posts need to be returned from backend for further use
-const from_backend = () => {
-    fetch('http://localhost:5000/api/posts/all', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-    })
-        .then((response) => response.json())
-        .then((result) => {
-            const status = result.status
-            if (status === 'fail') {
-                const errorCode = result.data.error_code
-                // Do something
-            } else if (status === 'error') {
-                // Wrong fetch format
-                const message = result.message
-            } else {
-                const data = result.data
-                const posts = data.posts // Array of post
-                //Each post will have following fields:
-                // post_id:
-                // content:
-                // creation_time: Date,Time
-                // num_like:
-                // num_dislike:
-                // num_retweet:
-                // num_comment:
-                // is_anonymous:
-                // tag:
-                // creator_name: username
-                // creator_id:
-                // liked_by_user: boolean
-                // disliked_by_user: boolean
-                // Do something
-            }
-        })
-        .catch((error) => {
-            console.error('Error fetching all posts:', error)
-        })
-}
-const posts = [
-    {
-        id: 'usermail@gmail.com',
-        isLiked: true,
-        content: 'this is post 1',
-        reposted: false,
-    },
-    {
-        id: '9265@xxx',
-        createdAt: subDays(now, 56).getTime(),
-        status: 'complete',
-        updatedAt: subDays(now, 54).getTime(),
-        isLiked: false,
-        reposted: false,
-    },
-    {
-        id: '9266',
-        createdAt: subDays(now, 31).getTime(),
-        status: 'placed',
-        updatedAt: subDays(now, 43).getTime(),
-        isLiked: true,
-        reposted: false,
-    },
-    {
-        id: '1090',
-        createdAt: subDays(now, 51).getTime(),
-        status: 'processed',
-        updatedAt: subDays(now, 13).getTime(),
-        isLiked: true,
-        reposted: false,
-    },
-    {
-        id: '1111',
-        createdAt: subDays(now, 6).getTime(),
-        status: 'processed',
-        updatedAt: subDays(now, 54).getTime(),
-        isLiked: true,
-        reposted: false,
-    },
-]
-
 const HomePage = () => {
-    // const [setMode] = useState('table')
-    // const [setQuery] = useState('')
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [isLoading, setIsLoading] = useState(true) // Add loading state
 
-    // const handleModeChange = useCallback((event, value) => {
-    //   if (value) {
-    //     setMode(value)
-    //   }
-    // }, [])
-
-    // const handleQueryChange = useCallback((value) => {
-    //   setQuery(value)
-    // }, [])
+    const [postToDisplay, setPostToDisplay] = useState([]) // Use state instead of a variable
 
     const handleChangePage = useCallback((event, value) => {
         setPage(value)
@@ -116,6 +20,56 @@ const HomePage = () => {
         setRowsPerPage(parseInt(event.target.value, 10))
         setPage(0)
     }, [])
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/posts/all', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                const status = result.status
+                if (status === 'fail') {
+                    const errorCode = result.data.error_code
+                    console.log(errorCode)
+                    // Do something
+                } else if (status === 'error') {
+                    // Wrong fetch format
+                    const message = result.message
+                    console.log(message)
+                } else {
+                    const data = result.data
+                    setPostToDisplay(data.posts) // Update postToDisplay using the state setter
+                    setIsLoading(false) // Set loading state to false
+                    //Each post will have following fields:
+                    // post_id:
+                    // content:
+                    // creation_time: Date,Time
+                    // num_like:
+                    // num_dislike:
+                    // num_retweet:
+                    // num_comment:
+                    // is_anonymous:
+                    // tag:
+                    // creator_name: username
+                    // creator_id:
+                    // liked_by_user: boolean
+                    // disliked_by_user: boolean
+                    // Do something
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching all posts:', error)
+            })
+    }, []) // Empty dependency array to run the effect only once when the component mounts
+
+    if (isLoading) {
+        // Render a loading message while the posts are being retrieved
+        return <div>Loading posts...</div>
+    }
 
     return (
         <>
@@ -143,8 +97,8 @@ const HomePage = () => {
                             <Card>
                                 <Divider />
                                 <PostTable
-                                    count={posts.length}
-                                    items={posts}
+                                    count={postToDisplay.length}
+                                    items={postToDisplay}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
                                     onPageChange={handleChangePage}
