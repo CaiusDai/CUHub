@@ -1,10 +1,10 @@
 const { connect_db } = require('../configs/db')
-
+const util = require('../util/utils')
 //Queries:
 
 const insert_account = (username, email, password, is_blocked) => {
     const query_account = `INSERT INTO Account\
-    VALUES(DEFAULT, '${username}', '${email}','${password}', ${is_blocked})`
+    VALUES(DEFAULT,'${username}', '${email}','${password}', ${is_blocked})`
     return query_account
 }
 
@@ -36,9 +36,9 @@ const insert_admin = (username, password) => {
     return query_admin
 }
 
-const insert_announcement = (admin_id, content) => {
+const insert_announcement = (admin_id, content, title) => {
     const query_announcement = `INSERT INTO Announcement \
-                            VALUES(DEFAULT,${admin_id},'${content}',DEFAULT)`
+                            VALUES(DEFAULT,${admin_id},'${title}','${content}',DEFAULT)`
     return query_announcement
 }
 const insert_block = (user_id, admin_id, end_at) => {
@@ -73,7 +73,7 @@ const insert_comment = (user_id, post_id, reply_to, content) => {
 
 const insert_repost = (comment, original_post_id, user_id) => {
     const query_repost = `INSERT INTO Repost \
-                        VALUES(DEFAULT,'${comment}',${original_post_id},${user_id})`
+                        VALUES(DEFAULT,'${comment}',${original_post_id},DEFAULT,${user_id})`
     return query_repost
 }
 
@@ -137,7 +137,17 @@ async function insert_data() {
         await create_query_execute(
             database,
             'FollowRelationship',
+            insert_follow_relationship(2, 1, true)
+        )
+        await create_query_execute(
+            database,
+            'FollowRelationship',
             insert_follow_relationship(1, 3, true)
+        )
+        await create_query_execute(
+            database,
+            'FollowRelationship',
+            insert_follow_relationship(3, 1, true)
         )
         await create_query_execute(
             database,
@@ -203,17 +213,17 @@ async function insert_data() {
         await create_query_execute(
             database,
             'Announcement',
-            insert_announcement(1, 'I am god')
+            insert_announcement(1, 'I am god', 'Announcement 1')
         )
         await create_query_execute(
             database,
             'Announcement',
-            insert_announcement(1, 'I am god too')
+            insert_announcement(1, 'I am god too', 'Announcement 2')
         )
         await create_query_execute(
             database,
             'Announcement',
-            insert_announcement(1, 'I am god also')
+            insert_announcement(1, 'I am god also', 'Announcement 3')
         )
 
         //Insert block
@@ -245,6 +255,8 @@ async function insert_data() {
             insert_message(2, 1, 'Miss you very much!')
         )
 
+        await util.timeoutPromise(1000)
+
         //Insert post
         await create_query_execute(
             database,
@@ -260,9 +272,12 @@ async function insert_data() {
                 false,
                 true,
                 false,
-                'normal'
+                'treehole'
             )
         )
+
+        await util.timeoutPromise(1000)
+
         await create_query_execute(
             database,
             'Post',
@@ -277,9 +292,11 @@ async function insert_data() {
                 false,
                 true,
                 false,
-                'normal'
+                'academic'
             )
         )
+        await util.timeoutPromise(1000)
+
         await create_query_execute(
             database,
             'Post',
@@ -294,7 +311,7 @@ async function insert_data() {
                 false,
                 true,
                 false,
-                'normal'
+                'trading'
             )
         )
 
@@ -304,11 +321,13 @@ async function insert_data() {
             'Comment',
             insert_comment(3, 1, 1, 'Hahaha')
         )
+        await util.timeoutPromise(1000)
         await create_query_execute(
             database,
             'Comment',
             insert_comment(2, 1, 3, 'Yayaya')
         )
+        await util.timeoutPromise(1000)
         await create_query_execute(
             database,
             'Comment',
@@ -316,12 +335,24 @@ async function insert_data() {
         )
 
         //Insert repost
+        await util.timeoutPromise(1000)
         await create_query_execute(
             database,
             'Repost',
             insert_repost('See!', 1, 3)
         )
-
+        await util.timeoutPromise(1000)
+        await create_query_execute(
+            database,
+            'Repost',
+            insert_repost('Great!', 2, 1)
+        )
+        await util.timeoutPromise(1000)
+        await create_query_execute(
+            database,
+            'Repost',
+            insert_repost('Great!', 3, 1)
+        )
         //Insert Postaltitude
         await create_query_execute(
             database,

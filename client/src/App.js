@@ -2,7 +2,7 @@ import React from 'react'
 import { AppRouter } from './Route'
 import { useRoutes } from 'react-router-dom'
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import { createTheme } from './theme'
+import { createTheme } from './Theme'
 import 'simplebar-react/dist/simplebar.min.css'
 
 const App = () => {

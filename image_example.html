@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Image Upload Example</title>
+    </head>
+    <body>
+        <h1>Upload Images</h1>
+        <form id="upload-form" enctype="multipart/form-data">
+            <label for="images">Select images:</label>
+            <input type="file" id="images" name="images" multiple />
+            <br /><br />
+            <button type="submit">Upload Images</button>
+        </form>
+        <button id="download-button">Download Image</button>
+        <div id="image-container"></div>
+        <script>
+            const form = document.getElementById('upload-form');
+            const downloadButton = document.getElementById('download-button');
+            const imageContainer = document.getElementById('image-container');
+
+            form.addEventListener('submit', function(event) {
+            	event.preventDefault();
+            	const formData = new FormData(this);
+            	fetch('http://localhost:5000/api/example/uploads', {
+            		method: 'POST',
+            		body: formData
+            	})
+            	.then(response => {
+            		console.log('Files uploaded successfully.');
+            		downloadButton.disabled = false;
+            	})
+            	.catch(error => {
+            		console.error('Error uploading files:', error);
+            	})
+            	.finally(() => {
+            		// Clear the file input field after submitting
+            		document.getElementById('images').value = '';
+            	});
+            });
+
+            downloadButton.addEventListener('click', function() {
+            	fetch('http://localhost:5000/api/example/download', {
+            		method: 'GET'
+            	})
+            	.then(response => response.blob())
+            	.then(blob => {
+            		const objectURL = URL.createObjectURL(blob);
+            		const imgElement = document.createElement('img');
+            		imgElement.src = objectURL;
+            		imageContainer.appendChild(imgElement);
+            	})
+            	.catch(error => {
+            		console.error('Error downloading image:', error);
+            	});
+            });
+        </script>
+    </body>
+</html>
