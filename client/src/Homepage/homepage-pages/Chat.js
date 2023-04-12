@@ -5,7 +5,6 @@ import { Layout, Avatar } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { Link, useLocation } from 'react-router-dom'
 
-
 function ChatPage() {
     const [messages, setMessages] = useState([])
     const [inputValue, setInputValue] = useState('')

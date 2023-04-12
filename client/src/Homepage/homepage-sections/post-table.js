@@ -39,31 +39,24 @@ export const PostTable = (props) => {
         // Create a copy of the items array
         const updatedPosts = [...posts]
 
-        fetch(
-            `http://localhost:5000/api/posts/like`,
-            {
-                method: 'POST',
-                body: {post_id: postId},
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            }
-        )
+        fetch(`http://localhost:5000/api/posts/like`, {
+            method: 'POST',
+            body: { post_id: postId },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
             .then((response) => response.json())
             .then((data) => {
-                if(data.status === 'success')
-                {
+                if (data.status === 'success') {
                     //The current status is liked
-                    if(data.data.result === 'liked')
-                    {}
+                    if (data.data.result === 'liked') {
+                    }
                     //The current status is canceled, the current user have no altitude on the post
-                    else if (data.data.result === 'canceled')
-                    {}
-                    
-                }
-                else
-                {
+                    else if (data.data.result === 'canceled') {
+                    }
+                } else {
                     //Something error in query
                 }
             })
@@ -88,33 +81,26 @@ export const PostTable = (props) => {
         const updatedPosts = [...posts]
 
         //Interface from back-end
-        const parameters = {post_id: postId}
+        const parameters = { post_id: postId }
 
-        fetch(
-            `http://localhost:5000/api/posts/repost`,
-            {
-                method: 'POST',
-                body: JSON.stringify(parameters),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            }
-        )
+        fetch(`http://localhost:5000/api/posts/repost`, {
+            method: 'POST',
+            body: JSON.stringify(parameters),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
             .then((response) => response.json())
             .then((data) => {
-                if(data.status === 'success')
-                {
+                if (data.status === 'success') {
                     //The current status is liked
-                    if(data.data.result === 'reposted')
-                    {}
+                    if (data.data.result === 'reposted') {
+                    }
                     //The current status is canceled, the current user have no altitude on the post
-                    else if (data.data.result === 'canceled')
-                    {}
-                    
-                }
-                else
-                {
+                    else if (data.data.result === 'canceled') {
+                    }
+                } else {
                     //Something error in query
                 }
             })

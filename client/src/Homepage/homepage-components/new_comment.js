@@ -14,27 +14,22 @@ const NewCommentForm = (postId) => {
         const { postContent } = values
 
         //Interface from back-end
-        const parameters = {commentContent: postContent, post_id: postId}
+        const parameters = { commentContent: postContent, post_id: postId }
 
-        fetch(
-            `http://localhost:5000/api/posts/comments`,
-            {
-                method: 'POST',
-                body: JSON.stringify(parameters),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            }
-        )
+        fetch(`http://localhost:5000/api/posts/comments`, {
+            method: 'POST',
+            body: JSON.stringify(parameters),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
             .then((response) => response.json())
             .then((data) => {
                 if (data.status === 'success') {
                     //Success
                     console.log(data.message)
-
-                }
-                else {
+                } else {
                     //Something error in query or reply to himself
                     console.log(data.message)
                 }

@@ -49,36 +49,26 @@ const SearchPage = () => {
     // The Input for the backend is stored in searchContent, which is the search input from the suer
     // return all users corresponding to this searchContent and I will render it here.
 
-    fetch(
-        `http://localhost:5000/api/search/?searchContent=${searchContent}`,
-        {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        }
-    )
+    fetch(`http://localhost:5000/api/search/?searchContent=${searchContent}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    })
         .then((response) => response.json())
         .then((data) => {
-            if(data.status === 'success')
-            {
+            if (data.status === 'success') {
                 const user_list = data.data.user_list
                 //user_list is the array of users
                 //Retrieve the elements in user_list in the format: userlist[0].username, userlist[0].user_id, userlist[0].email, only these three elements in an object of the array
-                
-            }
-            else if(data.status === 'none')//No user found
-            {
-                
-            }
-            else //Some error in query
-            {
+            } else if (data.status === 'none') {
+                //No user found
+            } //Some error in query
+            else {
                 console.log(data.message)
             }
         })
-
-
 
     return <Table columns={columns} dataSource={data} />
 }

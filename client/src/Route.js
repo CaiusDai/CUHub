@@ -24,7 +24,6 @@ import DeleteConfirmPage from './Admin/admin-pages/deleteconfirm'
 import ChatPage from './Homepage/homepage-pages/Chat'
 import ChatWindow from './Homepage/homepage-pages/chat_p/ChatWindow'
 
-
 export const AppRouter = [
     {
         element: (
