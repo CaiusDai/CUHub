@@ -186,7 +186,6 @@ function ChatPage() {
                             {userId != null ? <ChatWindow userId={userId} /> : <img src={chatIcon} alt="Chat Icon" />}
                         </div>
                     </div>
-
                 </Layout.Content> */}
             </Layout>
         </div>
