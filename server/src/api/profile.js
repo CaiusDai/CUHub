@@ -11,7 +11,7 @@ const profile_router = express.Router()
 // profile_router.use(jsonParser)
 
 //Get personal profile, no input needed
-profile_router.get('/', (req, res) => {
+profile_router.get('/me', (req, res) => {
     if (!req.session.isAuthenticated) {
         res.status(HTTPCodes.Unauthorized).json({
             status: 'fail',

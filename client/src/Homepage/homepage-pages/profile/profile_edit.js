@@ -21,22 +21,18 @@ let oldgender
 let oldinterst=['chang','tiao','rap'] //eg
 
 //Here I need backend to give the initial value.
+const to_backend=(values)=>{
+    // This function is only for demonstration use, you should adapt it to your version
+    let { username,major, college, birthday, gender } = values
+    const change_avatar = true  // Pls only send the avatar when the user wants to change it
+        
+}
 const Page = () => {
     // Here the backend I store the update profile information.
     const onFinish = (values) => {
         console.log('Form submitted!')
-        let { major, college, birthday, gender } = values
+        let { username,major, college, birthday, gender } = values
         let interest = [values, values, values]
-        console.log('the following is major')
-        console.log(major)
-        console.log('the following is college')
-        console.log(college)
-        console.log('the following is birthday')
-        console.log(birthday)
-        console.log('the following is interest')
-        console.log(interest)
-        console.log('the following is gender')
-        console.log(gender)
         fetch(
             `http://localhost:5000/api/profile/`,
             {

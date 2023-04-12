@@ -27,7 +27,7 @@ const Page = () => {
     let username,email,major,college,birthday,interests,gender
 
     fetch(
-        `http://localhost:5000/api/profile`,
+        `http://localhost:5000/api/profiles/me`,
         {
             method: 'GET',
             headers: {
