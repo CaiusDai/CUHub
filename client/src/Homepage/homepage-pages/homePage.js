@@ -42,7 +42,7 @@ const HomePage = () => {
                     console.log(message)
                 } else {
                     const data = result.data
-                    console.log("the following is post for main page")
+                    console.log('the following is post for main page')
                     console.log(result.data)
                     setPostToDisplay(data.posts) // Update postToDisplay using the state setter
                     setIsLoading(false) // Set loading state to false
