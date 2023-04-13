@@ -63,7 +63,7 @@ signup_router.post('/', async (req, res) => {
                 // Insert Profile
                 let user_id = db_result.rows[0].user_id
                 return database.query(
-                    `INSERT INTO Profile VALUES('${user_id}',NULL,DEFAULT,NULL,NULL,NULL,NULL,DEFAULT,DEFAULT)`
+                    `INSERT INTO Profile VALUES('${user_id}',NULL,DEFAULT,NULL,NULL,DEFAULT,NULL,DEFAULT,DEFAULT)`
                 )
             })
             .then((db_result) => {

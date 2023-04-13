@@ -117,7 +117,11 @@ profile_router.get('/:user_id', (req, res) => {
     const user_id = req.params.user_id
 
     //Get username and profile photo of this user
-    const query_get_profile = `SELECT username,major,gender,birthday,college,interests FROM Profile WHERE user_id = ${user_id}`
+    const query_get_profile = `SELECT username,major,gender,TO_CHAR(birthday,'yyyy-mm-dd') AS birthday,
+                                college,interests,email,profile_photo,num_of_follower,num_of_following
+                                FROM Profile,Account 
+                                WHERE Profile.user_id = Account.user_id
+                                AND Profile.user_id = ${user_id}`
     //Get username and photo
     connect_db()
         .then((database) => database.query(query_get_profile))

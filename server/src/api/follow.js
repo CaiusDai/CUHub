@@ -77,7 +77,7 @@ follow_router.delete('/followinglist/:id', async (req, res) => {
         return
     }
 
-    try {
+    try{
         const user_id = req.session.uid
         const following_id = req.params.id
         console.log(following_id)
@@ -119,7 +119,6 @@ follow_router.delete('/followinglist/:id', async (req, res) => {
         })
     }
 })
-
 // Get : Get accounts who is being followed by user with <id>
 // Post : NOT DEFINED
 // Delete : Remove a user from following list
@@ -161,11 +160,14 @@ follow_router.get('/followerlist/me', async (req, res) => {
             query_get_followinglist_follower
         )
 
-        //The user have no follower
         if (db_result1.rowCount + db_result2.rowCount === 0) {
-            res.status(HTTPCode.Ok).json({
-                status: 'none',
-                data: {},
+            req.status(HTTPCode.Ok).json(
+                {
+                status: 'success',
+                data: {
+                    pending_list: [],
+                    follower_list: [],
+                },
                 message: '[INFO] You have no follower or pending user',
             })
             return
@@ -226,7 +228,6 @@ follow_router.delete('/followerlist/:id', async (req, res) => {
         const user_id = req.session.uid
         const follower_id = req.params.id
         const database = await connect_db()
-
         const status = await database.query(
             `SELECT status FROM FollowRelationship WHERE user1 = ${follower_id} AND user2 = ${user_id}`
         )
@@ -268,4 +269,41 @@ follow_router.delete('/followerlist/:id', async (req, res) => {
     }
 })
 
+// Approve
+follow_router.put('/followerlist/:id', async (req, res) => {
+    //Check validity
+    if (!req.session.isAuthenticated) {
+        res.status(HTTPCode.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
+        })
+        return
+    }
+
+    try {
+        const user_id = req.session.uid
+        const following_id = req.params.id
+        const database = await connect_db()
+        const query = `UPDATE FollowRelationship SET status = true WHERE user1 = ${following_id} AND user2 = ${user_id}`
+
+        await database.query(query)
+
+        res.status(HTTPCode.Ok).json({
+            status: 'deleted',
+            data: {},
+            message: '[INFO] Updating the status succesffully',
+        })
+    } catch (err) {
+        console.error(
+            `[Error] Failed to operate following list.\n Error: ${err}`
+        )
+        res.status(HTTPCode.BadRequest).json({
+            status: 'error',
+            message: '[Error] Invalid query format',
+        })
+    }
+})
 module.exports = follow_router
