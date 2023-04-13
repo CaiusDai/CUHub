@@ -5,6 +5,7 @@ const { Query } = require('pg')
 const HTTPCode = config.HTTPCode
 const follow_router = express.Router()
 
+//Get all following users including pending
 follow_router.get('/followinglist/me',async (req,res)=>{
 
     //Check validity
@@ -70,6 +71,7 @@ follow_router.get('/followinglist/me',async (req,res)=>{
     }
 })
 
+//Remove user from following list
 follow_router.delete('/followinglist/:id',async (req,res)=>{
 
     //Check validity
@@ -138,6 +140,7 @@ follow_router.delete('/followinglist/:id',async (req,res)=>{
 })
 
 
+//For search
 follow_router.put('/followinglist/:id',async (req,res)=>{
 
     //Check validity
@@ -166,7 +169,7 @@ follow_router.put('/followinglist/:id',async (req,res)=>{
             const query_insert_following = `INSERT INTO FollowRelationship (user1,user2,status,creation_time) VALUES(${user_id},${following_id},FALSE,DEFAULT)`
             await database.query(query_insert_following)
             res.status(HTTPCode.Ok).json({
-                status: 'success',
+                status: 'inserted',
                 data: {
                 },
                 message: "[INFO] Sent request to following others successfully",
@@ -190,7 +193,7 @@ follow_router.put('/followinglist/:id',async (req,res)=>{
         //The record is deleted
 
         res.status(HTTPCode.Ok).json({
-            status: 'success',
+            status: 'deleted',
             data: {
             },
             message: "[INFO] Updating the status succesffully",
@@ -231,6 +234,7 @@ follow_router.put('/followinglist/:id',async (req,res)=>{
 // // Update : NOT DEFINED
 // '/follows/followerlist/:id'
 
+//Get follower list
 follow_router.get('/followerlist/me',async (req,res)=>{
 
     //Check validity
@@ -316,6 +320,7 @@ follow_router.get('/followerlist/me',async (req,res)=>{
 })
 
 
+//Remove a user from your followerlist
 follow_router.delete('/followerlist/:id',async (req,res)=>{
 
     //Check validity
