@@ -11,7 +11,6 @@ const connect_db = async () => {
             port: 5432,
         })
         await pool.connect()
-        console.log('[INFO] Connection established')
         return pool
     } catch (error) {
         console.log('[Error] Failed to connect to database')

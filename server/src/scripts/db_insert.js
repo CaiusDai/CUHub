@@ -391,6 +391,46 @@ async function insert_data() {
                 'trading'
             )
         )
+        //New posts added
+        await util.timeoutPromise(1000)
+
+        await create_query_execute(
+            database,
+            'Post',
+            insert_post(
+                4,
+                'I want more money!',
+                0,
+                0,
+                'NULL',
+                0,
+                0,
+                false,
+                true,
+                false,
+                'treehole'
+            )
+        )
+
+        await util.timeoutPromise(1000)
+
+        await create_query_execute(
+            database,
+            'Post',
+            insert_post(
+                5,
+                'I want to learn computer science!',
+                0,
+                0,
+                'NULL',
+                0,
+                0,
+                false,
+                true,
+                false,
+                'academic'
+            )
+        )
 
         //Insert comment
         await create_query_execute(

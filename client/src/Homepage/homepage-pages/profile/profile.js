@@ -82,155 +82,152 @@ const Page = () => {
                 <Container maxWidth="xl">
                     <Stack spacing={3}>
                         <div>
-                            <Grid container spacing={3}>
-                                <Grid xs={12} md={8}>
-                                    <Card sx={{ p: 3 }}>
-                                        <form onSubmit={formik.handleSubmit}>
-                                            <img
-                                                style={{
-                                                    maxWidth: 600,
-                                                    width: 'auto',
-                                                }}
-                                                src={backgroundimg}
-                                                alt="backgroundpic"
-                                            />
+                            <Grid container spacing={3} xs={12} md={8}>
+                                <Card sx={{ p: 3 }}>
+                                    <form onSubmit={formik.handleSubmit}>
+                                        <img
+                                            style={{
+                                                maxWidth: 600,
+                                                width: 'auto',
+                                            }}
+                                            src={backgroundimg}
+                                            alt="backgroundpic"
+                                        />
+                                        <Avatar
+                                            src={white}
+                                            sx={{
+                                                height: 20,
+                                                width: 20,
+                                            }}
+                                        />
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={4}
+                                            sx={{ mb: 3 }}
+                                        >
                                             <Avatar
-                                                src={white}
+                                                src={avatarUrl}
                                                 sx={{
-                                                    height: 20,
-                                                    width: 20,
+                                                    height: 64,
+                                                    width: 64,
                                                 }}
                                             />
-                                            <Stack
-                                                alignItems="center"
-                                                direction="row"
-                                                spacing={4}
-                                                sx={{ mb: 3 }}
-                                            >
-                                                <Avatar
-                                                    src={avatarUrl}
-                                                    sx={{
-                                                        height: 64,
-                                                        width: 64,
-                                                    }}
-                                                />
-                                                <div>
-                                                    <Button
-                                                        sx={{ ml: 30 }}
-                                                        color="primary"
-                                                        size="small"
-                                                        type="button"
-                                                        variant="outlined"
-                                                        href={`/homepage/profile_edit?avatar=${avatarUrl}`}
-                                                    >
-                                                        Edit Profile
-                                                    </Button>
-                                                </div>
+                                            <div>
+                                                <Button
+                                                    sx={{ ml: 30 }}
+                                                    color="primary"
+                                                    size="small"
+                                                    type="button"
+                                                    variant="outlined"
+                                                    href={`/homepage/profile_edit?avatar=${avatarUrl}`}
+                                                >
+                                                    Edit Profile
+                                                </Button>
+                                            </div>
+                                        </Stack>
+                                        <Box sx={{ maxWidth: 600 }}>
+                                            <Stack spacing={1}>
+                                                <Typography variant="h4">
+                                                    {userData &&
+                                                        userData.username}
+                                                </Typography>
+                                                <Typography variant="h6">
+                                                    {userData && userData.email}
+                                                </Typography>
+                                                <Typography variant="h6">
+                                                    {userData &&
+                                                        userData.college}
+                                                </Typography>
+                                                <Typography variant="h6">
+                                                    <SvgIcon>
+                                                        <AiOutlineHeart />
+                                                    </SvgIcon>
+                                                    <span
+                                                        style={{
+                                                            margin: '0 8px',
+                                                        }}
+                                                    ></span>
+                                                    {userData &&
+                                                        userData.interests}
+                                                    <span
+                                                        style={{
+                                                            margin: '0 8px',
+                                                        }}
+                                                    ></span>
+                                                    <SvgIcon>
+                                                        <HiOutlineCake />
+                                                    </SvgIcon>{' '}
+                                                    <span
+                                                        style={{
+                                                            margin: '0 8px',
+                                                        }}
+                                                    ></span>
+                                                    {userData &&
+                                                        userData.birthday}
+                                                </Typography>
+                                                <Typography variant="h6">
+                                                    Following{' '}
+                                                    {userData &&
+                                                        userData.num_of_following}
+                                                    <span
+                                                        style={{
+                                                            margin: '0 8px',
+                                                        }}
+                                                    ></span>
+                                                    Followers{' '}
+                                                    {userData &&
+                                                        userData.num_of_follower}
+                                                </Typography>
                                             </Stack>
-                                            <Box sx={{ maxWidth: 600 }}>
-                                                <Stack spacing={1}>
-                                                    <Typography variant="h4">
-                                                        {userData &&
-                                                            userData.username}
-                                                    </Typography>
-                                                    <Typography variant="h6">
-                                                        {userData &&
-                                                            userData.email}
-                                                    </Typography>
-                                                    <Typography variant="h6">
-                                                        {userData &&
-                                                            userData.college}
-                                                    </Typography>
-                                                    <Typography variant="h6">
-                                                        <SvgIcon>
-                                                            <AiOutlineHeart />
-                                                        </SvgIcon>
-                                                        <span
-                                                            style={{
-                                                                margin: '0 8px',
-                                                            }}
-                                                        ></span>
-                                                        {userData &&
-                                                            userData.interests}
-                                                        <span
-                                                            style={{
-                                                                margin: '0 8px',
-                                                            }}
-                                                        ></span>
-                                                        <SvgIcon>
-                                                            <HiOutlineCake />
-                                                        </SvgIcon>{' '}
-                                                        <span
-                                                            style={{
-                                                                margin: '0 8px',
-                                                            }}
-                                                        ></span>
-                                                        {userData &&
-                                                            userData.birthday}
-                                                    </Typography>
-                                                    <Typography variant="h6">
-                                                        Following{' '}
-                                                        {userData &&
-                                                            userData.num_of_following}
-                                                        <span
-                                                            style={{
-                                                                margin: '0 8px',
-                                                            }}
-                                                        ></span>
-                                                        Followers{' '}
-                                                        {userData &&
-                                                            userData.num_of_follower}
-                                                    </Typography>
-                                                </Stack>
-                                                <Box sx={{ mt: 3 }}>
-                                                    <Button
-                                                        color="primary"
-                                                        size="large"
-                                                        type="submit"
-                                                        variant="outlined"
-                                                        sx={{ ml: 2 }}
-                                                    >
-                                                        Post
-                                                    </Button>
+                                            <Box sx={{ mt: 3 }}>
+                                                <Button
+                                                    color="primary"
+                                                    size="large"
+                                                    type="submit"
+                                                    variant="outlined"
+                                                    sx={{ ml: 2 }}
+                                                >
+                                                    Post
+                                                </Button>
 
-                                                    <Button
-                                                        color="primary"
-                                                        size="large"
-                                                        type="submit"
-                                                        variant="outlined"
-                                                        sx={{ ml: 2 }}
-                                                        onClick={() =>
-                                                            handleFollowerClick()
-                                                        }
-                                                    >
-                                                        Followers
-                                                    </Button>
-                                                    <Button
-                                                        color="primary"
-                                                        size="large"
-                                                        type="submit"
-                                                        variant="outlined"
-                                                        sx={{ ml: 2 }}
-                                                        onClick={() =>
-                                                            handleFollowingClick()
-                                                        }
-                                                    >
-                                                        Following
-                                                    </Button>
-                                                    <Button
-                                                        color="primary"
-                                                        size="large"
-                                                        type="submit"
-                                                        variant="outlined"
-                                                        sx={{ ml: 2 }}
-                                                    >
-                                                        LikedPost
-                                                    </Button>
-                                                </Box>
+                                                <Button
+                                                    color="primary"
+                                                    size="large"
+                                                    type="submit"
+                                                    variant="outlined"
+                                                    sx={{ ml: 2 }}
+                                                    onClick={() =>
+                                                        handleFollowerClick()
+                                                    }
+                                                >
+                                                    Followers
+                                                </Button>
+                                                <Button
+                                                    color="primary"
+                                                    size="large"
+                                                    type="submit"
+                                                    variant="outlined"
+                                                    sx={{ ml: 2 }}
+                                                    onClick={() =>
+                                                        handleFollowingClick()
+                                                    }
+                                                >
+                                                    Following
+                                                </Button>
+                                                <Button
+                                                    color="primary"
+                                                    size="large"
+                                                    type="submit"
+                                                    variant="outlined"
+                                                    sx={{ ml: 2 }}
+                                                >
+                                                    LikedPost
+                                                </Button>
                                             </Box>
-                                        </form>
-                                    </Card>
-                                </Grid>
+                                        </Box>
+                                    </form>
+                                </Card>
                             </Grid>
                         </div>
                     </Stack>
