@@ -12,11 +12,11 @@ import {
     Unstable_Grid2 as Grid,
 } from '@mui/material'
 import { AiOutlineHeart } from 'react-icons/ai'
-import { VscBlank } from 'react-icons/vsc'
 import { SvgIcon } from '@mui/material'
 import backgroundimg from 'src/Images/bg.png'
 import white from 'src/Images/white.png'
 import { HiOutlineCake } from 'react-icons/hi'
+
 const Page = () => {
     const [userData, setUserData] = useState(null)
     const [avatarUrl, setAvatarUrl] = useState('')
@@ -26,7 +26,7 @@ const Page = () => {
         window.location.href = 'profile/follower_list'
     }
 
-    const handleFollowingClick = () =>{
+    const handleFollowingClick = () => {
         window.location.href = 'profile/following_list'
     }
 
@@ -114,8 +114,9 @@ const Page = () => {
                                                         width: 64,
                                                     }}
                                                 />
-                                                <div style={{ position: 'absolute', transform: 'translateX(500%)' }}>
+                                                <div>
                                                     <Button
+                                                        sx={{ ml: 30 }}
                                                         color="primary"
                                                         size="small"
                                                         type="button"
@@ -124,7 +125,6 @@ const Page = () => {
                                                     >
                                                         Edit Profile
                                                     </Button>
-                                                    <div></div>
                                                 </div>
                                             </Stack>
                                             <Box sx={{ maxWidth: 600 }}>
@@ -145,14 +145,26 @@ const Page = () => {
                                                         <SvgIcon>
                                                             <AiOutlineHeart />
                                                         </SvgIcon>
+                                                        <span
+                                                            style={{
+                                                                margin: '0 8px',
+                                                            }}
+                                                        ></span>
                                                         {userData &&
                                                             userData.interests}
-                                                        <SvgIcon>
-                                                            <VscBlank />
-                                                        </SvgIcon>
+                                                        <span
+                                                            style={{
+                                                                margin: '0 8px',
+                                                            }}
+                                                        ></span>
                                                         <SvgIcon>
                                                             <HiOutlineCake />
                                                         </SvgIcon>{' '}
+                                                        <span
+                                                            style={{
+                                                                margin: '0 8px',
+                                                            }}
+                                                        ></span>
                                                         {userData &&
                                                             userData.birthday}
                                                     </Typography>
@@ -160,6 +172,11 @@ const Page = () => {
                                                         Following{' '}
                                                         {userData &&
                                                             userData.num_of_following}
+                                                        <span
+                                                            style={{
+                                                                margin: '0 8px',
+                                                            }}
+                                                        ></span>
                                                         Followers{' '}
                                                         {userData &&
                                                             userData.num_of_follower}
@@ -171,6 +188,7 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
+                                                        sx={{ ml: 2 }}
                                                     >
                                                         Post
                                                     </Button>
@@ -180,6 +198,7 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
+                                                        sx={{ ml: 2 }}
                                                         onClick={() =>
                                                             handleFollowerClick()
                                                         }
@@ -191,10 +210,10 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
-                                                        onClick={()=>
-                                                          handleFollowingClick(
-                                                          )
-                                                    }
+                                                        sx={{ ml: 2 }}
+                                                        onClick={() =>
+                                                            handleFollowingClick()
+                                                        }
                                                     >
                                                         Following
                                                     </Button>
@@ -203,6 +222,7 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
+                                                        sx={{ ml: 2 }}
                                                     >
                                                         LikedPost
                                                     </Button>
