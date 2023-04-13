@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 import { useFormik } from 'formik'
+import { useState, useEffect } from 'react'
 import {
     Avatar,
     Box,
@@ -14,10 +15,43 @@ import { AiOutlineHeart } from 'react-icons/ai'
 import { VscBlank } from 'react-icons/vsc'
 import { SvgIcon } from '@mui/material'
 import backgroundimg from 'src/Images/bg.png'
-import useravatar from 'src/Images/useravatar.png'
 import white from 'src/Images/white.png'
 import { HiOutlineCake } from 'react-icons/hi'
 const Page = () => {
+    const [userData, setUserData] = useState(null)
+    const [avatarUrl, setAvatarUrl] = useState('')
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/api/profiles/me`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
+            .then((response) => response.json())
+            .then((res) => {
+                const data = res.data
+                setUserData(data.profile)
+                const profile_photo = data.profile.profile_photo
+                return fetch(
+                    `http://localhost:5000/api/images/avatars/${profile_photo}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'include',
+                    }
+                )
+            })
+            .then((response) => response.blob())
+            .then((blob) => {
+                const objectURL = URL.createObjectURL(blob)
+                setAvatarUrl(objectURL)
+            })
+    }, [])
+    
     const formik = useFormik({
         onSubmit: async (values, helpers) => {
             helpers.setStatus({ success: true })
@@ -66,7 +100,7 @@ const Page = () => {
                                             >
                                                 
                                                 <Avatar
-                                                    src={useravatar}
+                                                    src={avatarUrl}
                                                     sx={{
                                                         height: 64,
                                                         width: 64,
@@ -126,7 +160,7 @@ const Page = () => {
                                                         size="small"
                                                         type="button"
                                                         variant="outlined"
-                                                        href="/homepage/profile_edit"
+                                                        href={`/homepage/profile_edit?avatar=${avatarUrl}`}
                                                     >
                                                         Edit Profile
                                                     </Button>
@@ -136,40 +170,42 @@ const Page = () => {
                                             <Box sx={{ maxWidth: 600 }}>
                                                 <Stack spacing={1}>
                                                     <Typography variant="h4">
-                                                        User Name{' '}
-                                                        {/*Here I need the username*/}
+                                                        {userData &&
+                                                            userData.username}
                                                     </Typography>
                                                     <Typography variant="h6">
-                                                        email{' '}
-                                                        {/*Here I need the email*/}
+                                                        {userData &&
+                                                            userData.email}
                                                     </Typography>
                                                     <Typography variant="h6">
-                                                        Major (College Name){' '}
-                                                        {/*Here I need the major anf college name*/}
+                                                        {userData &&
+                                                            userData.college}
                                                     </Typography>
                                                     <Typography variant="h6" alignContent={'space-between'}>
                                                         <SvgIcon>
                                                             <AiOutlineHeart />
                                                         </SvgIcon>
-                                                        interest{' '}
-                                                        {/*Here I need the interest*/}
+                                                        {userData &&
+                                                            userData.interests}
                                                         <SvgIcon>
                                                             <VscBlank />
                                                         </SvgIcon>
                                                         <SvgIcon>
                                                             <HiOutlineCake />
-                                                        </SvgIcon>
-                                                        YYYY-MM-DD
-                                                        {/*Here I need the number of Following*/}
+                                                        </SvgIcon>{' '}
+                                                        {userData &&
+                                                            userData.birthday}
                                                     </Typography>
                                                     <Typography variant="h6">
-                                                        (number) Following{' '}
-                                                        {/*Here I need the number of Following*/}
+                                                        Following{' '}
+                                                        {userData &&
+                                                            userData.num_of_following}
                                                         <SvgIcon>
                                                             <VscBlank />
                                                         </SvgIcon>
-                                                        (number) Followers{' '}
-                                                        {/*Here I need the number of Followers*/}
+                                                        Followers{' '}
+                                                        {userData &&
+                                                            userData.num_of_follower}
                                                     </Typography>
                                                 </Stack>
                                                 <Box sx={{ mt: 3 }}>
