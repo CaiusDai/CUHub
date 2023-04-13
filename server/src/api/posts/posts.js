@@ -411,13 +411,11 @@ post_router.post(
             return
         }
         const user_id = req.session.uid
-        console.log(req.body)
         const { postContent, tagChoices, visibilityChoices } = req.body
         const has_image = req.image?true:false
         const image_name = has_image ? req.files.image[0].filename : ''
         const is_anonymous = visibilityChoices==='anonymous'
         const is_public = (is_anonymous || visibilityChoices==='is_public')? true:false
-        console.log(`public: ${is_public}, anonymous: ${is_anonymous}`)
         const is_draft = false
         const query_without_image =  `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft)
                                         VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft})
