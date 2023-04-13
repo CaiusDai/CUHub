@@ -30,7 +30,7 @@ follow_router.get('/followinglist/me', async (req, res) => {
             res.status(HTTPCode.Ok).json({
                 status: 'success',
                 data: {
-                    user_list: []
+                    user_list: [],
                 },
                 message: '[INFO] You have no following user',
             })
@@ -77,7 +77,7 @@ follow_router.delete('/followinglist/:id', async (req, res) => {
         return
     }
 
-    try{
+    try {
         const user_id = req.session.uid
         const following_id = req.params.id
         console.log(following_id)
@@ -98,7 +98,6 @@ follow_router.delete('/followinglist/:id', async (req, res) => {
         }
 
         const query_remove_following = `DELETE FROM FollowRelationship WHERE user1 = ${user_id} AND user2 = ${following_id};UPDATE Profile SET num_of_follower = num_of_follower - 1 WHERE user_id = ${following_id};UPDATE Profile SET num_of_following = num_of_following - 1 WHERE user_id = ${user_id}`
-
 
         await database.query(query_remove_following)
 
@@ -161,8 +160,7 @@ follow_router.get('/followerlist/me', async (req, res) => {
         )
 
         if (db_result1.rowCount + db_result2.rowCount === 0) {
-            req.status(HTTPCode.Ok).json(
-                {
+            req.status(HTTPCode.Ok).json({
                 status: 'success',
                 data: {
                     pending_list: [],

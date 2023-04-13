@@ -1,22 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, Button } from 'antd'
 
 const FollowerListPage = () => {
     // front end need the following information: The users who already followed the user and the users
     // separate them into two groups and frontend will render them in the correct format
-    fetch(`http://localhost:5000/api/follows/followerlist/me`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-    })
-        .then((result) => result.json())
-        .then((result) => {
-            const data = result.data
-            const { pending_list, follower_list } = data
-            // Handle
+    const [isLoading, setIsLoading] = useState(true) // Add loading state
+
+    const [pendingListToDisplay, setPendingListToDisplay] = useState([])
+    const [followerListToDisplay, setFollowerListToDisplay] = useState([])
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/api/follows/followerlist/me`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
         })
+            .then((result) => result.json())
+            .then((result) => {
+                const data = result.data
+                const { pending_list, follower_list } = data
+                setPendingListToDisplay(pending_list)
+                setFollowerListToDisplay(follower_list)
+                setIsLoading(false)
+                // Handle
+            })
+    })
 
     const followedUsers = [
         { name: 'John Smith', username: 'john_smith', email: 'sample' },
@@ -32,9 +42,9 @@ const FollowerListPage = () => {
 
     const followedColumns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
         },
         {
             title: 'Username',
@@ -146,13 +156,24 @@ const FollowerListPage = () => {
             })
     }
 
+    if (isLoading) {
+        // Render a loading message while the posts are being retrieved
+        return <div>Loading posts...</div>
+    }
+
     return (
         <div style={{ paddingTop: '50px' }}>
             <h2>Followers</h2>
-            <Table dataSource={followedUsers} columns={followedColumns} />
+            <Table
+                dataSource={followerListToDisplay}
+                columns={followedColumns}
+            />
 
             <h2>Follow Requests To You</h2>
-            <Table dataSource={followRequests} columns={followRequestColumns} />
+            <Table
+                dataSource={pendingListToDisplay}
+                columns={followRequestColumns}
+            />
         </div>
     )
 }
