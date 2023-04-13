@@ -17,10 +17,13 @@ import { SvgIcon } from '@mui/material'
 import backgroundimg from 'src/Images/bg.png'
 import white from 'src/Images/white.png'
 import { HiOutlineCake } from 'react-icons/hi'
+
 const Page = () => {
     const [userData, setUserData] = useState(null)
     const [avatarUrl, setAvatarUrl] = useState('')
-
+    const userDataString = JSON.stringify(userData)
+    const encodedUserDataString = encodeURIComponent(userDataString)
+    const encodedavatarUrl = encodeURIComponent(avatarUrl)
     useEffect(() => {
         fetch(`http://localhost:5000/api/profiles/me`, {
             method: 'GET',
@@ -51,7 +54,7 @@ const Page = () => {
                 setAvatarUrl(objectURL)
             })
     }, [])
-    
+
     const formik = useFormik({
         onSubmit: async (values, helpers) => {
             helpers.setStatus({ success: true })
@@ -71,12 +74,26 @@ const Page = () => {
                 }}
             >
                 <Container maxWidth="xl">
-                    <Stack spacing={3} >
-                        <div >{/*1 */}
-                            <Grid container spacing={3} >
-                                <Grid style={{height:'100%',width:'100%'}}>{/*2*/}
-                                    <Card sx={{ p: 3 }} style={{height:'100%',width:'100%'}}>
-                                        <form onSubmit={formik.handleSubmit} style={{height:'100%',width:'100%'}}>
+                    <Stack spacing={3}>
+                        <div>
+                            {/*1 */}
+                            <Grid container spacing={3}>
+                                <Grid style={{ height: '100%', width: '100%' }}>
+                                    {/*2*/}
+                                    <Card
+                                        sx={{ p: 3 }}
+                                        style={{
+                                            height: '100%',
+                                            width: '100%',
+                                        }}
+                                    >
+                                        <form
+                                            onSubmit={formik.handleSubmit}
+                                            style={{
+                                                height: '100%',
+                                                width: '100%',
+                                            }}
+                                        >
                                             <img
                                                 style={{
                                                     maxWidth: 600,
@@ -92,13 +109,16 @@ const Page = () => {
                                                     width: 20,
                                                 }}
                                             />
-                                            <Stack style={{height:'100%',width:'100%'}}
+                                            <Stack
+                                                style={{
+                                                    height: '100%',
+                                                    width: '100%',
+                                                }}
                                                 alignItems="center"
                                                 direction="row"
                                                 spacing={4}
                                                 sx={{ mb: 3 }}
                                             >
-                                                
                                                 <Avatar
                                                     src={avatarUrl}
                                                     sx={{
@@ -160,7 +180,7 @@ const Page = () => {
                                                         size="small"
                                                         type="button"
                                                         variant="outlined"
-                                                        href={`/homepage/profile_edit?avatar=${avatarUrl}`}
+                                                        href={`/homepage/profile_edit?userdata=${encodedUserDataString}&avatar=${encodedavatarUrl}`}
                                                     >
                                                         Edit Profile
                                                     </Button>
@@ -180,13 +200,31 @@ const Page = () => {
                                                     <Typography variant="h6">
                                                         {userData &&
                                                             userData.college}
+                                                        {' ('}
+                                                        {userData &&
+                                                            userData.major}
+                                                        {')'}
                                                     </Typography>
-                                                    <Typography variant="h6" alignContent={'space-between'}>
+                                                    <Typography
+                                                        variant="h5"
+                                                        alignContent={
+                                                            'space-between'
+                                                        }
+                                                    >
                                                         <SvgIcon>
                                                             <AiOutlineHeart />
                                                         </SvgIcon>
                                                         {userData &&
-                                                            userData.interests}
+                                                            userData
+                                                                .interests[0]}
+                                                        ,{' '}
+                                                        {userData &&
+                                                            userData
+                                                                .interests[1]}
+                                                        ,{' '}
+                                                        {userData &&
+                                                            userData
+                                                                .interests[2]}{' '}
                                                         <SvgIcon>
                                                             <VscBlank />
                                                         </SvgIcon>

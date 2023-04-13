@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async'
-import { useLocation,useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'
 import React from 'react'
 import {
     Avatar,
@@ -14,20 +14,24 @@ import {
 import { Form, Input } from 'antd'
 import { VscBlank } from 'react-icons/vsc'
 import { SvgIcon } from '@mui/material'
-let oldmajor
-let oldcollege
-let oldbirthday
-let oldgender
-let oldinterst = ['chang', 'tiao', 'rap'] //eg
-var avatar_changed = false;
-const Page = () => {
-    const [avatarUrl, setAvatarUrl] = React.useState('')
-    // Load the avatar
-    const location = useLocation();
 
-    React.useEffect(()=>{
-        setAvatarUrl(new URLSearchParams(location.search).get('avatar'));
-    },[location.search])
+var avatar_changed = false
+let userData
+
+const Page = () => {
+    let [avatarUrl, setAvatarUrl] = React.useState('')
+    // Load the avatar
+    const location = useLocation()
+    const queryString = window.location.search
+    const urlParams = new URLSearchParams(queryString)
+    const userDataString = urlParams.get('userdata')
+    userData = JSON.parse(decodeURIComponent(userDataString))
+    console.log(userData, avatarUrl)
+    // const encodedUserDataString = encodeURIComponent(userDataString)
+    // const encodedavatarUrl = encodeURIComponent(avatarUrl)
+    React.useEffect(() => {
+        setAvatarUrl(new URLSearchParams(location.search).get('avatar'))
+    }, [location.search])
 
     // Hide the input form
     const hiddenFileInput = React.useRef(null)
@@ -37,47 +41,50 @@ const Page = () => {
     }
 
     const handleChange = (event) => {
+        console.log('1111')
         const fileUploaded = event.target.files[0]
-        avatar_changed=true
+        avatar_changed = true
         const objectURL = URL.createObjectURL(fileUploaded)
         if (avatarUrl) {
             URL.revokeObjectURL(avatarUrl)
         }
         setAvatarUrl(objectURL)
+
+        console.log('sss',{avatar_changed})
     }
 
-    const handleExit = (event)=>{
-        if(avatar_changed) URL.revokeObjectURL(avatarUrl)
+    const handleExit = (event) => {
+        if (avatar_changed) URL.revokeObjectURL(avatarUrl)
     }
 
-    const avatarSubmit = (values) =>{
+    const avatarSubmit = (values) => {
         const form_data = new FormData(values)
         fetch('http://localhost:5000/api/images/avatars/me', {
-            		method: 'PUT',
-            		body: form_data
-            	})
-            	.then(response => {
-            		console.log('Files uploaded successfully.');
-            	})
-            	.catch(error => {
-            		console.error('Error uploading files:', error);
-            	})
-            	.finally(() => {
-            		// Clear the file input field after submitting
-            		document.getElementById('images').value = '';
-            	});
+            method: 'PUT',
+            body: form_data,
+        })
+            .then((response) => {
+                console.log('Files uploaded successfully.')
+            })
+            .catch((error) => {
+                console.error('Error uploading files:', error)
+            })
+            .finally(() => {
+                // Clear the file input field after submitting
+                document.getElementById('images').value = ''
+            })
     }
 
     // Here the backend I store the update profile information.
     const onFinish = (values) => {
         console.log('Form submitted!')
-        if(avatar_changed){
+        if (avatar_changed) {
             document.getElementById('avatar_form').submit()
-            console.log("Calling Form")
-        }else{
-            console.log("Errror")
+            console.log('Calling Form')
+        } else {
+            console.log('Errror')
         }
-        
+
         let { username, major, college, birthday, gender } = values
         let interest = [values, values, values]
         fetch(`http://localhost:5000/api/profile/`, {
@@ -142,7 +149,25 @@ const Page = () => {
                                                     width: 64,
                                                 }}
                                             />
-                                            <div>
+                                            
+                                        </Stack>
+                                        <Form
+                                            action=""
+                                            name="profile_edit"
+                                            initialValues={{
+                                                username: userData.username,
+                                                major: userData.major,
+                                                college: userData.college,
+                                                birthday: userData.birthday,
+                                                interest: userData.interests,
+                                                gender: userData.gender,
+                                            }}
+                                            onFinish={onFinish}
+                                            style={{ minWidth: '300px' }}
+                                        >
+                                            <Box sx={{ maxWidth: 420 }}>
+                                                <Stack spacing={3}>
+                                                <div>
                                                 <Button
                                                     color="primary"
                                                     size="small"
@@ -152,8 +177,8 @@ const Page = () => {
                                                 >
                                                     Change
                                                 </Button>
-                                                <form
-                                                    id = "avatar_form"
+                                                <Form
+                                                    id="avatar_form"
                                                     encType="multipart/form-data"
                                                     onSubmit={avatarSubmit}
                                                 >
@@ -166,7 +191,7 @@ const Page = () => {
                                                             display: 'none',
                                                         }}
                                                     />
-                                                </form>
+                                                </Form>
                                                 <div>
                                                     <Typography
                                                         color="text.secondary"
@@ -174,25 +199,20 @@ const Page = () => {
                                                     >
                                                         Recommended dimensions:
                                                         200x200
-                                                        <Form></Form>
                                                     </Typography>
                                                 </div>
                                             </div>
-                                        </Stack>
-                                        <Form
-                                            name="profile_edit"
-                                            initialValues={{
-                                                major: oldmajor,
-                                                college: oldcollege,
-                                                birthday: oldbirthday,
-                                                interest: oldinterst,
-                                                gender: oldgender,
-                                            }}
-                                            onFinish={onFinish}
-                                            style={{ minWidth: '300px' }}
-                                        >
-                                            <Box sx={{ maxWidth: 420 }}>
-                                                <Stack spacing={3}>
+                                                    <div className="input-container">
+                                                        <label htmlFor="username">
+                                                            Username:
+                                                        </label>
+                                                        <Form.Item name="username">
+                                                            <Input
+                                                                type="username"
+                                                                id="username"
+                                                            />
+                                                        </Form.Item>
+                                                    </div>
                                                     <div className="input-container">
                                                         <label htmlFor="major">
                                                             Major:
