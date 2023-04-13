@@ -334,7 +334,6 @@ post_router.post('/repost', async (req, res) => {
             return
         }
 
-
         //First check status of repost
         // const query_check_status = `SELECT * FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
         // const db_result = await database.query(query_check_status)
