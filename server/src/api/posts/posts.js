@@ -357,20 +357,20 @@ post_router.post('/repost', async (req, res) => {
         }
 
         //If existed, cancel the repost
-        else {
-            const query_delete_repost = `DELETE FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
-            await database.query(query_delete_repost)
-            console.log('3')
+        // else {
+        //     const query_delete_repost = `DELETE FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
+        //     await database.query(query_delete_repost)
+        //     console.log('3')
 
-            res.status(HTTPCode.Ok).json({
-                status: 'success',
-                data: {
-                    result: 'canceled',
-                },
-                message: '[INFO] Cancel repost successfully',
-            })
-            return
-        }
+        //     res.status(HTTPCode.Ok).json({
+        //         status: 'success',
+        //         data: {
+        //             result: 'canceled',
+        //         },
+        //         message: '[INFO] Cancel repost successfully',
+        //     })
+        //     return
+        // }
     } catch (err) {
         console.error(`[Error] Failed to repost.\n Error: ${err}`)
         res.status(HTTPCode.BadRequest).json({
