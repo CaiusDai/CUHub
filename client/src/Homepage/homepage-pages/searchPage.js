@@ -21,11 +21,54 @@ const SearchPage = () => {
                 if (user.followed === true || user.followed === null) {
                     // for following and pending, cancel the follow request
                     user.followed = false
+                    
+                    fetch(
+                        `http://localhost:5000/api/follows/followinglist/${record.user_id}`,
+                        {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            credentials: 'include',
+                        }
+                    )
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.status === 'deleted') {
+                                //Successfully change status back to no relationship
+                                console.log(data.message)
+                            } else{
+                                //error
+                                console.log(data.message)
+                            } //Some error in query
+                        })
 
                     // backend: do something here to update the state in database
                 } else {
                     // for unfollowed, send a followed request, the frontend render the status as
                     // pending
+                    fetch(
+                        `http://localhost:5000/api/follows/followinglist/${record.user_id}`,
+                        {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            credentials: 'include',
+                        }
+                    )
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.status === 'inserted') {
+                                //Add new record to the table, now is pending
+                                console.log(data.message)
+                            } else{
+                                //error
+                                console.log(data.message)
+                            } //Some error in query
+                        })
+
+
                     user.followed = null
                     // backend: do something here to send the request to corresponding user
                 }
@@ -56,6 +99,7 @@ const SearchPage = () => {
             dataIndex: 'followed',
             key: 'followed',
             render: (followed, record) => {
+
                 let buttonText
                 switch (followed) {
                     case true:
@@ -96,10 +140,17 @@ const SearchPage = () => {
                     // PLEASE OMIT CODE BELLOW UNTIL NEXT REMINDER
                     // since the current result from back end does not have property call followed
                     // Adding the "followed" property to each user object in the data
-                    const dataWithFollowed = user_list.map((user) => ({
-                        ...user,
-                        followed: true, // Assuming no user is followed by default
-                    }))
+                    
+                    //user_list[0].user_id, user_list[0].username, user_list[0].email, user_list[0].status
+
+                    if(user_list[0].status === false)//pending
+
+                    if(user_list[0].status === true)//following
+                    
+                    else//No relationship
+
+
+    
                     // PLEASE OMIT CODE ABOVE
                     setSearchResultToDisplay(dataWithFollowed)
                     setIsLoading(false)
