@@ -166,7 +166,7 @@ async function insert_data() {
                 'CUHK',
                 '1681304315539.jfif',
                 ['sing', 'jump', 'rap'],
-                0,
+                2,
                 2
             )
         )
@@ -182,7 +182,7 @@ async function insert_data() {
                 '1681304354942.jfif',
                 ['sing', 'jump', 'rap'],
                 1,
-                1
+                2
             )
         )
         await create_query_execute(
@@ -197,7 +197,7 @@ async function insert_data() {
                 '1681304358529.jfif',
                 ['sing', 'jump', 'rap'],
                 2,
-                0
+                1
             )
         )
 
