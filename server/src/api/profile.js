@@ -114,7 +114,6 @@ profile_router.get('/:user_id', async (req, res) => {
         return
     }
 
-
     try {
         const user_id = req.params.user_id
         const current_id = req.session.uid
@@ -135,19 +134,8 @@ profile_router.get('/:user_id', async (req, res) => {
         const query_check_valid = `SELECT status FROM FollowRelationship WHERE user1 =${current_id} AND user2 = ${user_id}`
         const db_status = await database.query(query_check_valid)
 
-        if (db_status.rowCount === 0)//No record, without sending posts back
-        {
-            res.status(HTTPCodes.Ok).json({
-                status: 'success',
-                data: {
-                    profile: profile,
-                    posts: []
-                },
-                message: '[INFO] Get profile successfully',
-            })
-        }
-        else if (db_status.rows[0].status === false)//Pending
-        {
+        if (db_status.rowCount === 0) {
+            //No record, without sending posts back
             res.status(HTTPCodes.Ok).json({
                 status: 'success',
                 data: {
@@ -156,10 +144,19 @@ profile_router.get('/:user_id', async (req, res) => {
                 },
                 message: '[INFO] Get profile successfully',
             })
-        }
-        else if (db_status.rows[0].status === true) //If current user is following the user
-        {
-            const query_get_post = `SELECT`//Unfinished
+        } else if (db_status.rows[0].status === false) {
+            //Pending
+            res.status(HTTPCodes.Ok).json({
+                status: 'success',
+                data: {
+                    profile: profile,
+                    posts: [],
+                },
+                message: '[INFO] Get profile successfully',
+            })
+        } else if (db_status.rows[0].status === true) {
+            //If current user is following the user
+            const query_get_post = `SELECT` //Unfinished
             const result_post = await database.query(query_get_post)
             res.status(HTTPCodes.Ok).json({
                 status: 'success',
@@ -170,9 +167,7 @@ profile_router.get('/:user_id', async (req, res) => {
                 message: '[INFO] Get profile successfully',
             })
         }
-
-    }
-    catch (err) {
+    } catch (err) {
         console.log(
             'Error in getting the profile of other user and the error is :',
             err
@@ -181,9 +176,7 @@ profile_router.get('/:user_id', async (req, res) => {
             status: 'error',
             message: '[Error] Invalid query format',
         })
-
     }
-
 })
 
 // Get : Get the profile of oneself
