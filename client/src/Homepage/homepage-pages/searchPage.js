@@ -21,7 +21,7 @@ const SearchPage = () => {
                 if (user.status === true || user.status === false) {
                     // for following and pending, cancel the follow request
                     user.status = null
-                    
+
                     fetch(
                         `http://localhost:5000/api/search/followinglist/${record.user_id}`,
                         {
@@ -37,8 +37,8 @@ const SearchPage = () => {
                             if (data.status === 'deleted') {
                                 //Successfully change status back to no relationship
                                 console.log(data.message)
-                                console.log("follow request has been canceled")
-                            } else{
+                                console.log('follow request has been canceled')
+                            } else {
                                 //error
                                 console.log(data.message)
                             } //Some error in query
@@ -63,14 +63,13 @@ const SearchPage = () => {
                             console.log(data.status)
                             if (data.status === 'inserted') {
                                 //Add new record to the table, now is pending
-                                console.log("a follow request has been sent")
+                                console.log('a follow request has been sent')
                                 console.log(data.message)
-                            } else{
+                            } else {
                                 //error
                                 console.log(data.message)
                             } //Some error in query
                         })
-
 
                     user.status = false
                     // backend: do something here to send the request to corresponding user
@@ -102,7 +101,6 @@ const SearchPage = () => {
             dataIndex: 'status',
             key: 'status',
             render: (status, record) => {
-
                 let buttonText
                 switch (status) {
                     case true:
@@ -145,22 +143,17 @@ const SearchPage = () => {
                     // PLEASE OMIT CODE BELLOW UNTIL NEXT REMINDER
                     // since the current result from back end does not have property call followed
                     // Adding the "followed" property to each user object in the data
-                    
+
                     //user_list[0].user_id, user_list[0].username, user_list[0].email, user_list[0].status
 
-                    if(user_list[0].status === false){
+                    if (user_list[0].status === false) {
+                    } //pending
 
-                    }//pending
+                    if (user_list[0].status === true) {
+                    } //following
+                    else {
+                    } //unfollowed
 
-                    if(user_list[0].status === true){
-
-                    }//following
-                    
-                    else{
-
-                    }//unfollowed
-
-    
                     // PLEASE OMIT CODE ABOVE
                     setSearchResultToDisplay(user_list)
                     setIsLoading(false)

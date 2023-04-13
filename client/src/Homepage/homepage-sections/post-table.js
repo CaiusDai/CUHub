@@ -21,7 +21,7 @@ import RepeatIcon from '@mui/icons-material/Repeat'
 import ChatIcon from '@mui/icons-material/Chat'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {ButtonBase} from "@mui/material";
+import { ButtonBase } from '@mui/material'
 
 export const PostTable = (props) => {
     const navigate = useNavigate()
@@ -123,7 +123,7 @@ export const PostTable = (props) => {
         setPosts(updatedPosts)
     }
 
-    const handleAvatarClick = (CreatorId) =>{
+    const handleAvatarClick = (CreatorId) => {
         navigate(`/homepage/other_profile/${CreatorId}`)
     }
 
@@ -148,8 +148,17 @@ export const PostTable = (props) => {
                             return (
                                 <TableRow key={post.post_id}>
                                     <TableCell>
-                                        <ButtonBase onClick={() => handleAvatarClick(post.creator_id)}>
-                                            <Avatar src={post.authorAvatar} alt={post.authorName} />
+                                        <ButtonBase
+                                            onClick={() =>
+                                                handleAvatarClick(
+                                                    post.creator_id
+                                                )
+                                            }
+                                        >
+                                            <Avatar
+                                                src={post.authorAvatar}
+                                                alt={post.authorName}
+                                            />
                                         </ButtonBase>
                                         <Card variant="outlined">
                                             <CardHeader
