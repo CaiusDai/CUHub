@@ -49,7 +49,7 @@ app.use(
     })
 )
 app.use('/avatar_images', express.static(config.UploadPath.avatars))
-app.use('/post_images', express.static(config.UploadPath.avatars))
+app.use('/post_images', express.static(config.UploadPath.posts))
 app.use(express.json())
 app.use(cors(cors_options))
 

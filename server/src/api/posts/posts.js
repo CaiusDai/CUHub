@@ -106,7 +106,7 @@ post_router.get('/friends', (req, res) => {
         FROM 
           Post AS p 
           JOIN Account AS a ON a.user_id = p.user_id 
-          LEFT JOIN (
+          INNER JOIN (
             SELECT 
               user2 
             FROM 
