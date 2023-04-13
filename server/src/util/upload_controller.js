@@ -4,7 +4,7 @@ const config = require('../configs/configs')
 
 const image_storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, `${config.UploadPath.images}`)
+        cb(null, `${config.UploadPath.posts}`)
     },
     filename: (req, file, cb) => {
         console.log(file)
