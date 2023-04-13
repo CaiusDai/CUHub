@@ -36,7 +36,9 @@ const OtherProfilePage = () => {
       if (data.status === 'success') {
         //Successfully get profile of other user
         console.log(data.message)
-        const profile = data.data.profile
+        const profile = data.data.profile //profile is object of profile, contains username,major,gender, birthday,
+        //college,interests,email,profile_photo,num_of_follower,num_of_following
+        const posts = data.data.posts //posts is array of posts
         console.log(profile)
       } else {
         //error or unauthorized

@@ -127,6 +127,17 @@ async function insert_data() {
             'Account',
             insert_account('SU', 'xixixi@outlook.com', 'surunlong', false)
         )
+        //New Account
+        await create_query_execute(
+            database,
+            'Account',
+            insert_account('LUO', 'luo@outlook.com', 'luojunwen', false)
+        )
+        await create_query_execute(
+            database,
+            'Account',
+            insert_account('HU', 'hu@outlook.com', 'huyaoyuan', false)
+        )
         //Insert follow relationship
         await create_query_execute(
             database,
@@ -152,6 +163,42 @@ async function insert_data() {
             database,
             'FollowRelationship',
             insert_follow_relationship(2, 3, true)
+        )
+        //New follow_relationship
+        await create_query_execute(
+            database,
+            'FollowRelationship',
+            insert_follow_relationship(4, 3, false)
+        )
+        await create_query_execute(
+            database,
+            'FollowRelationship',
+            insert_follow_relationship(5, 3, false)
+        )
+        await create_query_execute(
+            database,
+            'FollowRelationship',
+            insert_follow_relationship(5, 4, false)
+        )
+        await create_query_execute(
+            database,
+            'FollowRelationship',
+            insert_follow_relationship(1, 4, false)
+        )
+        await create_query_execute(
+            database,
+            'FollowRelationship',
+            insert_follow_relationship(1, 5, false)
+        )
+        await create_query_execute(
+            database,
+            'FollowRelationship',
+            insert_follow_relationship(2, 4, false)
+        )
+        await create_query_execute(
+            database,
+            'FollowRelationship',
+            insert_follow_relationship(2, 5, false)
         )
 
         //Insert profile relationship
@@ -198,6 +245,37 @@ async function insert_data() {
                 ['sing', 'jump', 'rap'],
                 2,
                 1
+            )
+        )
+        //New profile of new users
+        await create_query_execute(
+            database,
+            'Profile',
+            insert_profile(
+                4,
+                'stat',
+                'female',
+                '2001-02-05',
+                'CUHK',
+                '1681304358529.jfif',
+                ['sing', 'jump', 'rap'],
+                0,
+                0
+            )
+        )
+        await create_query_execute(
+            database,
+            'Profile',
+            insert_profile(
+                5,
+                'cs',
+                'male',
+                '2001-02-05',
+                'CUHK',
+                '1681304358529.jfif',
+                ['sing', 'jump', 'rap'],
+                0,
+                0
             )
         )
 
