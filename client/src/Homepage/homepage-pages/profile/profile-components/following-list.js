@@ -1,30 +1,38 @@
 import React from 'react'
 import { Table, Button } from 'antd'
+import { useState, useEffect } from 'react'
 
 const FollowingListPage = () => {
     // front end need the following information: The users who have been followed by this user
+    const [isLoading, setIsLoading] = useState(true) // Add loading state
 
-    fetch(`http://localhost:5000/api/follows/followinglist/me`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.status === 'success') {
-                //Successfully get following list
-                console.log(data.message)
+    const [followingListToDisplay, setFollowingListToDisplay] = useState([])
 
-                const following_list = data.data.user_list
-                console.log(following_list)
-                //following_list is the list of following users, array, get elements by following_list[0].(user_id,username,email,status)
-            } else {
-                //error or unauthorized
-                console.log(data.message)
-            } //Some error in query
+    useEffect(() => {
+        fetch(`http://localhost:5000/api/follows/followinglist/me`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
         })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.status === 'success') {
+                    //Successfully get following list
+                    console.log(data.message)
+
+                    const following_list = data.data.user_list
+                    console.log(following_list)
+                    setFollowingListToDisplay(following_list)
+                    setIsLoading(false)
+                    //following_list is the list of following users, array, get elements by following_list[0].(user_id,username,email,status)
+                } else {
+                    //error or unauthorized
+                    console.log(data.message)
+                } //Some error in query
+            })
+    })
 
     const followedUsers = [
         { name: 'John Smith', username: 'john_smith', email: 'sample' },
@@ -34,9 +42,9 @@ const FollowingListPage = () => {
 
     const followedColumns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
         },
         {
             title: 'Username',
@@ -86,7 +94,10 @@ const FollowingListPage = () => {
     return (
         <div style={{ paddingTop: '50px' }}>
             <h2>Following Users</h2>
-            <Table dataSource={followedUsers} columns={followedColumns} />
+            <Table
+                dataSource={followingListToDisplay}
+                columns={followedColumns}
+            />
         </div>
     )
 }

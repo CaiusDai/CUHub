@@ -22,6 +22,7 @@ import ChatIcon from '@mui/icons-material/Chat'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ButtonBase } from '@mui/material'
+import { ButtonBase } from '@mui/material'
 
 export const PostTable = (props) => {
     const navigate = useNavigate()
@@ -123,6 +124,7 @@ export const PostTable = (props) => {
         setPosts(updatedPosts)
     }
 
+    const handleAvatarClick = (CreatorId) => {
     const handleAvatarClick = (CreatorId) => {
         navigate(`/homepage/other_profile/${CreatorId}`)
     }
