@@ -5,6 +5,7 @@ const util = require('../../util/utils')
 const HTTPCode = config.HTTPCode
 const post_router = express.Router()
 const comment_router = require('./comments')
+const { image_upload } = require('../../util/upload_controller')
 
 post_router.use('/comments', comment_router)
 
@@ -25,11 +26,12 @@ post_router.get('/all', (req, res) => {
     // Content CreationTime num_likes num_dislikes Post
     const query = `SELECT p.post_id, p.content, p.creation_time, p.num_like, p.num_dislike,
                     p.num_retweet, p.num_comment, p.is_anonymous, p.tags,
-                    a.username AS creator, a.user_id AS creator_id,
+                    a.username AS creator, a.user_id AS creator_id, f.profile_photo AS avatar, p.images,
                     EXISTS(SELECT 1 FROM PostAltitude WHERE user_id = ${user_id} AND post_id = p.post_id AND status = 'like') AS liked_by_user,
                     EXISTS(SELECT 1 FROM PostAltitude WHERE user_id = ${user_id} AND post_id = p.post_id AND status = 'dislike') AS disliked_by_user
                     FROM Post p
                     JOIN Account a ON p.user_id = a.user_id
+                    JOIN Profile f ON f.user_id = a.user_id
                     WHERE p.is_public = true AND p.is_draft = false
                     ORDER BY p.creation_time DESC`
     connect_db()
@@ -50,6 +52,8 @@ post_router.get('/all', (req, res) => {
                     creator_id: post.creator_id,
                     is_liked: post.liked_by_user,
                     disliked_by_user: post.disliked_by_user,
+                    avatar: post.avatar,
+                    images: post.images,
                 }
             })
             res.status(HTTPCode.Ok).json({
@@ -380,48 +384,54 @@ post_router.post('/repost', async (req, res) => {
     }
 })
 
-post_router.post('/new', (req, res) => {
-    // Check identity:
-    if (!req.session.isAuthenticated || req.session.isAdmin) {
-        const error_code = req.session.isAuthenticated
-          ? config.ErrorCodes.InvalidAccess
-          : config.ErrorCodes.NotAuthenticated
-        res.status(HTTPCode.Unauthorized).json({
-            status: 'fail',
-            data: {
-                error_code: error_code,
-            },
-            message:
-              'Post can only be created by normal users that have signed in',
-        })
-        return
-    }
-    const user_id = req.session.uid
-    const { postContent, tagChoices } = req.body
-    const is_public = true
-    const is_anonymous = false
-    const is_draft = false
-    const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft)
-                   VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft})
+post_router.post(
+    '/new',
+    image_upload.fields([{ name: 'image', maxCount: 1 }]),
+    (req, res) => {
+        // Check identity:
+        if (!req.session.isAuthenticated || req.session.isAdmin) {
+            const error_code = req.session.isAuthenticated
+                ? config.ErrorCodes.InvalidAccess
+                : config.ErrorCodes.NotAuthenticated
+            res.status(HTTPCode.Unauthorized).json({
+                status: 'fail',
+                data: {
+                    error_code: error_code,
+                },
+                message:
+                    'Post can only be created by normal users that have signed in',
+            })
+            return
+        }
+        const user_id = req.session.uid
+        const { postContent, tagChoices } = req.body
+        const image_name = req.files.image[0].filename
+        console.log('image name: ', image_name)
+        const is_public = true
+        const is_anonymous = false
+        const is_draft = false
+        const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft,images)
+                   VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft},'${image_name}')
                    RETURNING post_id`
-    connect_db()
-      .then((database) => database.query(query))
-      .then(() => {
-          res.status(config.HTTPCode.Ok).json({
-              status: 'success',
-              data: {
-                  is_success: true,
-              },
-              message: 'Post Created',
-          })
-      })
-      .catch((err) => {
-          console.log(err)
-          res.status(config.HTTPCode.BadRequest).json({
-              status: 'error',
-              message: 'Wrong query format',
-          })
-      })
-})
+        connect_db()
+            .then((database) => database.query(query))
+            .then(() => {
+                res.status(config.HTTPCode.Ok).json({
+                    status: 'success',
+                    data: {
+                        is_success: true,
+                    },
+                    message: 'Post Created',
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+                res.status(config.HTTPCode.BadRequest).json({
+                    status: 'error',
+                    message: 'Wrong query format',
+                })
+            })
+    }
+)
 
 module.exports = post_router

@@ -26,7 +26,7 @@ const Page = () => {
         window.location.href = 'profile/follower_list'
     }
 
-    const handleFollowingClick = () =>{
+    const handleFollowingClick = () => {
         window.location.href = 'profile/following_list'
     }
 
@@ -235,8 +235,7 @@ const Page = () => {
                                                         type="submit"
                                                         variant="outlined"
                                                         onClick={() =>
-                                                          handleFollowerClick(
-                                                          )
+                                                            handleFollowerClick()
                                                         }
                                                     >
                                                         Followers
@@ -252,10 +251,9 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
-                                                        onClick={()=>
-                                                          handleFollowingClick(
-                                                          )
-                                                    }
+                                                        onClick={() =>
+                                                            handleFollowingClick()
+                                                        }
                                                     >
                                                         Following
                                                     </Button>

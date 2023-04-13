@@ -144,7 +144,7 @@ export const PostTable = (props) => {
                                 <TableRow key={post.post_id}>
                                     <TableCell>
                                         <Avatar
-                                            src={post.authorAvatar}
+                                            src={`http://localhost:5000/avatar_images/${post.avatar}`}
                                             alt={post.authorName}
                                         />
                                         <Card variant="outlined">
@@ -160,7 +160,7 @@ export const PostTable = (props) => {
                                             {post.image && (
                                                 <CardMedia
                                                     component="img"
-                                                    image={post.image}
+                                                    image={`http://localhost:5000/post_images/${post.images}`}
                                                     alt={post.content}
                                                     sx={{ height: 200 }}
                                                 />

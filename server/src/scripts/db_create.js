@@ -91,7 +91,7 @@ const query_post =
                             creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
                             num_like INTEGER DEFAULT 0,\
                             num_dislike INTEGER DEFAULT 0,\
-                            images TEXT ARRAY,\
+                            images TEXT,\
                             num_comment INTEGER DEFAULT 0,\
                             num_retweet INTEGER DEFAULT 0,\
                             is_anonymous BOOLEAN NOT NULL,\

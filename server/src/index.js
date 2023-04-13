@@ -3,6 +3,7 @@ const express = require('express')
 const session = require('express-session')
 const crypto = require('crypto')
 const cors = require('cors')
+const path = require('path')
 
 // Project variables
 const config = require('./configs/configs')
@@ -47,7 +48,8 @@ app.use(
         session_store,
     })
 )
-
+app.use('/avatar_images', express.static(config.UploadPath.avatars))
+app.use('/post_images', express.static(config.UploadPath.avatars))
 app.use(express.json())
 app.use(cors(cors_options))
 

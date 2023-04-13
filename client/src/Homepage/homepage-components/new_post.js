@@ -21,34 +21,30 @@ const NewPostForm = () => {
         formData.append('postContent', postContent)
         formData.append('tagChoices', tagChoices)
         formData.append('image', image?.file)
-
         fetch('http://localhost:5000/api/posts/new', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values),
+            body: formData,
             credentials: 'include',
         })
-          .then((response) => response.json())
-          .then((result) => {
-              const status = result.status
-              if (status === 'fail') {
-                  const errorCode = result.data.error_code
-                  // Do something
-              } else if (status === 'error') {
-                  // Wrong fetch format
-                  const message = result.message
-              } else {
-                  const data = result.data
-                  const announcements = data.announcements
-                  console.log('new post submit successfully')
-                  // Do something
-              }
-          })
-          .catch((error) => {
-              console.error('Error fetching announcements:', error)
-          })
+            .then((response) => response.json())
+            .then((result) => {
+                const status = result.status
+                if (status === 'fail') {
+                    const errorCode = result.data.error_code
+                    // Do something
+                } else if (status === 'error') {
+                    // Wrong fetch format
+                    const message = result.message
+                } else {
+                    const data = result.data
+                    const announcements = data.announcements
+                    console.log('new post submit successfully')
+                    // Do something
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching announcements:', error)
+            })
         console.log('the following is postContent')
         console.log(postContent)
         console.log('the following is tagChoices')
@@ -69,64 +65,64 @@ const NewPostForm = () => {
     }
 
     return (
-      <Form
-        form={form}
-        onFinish={handleSubmit}
-        layout="vertical"
-        autoComplete="off"
-        style={{
-            backgroundColor: '#fff',
-            padding: '24px',
-            borderRadius: '12px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-          <Form.Item
-            label="Post Content"
-            name="postContent"
-            rules={[
-                { required: false, message: 'Please enter post content' },
-            ]}
-          >
-              <Input.TextArea
-                prefix={<LockOutlined className="site-form-item-icon" />}
-                rows={4}
-                placeholder="What happens to you today? Share it to your friends!"
-              />
-          </Form.Item>
-          <Form.Item
-            label="Tag Choices"
-            name="tagChoices"
-            rules={[
-                { required: true, message: 'Please select tag choices' },
-            ]}
-          >
-              <Select mode="multiple" placeholder="Please select tag choices">
-                  <Option value="treehole">Tree Hole</Option>
-                  <Option value="jobseeking">Job Seeking</Option>
-                  <Option value="trading">Trading</Option>
-                  <Option value="academic">Academic</Option>
-                  <Option value="information">Info</Option>
-              </Select>
-          </Form.Item>
-          <Form.Item
-            label="Image"
-            name="image"
-          >
-              <Upload
-                maxCount={1}
-                beforeUpload={() => false}
-                onChange={handleUploadChange}
-              >
-                  <Button icon={<UploadOutlined />}>Upload Image</Button>
-              </Upload>
-          </Form.Item>
-          <Form.Item>
-              <Button type="primary" htmlType="submit" loading={submitting}>
-                  Post
-              </Button>
-          </Form.Item>
-      </Form>
+        <Form
+            form={form}
+            onFinish={handleSubmit}
+            layout="vertical"
+            encType="multipart/form-data"
+            autoComplete="off"
+            style={{
+                backgroundColor: '#fff',
+                padding: '24px',
+                borderRadius: '12px',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            }}
+        >
+            <Form.Item
+                label="Post Content"
+                name="postContent"
+                rules={[
+                    { required: false, message: 'Please enter post content' },
+                ]}
+            >
+                <Input.TextArea
+                    prefix={<LockOutlined className="site-form-item-icon" />}
+                    rows={4}
+                    placeholder="What happens to you today? Share it to your friends!"
+                />
+            </Form.Item>
+            <Form.Item
+                label="Tag Choices"
+                name="tagChoices"
+                rules={[
+                    { required: true, message: 'Please select tag choices' },
+                ]}
+            >
+                <Select mode="multiple" placeholder="Please select tag choices">
+                    <Option value="treehole">Tree Hole</Option>
+                    <Option value="jobseeking">Job Seeking</Option>
+                    <Option value="trading">Trading</Option>
+                    <Option value="academic">Academic</Option>
+                    <Option value="information">Info</Option>
+                </Select>
+            </Form.Item>
+            <Form.Item label="Image" name="image">
+                <Upload
+                    id="images"
+                    name="image"
+                    maxCount={1}
+                    beforeUpload={() => false}
+                    onChange={handleUploadChange}
+                >
+                    <Button icon={<UploadOutlined />}>Upload Image</Button>
+                </Upload>
+            </Form.Item>
+            <Form.Item>
+                <Button type="primary" htmlType="submit" loading={submitting}>
+                    Post
+                </Button>
+            </Form.Item>
+        </Form>
     )
 }
 
