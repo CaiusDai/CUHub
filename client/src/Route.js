@@ -84,7 +84,11 @@ export const AppRouter = [
             },
             {
                 path: 'homepage/profile/follower_list',
-                element: <FollowerListPage/>,
+                element: <FollowerListPage />,
+            },
+            {
+                path: 'homepage/profile/following_list',
+                element: <FollowingListPage />,
             },
             {
                 path: 'homepage/profile/following_list',

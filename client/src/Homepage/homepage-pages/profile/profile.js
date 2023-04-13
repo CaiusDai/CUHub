@@ -235,8 +235,7 @@ const Page = () => {
                                                         type="submit"
                                                         variant="outlined"
                                                         onClick={() =>
-                                                          handleFollowerClick(
-                                                          )
+                                                            handleFollowerClick()
                                                         }
                                                     >
                                                         Followers
