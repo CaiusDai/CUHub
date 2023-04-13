@@ -5,7 +5,7 @@ const { Query } = require('pg')
 const HTTPCode = config.HTTPCode
 const follow_router = express.Router()
 
-follow_router.get('/followinglist',async (req,res)=>{
+follow_router.get('/followinglist/me',async (req,res)=>{
 
     //Check validity
     if (!req.session.isAuthenticated) {
@@ -23,7 +23,7 @@ follow_router.get('/followinglist',async (req,res)=>{
         const user_id = req.session.uid
         const database = await connect_db()
 
-        const query_get_followinglist = `SELECT * FROM Account,FollowRelationship WHERE Account.user_id = FollowRelationship.user2 AND FollowRelationship.user1 = ${user_id}`
+        const query_get_followinglist = `SELECT * FROM Account,FollowRelationship WHERE Account.user_id = FollowRelationship.user2 AND FollowRelationship.user1 = ${user_id} ORDER BY (CASE WHEN FALSE THEN 0 ELSE 1 END) ASC`
         const db_result = await database.query(query_get_followinglist)
 
         //The user have no following user
@@ -70,7 +70,7 @@ follow_router.get('/followinglist',async (req,res)=>{
     }
 })
 
-follow_router.delete('/followinglist:id',async (req,res)=>{
+follow_router.delete('/followinglist/:id',async (req,res)=>{
 
     //Check validity
     if (!req.session.isAuthenticated) {
@@ -137,7 +137,7 @@ follow_router.delete('/followinglist:id',async (req,res)=>{
 })
 
 
-follow_router.put('/followinglist:id',async (req,res)=>{
+follow_router.put('/followinglist/:id',async (req,res)=>{
 
     //Check validity
     if (!req.session.isAuthenticated) {
@@ -230,7 +230,7 @@ follow_router.put('/followinglist:id',async (req,res)=>{
 // // Update : NOT DEFINED
 // '/follows/followerlist/:id'
 
-follow_router.get('/followerlist',async (req,res)=>{
+follow_router.get('/followerlist/me',async (req,res)=>{
 
     //Check validity
     if (!req.session.isAuthenticated) {
@@ -248,7 +248,7 @@ follow_router.get('/followerlist',async (req,res)=>{
         const user_id = req.session.uid
         const database = await connect_db()
 
-        const query_get_followinglist = `SELECT * FROM Account,FollowRelationship WHERE Account.user_id = FollowRelationship.user1 AND FollowRelationship.user2 = ${user_id}`
+        const query_get_followinglist = `SELECT * FROM Account,FollowRelationship WHERE Account.user_id = FollowRelationship.user1 AND FollowRelationship.user2 = ${user_id} ORDER BY (CASE WHEN FALSE THEN 0 ELSE 1 END) ASC`
         const db_result = await database.query(query_get_followinglist)
 
         //The user have no follower
