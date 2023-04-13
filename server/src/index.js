@@ -27,7 +27,13 @@ const session_store = new session.MemoryStore()
 const app = express()
 const session_key = crypto.randomBytes(20).toString('hex')
 const cors_options = {
-    origin: 'http://localhost:3000',
+    origin: function (origin, callback) {
+        if (origin.startsWith('http://localhost')) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type'],
