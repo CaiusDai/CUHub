@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async'
-import { useLocation,useHistory } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom'
 import React from 'react'
 import {
     Avatar,
@@ -19,15 +19,15 @@ let oldcollege
 let oldbirthday
 let oldgender
 let oldinterst = ['chang', 'tiao', 'rap'] //eg
-var avatar_changed = false;
+var avatar_changed = false
 const Page = () => {
     const [avatarUrl, setAvatarUrl] = React.useState('')
     // Load the avatar
-    const location = useLocation();
+    const location = useLocation()
 
-    React.useEffect(()=>{
-        setAvatarUrl(new URLSearchParams(location.search).get('avatar'));
-    },[location.search])
+    React.useEffect(() => {
+        setAvatarUrl(new URLSearchParams(location.search).get('avatar'))
+    }, [location.search])
 
     // Hide the input form
     const hiddenFileInput = React.useRef(null)
@@ -38,7 +38,7 @@ const Page = () => {
 
     const handleChange = (event) => {
         const fileUploaded = event.target.files[0]
-        avatar_changed=true
+        avatar_changed = true
         const objectURL = URL.createObjectURL(fileUploaded)
         if (avatarUrl) {
             URL.revokeObjectURL(avatarUrl)
@@ -46,38 +46,38 @@ const Page = () => {
         setAvatarUrl(objectURL)
     }
 
-    const handleExit = (event)=>{
-        if(avatar_changed) URL.revokeObjectURL(avatarUrl)
+    const handleExit = (event) => {
+        if (avatar_changed) URL.revokeObjectURL(avatarUrl)
     }
 
-    const avatarSubmit = (values) =>{
+    const avatarSubmit = (values) => {
         const form_data = new FormData(values)
         fetch('http://localhost:5000/api/images/avatars/me', {
-            		method: 'PUT',
-            		body: form_data
-            	})
-            	.then(response => {
-            		console.log('Files uploaded successfully.');
-            	})
-            	.catch(error => {
-            		console.error('Error uploading files:', error);
-            	})
-            	.finally(() => {
-            		// Clear the file input field after submitting
-            		document.getElementById('images').value = '';
-            	});
+            method: 'PUT',
+            body: form_data,
+        })
+            .then((response) => {
+                console.log('Files uploaded successfully.')
+            })
+            .catch((error) => {
+                console.error('Error uploading files:', error)
+            })
+            .finally(() => {
+                // Clear the file input field after submitting
+                document.getElementById('images').value = ''
+            })
     }
 
     // Here the backend I store the update profile information.
     const onFinish = (values) => {
         console.log('Form submitted!')
-        if(avatar_changed){
+        if (avatar_changed) {
             document.getElementById('avatar_form').submit()
-            console.log("Calling Form")
-        }else{
-            console.log("Errror")
+            console.log('Calling Form')
+        } else {
+            console.log('Errror')
         }
-        
+
         let { username, major, college, birthday, gender } = values
         let interest = [values, values, values]
         fetch(`http://localhost:5000/api/profile/`, {
@@ -153,7 +153,7 @@ const Page = () => {
                                                     Change
                                                 </Button>
                                                 <form
-                                                    id = "avatar_form"
+                                                    id="avatar_form"
                                                     encType="multipart/form-data"
                                                     onSubmit={avatarSubmit}
                                                 >
