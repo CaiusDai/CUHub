@@ -30,11 +30,12 @@ follow_router.get('/followinglist/me', async (req, res) => {
             res.status(HTTPCode.Ok).json({
                 status: 'success',
                 data: {
-                    is_none: true,
+                    user_list: []
                 },
                 message: '[INFO] You have no following user',
-        })}
-
+            })
+            return
+        }
 
         //The current user have at least one following user
         const user_list = db_result.rows.map((row) => {
@@ -49,7 +50,6 @@ follow_router.get('/followinglist/me', async (req, res) => {
         res.status(HTTPCode.Ok).json({
             status: 'success',
             data: {
-                is_none: false,
                 user_list: user_list,
             },
             message: '[INFO] Sent all following user already',
@@ -97,13 +97,8 @@ follow_router.delete('/followinglist/:id', async (req, res) => {
             return
         }
 
+        const query_remove_following = `DELETE FROM FollowRelationship WHERE user1 = ${user_id} AND user2 = ${following_id};UPDATE Profile SET num_of_follower = num_of_follower - 1 WHERE user_id = ${following_id};UPDATE Profile SET num_of_following = num_of_following - 1 WHERE user_id = ${user_id}`
 
-        let query_remove_following
-        if (status.rows[0].status === false) {
-            query_remove_following = `DELETE FROM FollowRelationship WHERE user1 = ${user_id} AND user2 = ${following_id}`
-        } else if (status.rows[0].status === true) {
-            query_remove_following = `DELETE FROM FollowRelationship WHERE user1 = ${user_id} AND user2 = ${following_id};UPDATE Profile SET num_of_follower = num_of_follower - 1 WHERE user_id = ${following_id};UPDATE Profile SET num_of_following = num_of_following - 1 WHERE user_id = ${user_id}`
-        }
 
         await database.query(query_remove_following)
 
@@ -259,6 +254,7 @@ follow_router.delete('/followerlist/:id', async (req, res) => {
         //The record is deleted
 
         res.status(HTTPCode.Ok).json({
+            status: 'success',
             data: {},
             message: '[INFO] Remove user from follower list success',
         })
