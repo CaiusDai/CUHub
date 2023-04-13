@@ -25,6 +25,7 @@ import ChatPage from './Homepage/homepage-pages/Chat'
 import ChatWindow from './Homepage/homepage-pages/chat_p/ChatWindow'
 import FollowerListPage from "./Homepage/homepage-pages/profile/profile-components/follower-list";
 import FollowingListPage from "./Homepage/homepage-pages/profile/profile-components/following-list";
+import OtherProfilePage from "./Homepage/homepage-pages/profile/others_profile";
 
 export const AppRouter = [
     {
@@ -57,6 +58,10 @@ export const AppRouter = [
             {
                 path: 'homepage/particular_post/:id',
                 element: <SpecificPostPage />,
+            },
+            {
+                path: 'homepage/other_profile/:id',
+                element: <OtherProfilePage/>,
             },
             {
                 path: 'search/:searchContent',
