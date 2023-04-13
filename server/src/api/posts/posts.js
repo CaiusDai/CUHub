@@ -97,15 +97,18 @@ post_router.get('/friends', (req, res) => {
           p.num_dislike, 
           p.num_retweet, 
           p.num_comment, 
+          p.images,
           NULL AS repost_creator_username, 
           a.username AS creator_username, 
           p.tags, 
           false AS is_repost, 
           NULL AS repost_content,
-          false AS retweeted_by_user
+          false AS retweeted_by_user,
+          f.profile_photo AS avatar
         FROM 
           Post AS p 
           JOIN Account AS a ON a.user_id = p.user_id 
+          JOIN PROFILE AS f ON p.user_id = a.user_id
           INNER JOIN (
             SELECT 
               user2 
@@ -128,17 +131,20 @@ post_router.get('/friends', (req, res) => {
           p.num_dislike, 
           p.num_retweet, 
           p.num_comment, 
+          p.images,
           a2.username AS repost_creator_username, 
           a.username AS creator_username, 
           p.tags, 
           true AS is_repost, 
           r.comment AS repost_content,
-          r.user_id = ${user_id} AS retweeted_by_user
+          r.user_id = ${user_id} AS retweeted_by_user,
+          f.profile_photo AS avatar
         FROM 
           Post AS p 
           JOIN Repost AS r ON r.original_post_id = p.post_id 
           JOIN Account AS a ON a.user_id = p.user_id 
           JOIN Account AS a2 ON a2.user_id = r.user_id 
+          JOIN Profile AS f ON a.user_id = f.user_id
           JOIN (
             SELECT 
               user2 
@@ -166,9 +172,11 @@ post_router.get('/friends', (req, res) => {
       op.tags, 
       op.is_repost, 
       op.repost_content, 
-      COALESCE(pa.status = 'like', false) AS liked_by_user,
-      COALESCE(pa.status = 'dislike', false) AS disliked_by_user,
-      op.retweeted_by_user
+      COALESCE(pa.status = 'like', false) AS liked_by_user, 
+      COALESCE(pa.status = 'dislike', false) AS disliked_by_user, 
+      op.retweeted_by_user,
+      op.avatar,
+      op.images
     FROM 
       OriginalPosts AS op
       LEFT JOIN PostAltitude AS pa ON op.post_id = pa.post_id AND pa.user_id = ${user_id}
@@ -196,6 +204,8 @@ post_router.get('/friends', (req, res) => {
                     is_liked: post.liked_by_user,
                     is_disliked: post.disliked_by_user,
                     is_retweeted: post.retweeted_by_user,
+                    avatar: post.avatar,
+                    images: post.images,
                 }
             })
             res.status(HTTPCode.Ok).json({
