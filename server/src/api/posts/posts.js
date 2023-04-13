@@ -277,7 +277,7 @@ post_router.post('/like', async (req, res) => {
             // await database.query(query_delete_record)
             // //Then update num_like in post table
             // const query_minus_number = `UPDATE Post SET num_like = num_like - 1 WHERE post_id = ${post_id}`
-            const query_delete_and_minus_number = `DELETE FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id};UPDATE Post SET num_like = num_like - 1 WHERE post_id = ${post_id}`
+            const query_delete_and_minus_number = `DELETE FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id}`
             await database.query(query_delete_and_minus_number)
             res.status(HTTPCode.Ok).json({
                 status: 'success',
