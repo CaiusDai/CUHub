@@ -102,7 +102,7 @@ profile_router.put('/', (req, res) => {
 })
 
 //View other profile, need other's user_id
-profile_router.get('/:user_id', (req, res) => {
+profile_router.get('/:user_id', async (req, res) => {
     if (!req.session.isAuthenticated) {
         res.status(HTTPCodes.Unauthorized).json({
             status: 'fail',
@@ -115,6 +115,8 @@ profile_router.get('/:user_id', (req, res) => {
     }
 
     const user_id = req.params.user_id
+    const current_id = req.session.uid
+    const database = await connect_db()
 
     //Get username and profile photo of this user
     const query_get_profile = `SELECT username,major,gender,TO_CHAR(birthday,'yyyy-mm-dd') AS birthday,
@@ -122,29 +124,60 @@ profile_router.get('/:user_id', (req, res) => {
                                 FROM Profile,Account 
                                 WHERE Profile.user_id = Account.user_id
                                 AND Profile.user_id = ${user_id}`
+
     //Get username and photo
-    connect_db()
-        .then((database) => database.query(query_get_profile))
-        .then((db_result) => {
-            const result = db_result.rows[0]
-            res.status(HTTPCodes.Ok).json({
-                status: 'success',
-                data: {
-                    profile: result,
-                },
-                message: '[INFO] Get profile successfully',
-            })
+    const db_result = await database.query(query_get_profile)
+    const profile = db_result.rows[0]
+
+    //Check condition to get post of other
+    const query_check_valid = `SELECT status FROM FollowRelationship WHERE user1 =${current_id} AND user2 = ${user_id}`
+    const db_status = await database.query(query_check_valid)
+    
+    if(db_status.rowCount === 0)//No record, without sending posts back
+    {
+        res.status(HTTPCodes.Ok).json({
+            status: 'success',
+            data: {
+                profile: result,
+                posts: []
+            },
+            message: '[INFO] Get profile successfully',
         })
-        .catch((err) => {
-            console.log(
-                'Error in getting the profile of other user and the error is :',
-                err
-            )
-            res.status(HTTPCodes.BadRequest).json({
-                status: 'error',
-                message: '[Error] Invalid query format',
-            })
+    }
+    else if (db_status.rows[0].status === false)//Pending
+    {
+        res.status(HTTPCodes.Ok).json({
+            status: 'success',
+            data: {
+                profile: result,
+                posts: [],
+            },
+            message: '[INFO] Get profile successfully',
         })
+    }
+    else if (db_status.rows[0].status === true)
+    {
+        const query_get_post = `SELECT`
+        res.status(HTTPCodes.Ok).json({
+            status: 'success',
+            data: {
+                profile: result,
+                posts: []
+            },
+            message: '[INFO] Get profile successfully',
+        })
+    }
+})
+    .catch((err) => {
+        console.log(
+            'Error in getting the profile of other user and the error is :',
+            err
+        )
+        res.status(HTTPCodes.BadRequest).json({
+            status: 'error',
+            message: '[Error] Invalid query format',
+        })
+    })
 })
 // Get : Get the profile of oneself
 // Post : Already created when a user sign up successfully

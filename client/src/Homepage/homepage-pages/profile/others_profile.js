@@ -21,6 +21,29 @@ import {useParams} from "react-router-dom";
 const OtherProfilePage = () => {
   const { id } = useParams()
 
+  fetch(
+    `http://localhost:5000/api/profiles/${id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    }
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === 'success') {
+        //Successfully get profile of other user
+        console.log(data.message)
+        const profile = data.data.profile
+        console.log(profile)
+      } else {
+        //error or unauthorized
+        console.log(data.message)
+      }
+    })
+
   // here is the interface for view others profile, the id above provide to you
   // is the creator_id corresponding to the post, please help me to provide all
   // info that require current user (A) to see about the creator user (B) in here
