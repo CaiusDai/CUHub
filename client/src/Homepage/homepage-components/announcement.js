@@ -8,7 +8,6 @@ const { Title, Paragraph } = Typography
 // currently, only title and content is considered
 
 const AnnouncementDialog = () => {
-    console.log('code can enter here')
     const [isLoading, setIsLoading] = useState(true)
     const [postToDisplay, setPostToDisplay] = useState([])
 
@@ -36,9 +35,6 @@ const AnnouncementDialog = () => {
                 } else {
                     const data = result.data
                     const announcements = data.announcements
-                    console.log(announcements)
-                    console.log('the following is data for announcement')
-                    console.log(data)
                     setPostToDisplay(data.announcements) // Update postToDisplay using the state setter
                     setIsLoading(false) // Set loading state to false
                     // Do something

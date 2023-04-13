@@ -27,7 +27,7 @@ export const CommentTable = (props) => {
     const {
         count = 0,
         items = [],
-        onPageChange = () => { },
+        onPageChange = () => {},
         page = 0,
         rowsPerPage = 0,
         onRowsPerPageChange,
@@ -60,25 +60,20 @@ export const CommentTable = (props) => {
             commentContent: commentInput,
             comment_id: commentId,
         }
-        fetch(
-            `http://localhost:5000/api/posts/comments/reply`,
-            {
-                method: 'POST',
-                body: JSON.stringify(parameters),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            }
-        )
+        fetch(`http://localhost:5000/api/posts/comments/reply`, {
+            method: 'POST',
+            body: JSON.stringify(parameters),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
             .then((response) => response.json())
             .then((data) => {
                 if (data.status === 'success') {
                     //Success
                     console.log(data.message)
-
-                }
-                else {
+                } else {
                     //Something error in query or reply to himself
                     console.log(data.message)
                 }

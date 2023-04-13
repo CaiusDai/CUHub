@@ -37,6 +37,7 @@ const NewPostForm = () => {
                 } else {
                     const data = result.data
                     const announcements = data.announcements
+                    console.log('new post submit successfully')
                     // Do something
                 }
             })
