@@ -1,4 +1,6 @@
 import { Helmet } from 'react-helmet-async'
+import { useLocation,useHistory } from 'react-router-dom';
+import React from 'react'
 import {
     Avatar,
     Box,
@@ -12,31 +14,94 @@ import {
 import { Form, Input } from 'antd'
 import { VscBlank } from 'react-icons/vsc'
 import { SvgIcon } from '@mui/material'
-import old from 'src/Images/useravatar.png'
-
 let oldmajor
 let oldcollege
 let oldbirthday
 let oldgender
 let oldinterst = ['chang', 'tiao', 'rap'] //eg
-
-//Here I need backend to give the initial value.
+var avatar_changed = false;
 const Page = () => {
+    const [avatarUrl, setAvatarUrl] = React.useState('')
+    // Load the avatar
+    const location = useLocation();
+
+    React.useEffect(()=>{
+        setAvatarUrl(new URLSearchParams(location.search).get('avatar'));
+    },[location.search])
+
+    // Hide the input form
+    const hiddenFileInput = React.useRef(null)
+
+    const handleUpload = (event) => {
+        hiddenFileInput.current.click()
+    }
+
+    const handleChange = (event) => {
+        const fileUploaded = event.target.files[0]
+        avatar_changed=true
+        const objectURL = URL.createObjectURL(fileUploaded)
+        if (avatarUrl) {
+            URL.revokeObjectURL(avatarUrl)
+        }
+        setAvatarUrl(objectURL)
+    }
+
+    const handleExit = (event)=>{
+        if(avatar_changed) URL.revokeObjectURL(avatarUrl)
+    }
+
+    const avatarSubmit = (values) =>{
+        const form_data = new FormData(values)
+        fetch('http://localhost:5000/api/images/avatars/me', {
+            		method: 'PUT',
+            		body: form_data
+            	})
+            	.then(response => {
+            		console.log('Files uploaded successfully.');
+            	})
+            	.catch(error => {
+            		console.error('Error uploading files:', error);
+            	})
+            	.finally(() => {
+            		// Clear the file input field after submitting
+            		document.getElementById('images').value = '';
+            	});
+    }
+
     // Here the backend I store the update profile information.
     const onFinish = (values) => {
         console.log('Form submitted!')
-        let { major, college, birthday, gender } = values
+        if(avatar_changed){
+            document.getElementById('avatar_form').submit()
+            console.log("Calling Form")
+        }else{
+            console.log("Errror")
+        }
+        
+        let { username, major, college, birthday, gender } = values
         let interest = [values, values, values]
-        console.log('the following is major')
-        console.log(major)
-        console.log('the following is college')
-        console.log(college)
-        console.log('the following is birthday')
-        console.log(birthday)
-        console.log('the following is interest')
-        console.log(interest)
-        console.log('the following is gender')
-        console.log(gender)
+        fetch(`http://localhost:5000/api/profile/`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                username: username,
+                major: major,
+                college: college,
+                birthday: birthday,
+                interests: interest,
+                gender: gender,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                //updating failed
+                if (data.status === 'fail') {
+                } else if (data.status === 'success') {
+                }
+            })
     }
 
     return (
@@ -71,7 +136,7 @@ const Page = () => {
                                             sx={{ mb: 3 }}
                                         >
                                             <Avatar
-                                                src={old}
+                                                src={avatarUrl}
                                                 sx={{
                                                     height: 64,
                                                     width: 64,
@@ -83,17 +148,32 @@ const Page = () => {
                                                     size="small"
                                                     type="button"
                                                     variant="outlined"
+                                                    onClick={handleUpload}
                                                 >
                                                     Change
                                                 </Button>
+                                                <form
+                                                    id = "avatar_form"
+                                                    encType="multipart/form-data"
+                                                    onSubmit={avatarSubmit}
+                                                >
+                                                    <input
+                                                        type="file"
+                                                        id="images"
+                                                        ref={hiddenFileInput}
+                                                        onChange={handleChange}
+                                                        style={{
+                                                            display: 'none',
+                                                        }}
+                                                    />
+                                                </form>
                                                 <div>
                                                     <Typography
                                                         color="text.secondary"
                                                         variant="caption"
                                                     >
                                                         Recommended dimensions:
-                                                        200x200, maximum file
-                                                        size: 5MB
+                                                        200x200
                                                         <Form></Form>
                                                     </Typography>
                                                 </div>
@@ -220,6 +300,7 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="contained"
+                                                        onClick={handleExit}
                                                         href="/homepage/profile"
                                                     >
                                                         Exit
