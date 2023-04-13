@@ -2,46 +2,6 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { Table } from 'antd'
 import { useParams } from 'react-router-dom'
-import searchResultTable from '../homepage-sections/search-result-table'
-
-const columns = [
-    {
-        title: 'USERNAME',
-        dataIndex: 'username',
-        key: 'username',
-    },
-    {
-        title: 'USER ID',
-        dataIndex: 'user_id',
-        key: 'user_id',
-    },
-    {
-        title: 'EMAIL',
-        dataIndex: 'email',
-        key: 'email',
-    },
-]
-
-const data = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-    },
-    {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-    },
-    {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-    },
-]
 
 const SearchPage = () => {
     const { searchContent } = useParams()
@@ -52,6 +12,69 @@ const SearchPage = () => {
     // return all users corresponding to this searchContent and I will render it here.
     const [isLoading, setIsLoading] = useState(true)
     const [searchResultToDisplay, setSearchResultToDisplay] = useState([])
+
+    const handleFollowedChange = (record) => {
+        // user.followed is the result got from backend, there are three states
+        // true: following, false:unfollowed, none, pending
+        const updatedData = searchResultToDisplay.map((user) => {
+            if (user.user_id === record.user_id) {
+                if (user.followed === true || user.followed === null) {
+                    // for following and pending, cancel the follow request
+                    user.followed = false
+
+                    // backend: do something here to update the state in database
+                } else {
+                    // for unfollowed, send a followed request, the frontend render the status as
+                    // pending
+                    user.followed = null
+                    // backend: do something here to send the request to corresponding user
+                }
+            }
+            return user
+        })
+        setSearchResultToDisplay(updatedData)
+    }
+
+    const columns = [
+        {
+            title: 'USERNAME',
+            dataIndex: 'username',
+            key: 'username',
+        },
+        {
+            title: 'USER ID',
+            dataIndex: 'user_id',
+            key: 'user_id',
+        },
+        {
+            title: 'EMAIL',
+            dataIndex: 'email',
+            key: 'email',
+        },
+        {
+            title: 'FOLLOWED',
+            dataIndex: 'followed',
+            key: 'followed',
+            render: (followed, record) => {
+                let buttonText
+                switch (followed) {
+                    case true:
+                        buttonText = 'Following'
+                        break
+                    case false:
+                        buttonText = 'Unfollowed'
+                        break
+                    default:
+                        buttonText = 'Pending'
+                }
+                return (
+                    <button onClick={() => handleFollowedChange(record)}>
+                        {buttonText}
+                    </button>
+                )
+            },
+        },
+    ]
 
     useEffect(() => {
         fetch(
@@ -70,7 +93,15 @@ const SearchPage = () => {
                     const user_list = data.data.user_list
                     console.log('The following is search result')
                     console.log(user_list)
-                    setSearchResultToDisplay(user_list)
+                    // PLEASE OMIT CODE BELLOW UNTIL NEXT REMINDER
+                    // since the current result from back end does not have property call followed
+                    // Adding the "followed" property to each user object in the data
+                    const dataWithFollowed = user_list.map((user) => ({
+                        ...user,
+                        followed: true, // Assuming no user is followed by default
+                    }))
+                    // PLEASE OMIT CODE ABOVE
+                    setSearchResultToDisplay(dataWithFollowed)
                     setIsLoading(false)
                     //user_list is the array of users
                     //Retrieve the elements in user_list in the format: userlist[0].username, userlist[0].user_id, userlist[0].email, only these three elements in an object of the array

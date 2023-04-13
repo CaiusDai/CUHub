@@ -51,7 +51,7 @@ const Page = () => {
                 setAvatarUrl(objectURL)
             })
     }, [])
-    
+
     const formik = useFormik({
         onSubmit: async (values, helpers) => {
             helpers.setStatus({ success: true })

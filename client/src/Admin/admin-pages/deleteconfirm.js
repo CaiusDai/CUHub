@@ -25,7 +25,7 @@ const Page = () => {
     }
     //below I need the email of the user.
     const { email } = useParams()
-    console.log("the following is the account email that I wish to delete")
+    console.log('the following is the account email that I wish to delete')
     console.log(email)
 
     // here is the interface for delete user function, the email for the user I wish to delete

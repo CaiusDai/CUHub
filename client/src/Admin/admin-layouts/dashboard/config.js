@@ -3,7 +3,7 @@ import { IoPersonOutline } from 'react-icons/io5'
 import { IoMdListBox } from 'react-icons/io'
 import ExclamationTriangleIcon from '@heroicons/react/24/solid/ExclamationTriangleIcon'
 import { SvgIcon } from '@mui/material'
-import ArrowLeftOnRectangleIcon from "@heroicons/react/24/solid/ArrowLeftOnRectangleIcon";
+import ArrowLeftOnRectangleIcon from '@heroicons/react/24/solid/ArrowLeftOnRectangleIcon'
 
 export const items = [
     {
@@ -45,9 +45,9 @@ export const items = [
     {
         href: '/admin/logout',
         icon: (
-          <SvgIcon>
-              <ArrowLeftOnRectangleIcon />
-          </SvgIcon>
+            <SvgIcon>
+                <ArrowLeftOnRectangleIcon />
+            </SvgIcon>
         ),
         label: 'Log out',
     },
