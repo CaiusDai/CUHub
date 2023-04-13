@@ -48,7 +48,7 @@ post_router.get('/all', (req, res) => {
                     tag: post.tags,
                     creator_name: post.creator,
                     creator_id: post.creator_id,
-                    liked_by_user: post.liked_by_user,
+                    is_liked: post.liked_by_user,
                     disliked_by_user: post.disliked_by_user,
                 }
             })
@@ -301,6 +301,8 @@ post_router.post('/like', async (req, res) => {
     }
 })
 
+//Repost
+
 post_router.post('/repost', async (req, res) => {
     if (!req.session.isAuthenticated) {
         res.status(HTTPCode.Unauthorized).json({
@@ -355,20 +357,20 @@ post_router.post('/repost', async (req, res) => {
         }
 
         //If existed, cancel the repost
-        else {
-            const query_delete_repost = `DELETE FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
-            await database.query(query_delete_repost)
-            console.log('3')
+        // else {
+        //     const query_delete_repost = `DELETE FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
+        //     await database.query(query_delete_repost)
+        //     console.log('3')
 
-            res.status(HTTPCode.Ok).json({
-                status: 'success',
-                data: {
-                    result: 'canceled',
-                },
-                message: '[INFO] Cancel repost successfully',
-            })
-            return
-        }
+        //     res.status(HTTPCode.Ok).json({
+        //         status: 'success',
+        //         data: {
+        //             result: 'canceled',
+        //         },
+        //         message: '[INFO] Cancel repost successfully',
+        //     })
+        //     return
+        // }
     } catch (err) {
         console.error(`[Error] Failed to repost.\n Error: ${err}`)
         res.status(HTTPCode.BadRequest).json({
@@ -376,6 +378,50 @@ post_router.post('/repost', async (req, res) => {
             message: '[Error] Invalid query format',
         })
     }
+})
+
+post_router.post('/new', (req, res) => {
+    // Check identity:
+    if (!req.session.isAuthenticated || req.session.isAdmin) {
+        const error_code = req.session.isAuthenticated
+          ? config.ErrorCodes.InvalidAccess
+          : config.ErrorCodes.NotAuthenticated
+        res.status(HTTPCode.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: error_code,
+            },
+            message:
+              'Post can only be created by normal users that have signed in',
+        })
+        return
+    }
+    const user_id = req.session.uid
+    const { postContent, tagChoices } = req.body
+    const is_public = true
+    const is_anonymous = false
+    const is_draft = false
+    const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft)
+                   VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft})
+                   RETURNING post_id`
+    connect_db()
+      .then((database) => database.query(query))
+      .then(() => {
+          res.status(config.HTTPCode.Ok).json({
+              status: 'success',
+              data: {
+                  is_success: true,
+              },
+              message: 'Post Created',
+          })
+      })
+      .catch((err) => {
+          console.log(err)
+          res.status(config.HTTPCode.BadRequest).json({
+              status: 'error',
+              message: 'Wrong query format',
+          })
+      })
 })
 
 module.exports = post_router

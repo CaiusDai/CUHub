@@ -26,7 +26,7 @@ const insert_profile = (
     num_of_following
 ) => {
     const query_profile = `INSERT INTO Profile \
-                        VALUES(${user_id},'${major}','${gender}','${birthday}','${college}',${profile_photo},ARRAY['${interests[0]}','${interests[1]}','${interests[2]}'],${num_of_follower},${num_of_following})`
+                        VALUES(${user_id},'${major}','${gender}','${birthday}','${college}','${profile_photo}',ARRAY['${interests[0]}','${interests[1]}','${interests[2]}'],${num_of_follower},${num_of_following})`
     return query_profile
 }
 
@@ -61,7 +61,7 @@ const insert_post = (
     tags
 ) => {
     const query_post = `INSERT INTO Post \
-                        VALUES(DEFAULT,${user_id},'${content}',DEFAULT,${num_like},${num_dislike},'${images}',${num_comment},${num_retweet},${is_anonymous},${is_public},${is_draft},'${tags}')`
+                        VALUES(DEFAULT,${user_id},'${content}',DEFAULT,${num_like},${num_dislike},${images},${num_comment},${num_retweet},${is_anonymous},${is_public},${is_draft},'${tags}')`
     return query_post
 }
 
@@ -90,8 +90,7 @@ const insert_chat = (user_1, user_2) => {
 }
 
 const insert_message = (session_id, sender_id, content) => {
-    const query_message = `INSERT INTO Message \
-                        VALUES(${session_id},DEFAULT,${sender_id},'${content}')`
+    const query_message = `INSERT INTO Message (session_id, sender_id, content) VALUES (${session_id}, ${sender_id}, '${content}')`
     return query_message
 }
 
@@ -165,9 +164,9 @@ async function insert_data() {
                 'male',
                 '2001-02-05',
                 'CUHK',
-                'NULL',
+                '1681304315539.jfif',
                 ['sing', 'jump', 'rap'],
-                0,
+                2,
                 2
             )
         )
@@ -180,10 +179,10 @@ async function insert_data() {
                 'male',
                 '2001-02-05',
                 'CUHK',
-                'NULL',
+                '1681304354942.jfif',
                 ['sing', 'jump', 'rap'],
                 1,
-                1
+                2
             )
         )
         await create_query_execute(
@@ -195,10 +194,10 @@ async function insert_data() {
                 'male',
                 '2001-02-05',
                 'CUHK',
-                'NULL',
+                '1681304358529.jfif',
                 ['sing', 'jump', 'rap'],
                 2,
-                0
+                1
             )
         )
 

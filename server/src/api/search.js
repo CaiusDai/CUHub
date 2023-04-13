@@ -19,9 +19,9 @@ search_router.get('/', async (req, res) => {
     try {
         //Get input from request body
         const searchContent = req.query.searchContent
-
+        const user_id = req.session.uid
         const database = await connect_db()
-        const query_search = `SELECT * FROM Account WHERE username = '${searchContent}' AND is_blocked = FALSE`
+        const query_search = `SELECT Account.user_id, Account.username, Account.email, FollowRelationship.status, FollowRelationship.status FROM Account LEFT JOIN FollowRelationship ON Account.user_id = FollowRelationship.user2 AND FollowRelationship.user1 = ${user_id} WHERE Account.username = '${searchContent}' AND Account.is_blocked = FALSE AND Account.user_id != ${user_id}`
         const db_result = await database.query(query_search)
 
         //If no user found
@@ -40,6 +40,7 @@ search_router.get('/', async (req, res) => {
                     user_id: row.user_id,
                     username: row.username,
                     email: row.email,
+                    status: row.status,
                 }
             })
             console.log(result_array)
