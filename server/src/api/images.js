@@ -52,7 +52,7 @@ image_router.put('/avatars/me', avatar_upload.single('images'), (req, res) => {
     const get_old_query = `SELECT profile_photo FROM Profile WHERE user_id = ${user_id}`
     const upload_new_query = `UPDATE profile SET profile_photo = '${image_name}' WHERE user_id = ${user_id}`
     console.log('Start updating avatar')
-    console.log(get_old_query,upload_new_query)
+    console.log(get_old_query, upload_new_query)
     // Insert the new avatar
     connect_db().then((database) => {
         database.query(get_old_query).then((result) => {

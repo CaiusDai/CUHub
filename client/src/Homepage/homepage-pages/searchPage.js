@@ -23,7 +23,7 @@ const SearchPage = () => {
                     user.status = null
                     
                     fetch(
-                        `http://localhost:5000/api/follows/followinglist/${record.user_id}`,
+                        `http://localhost:5000/api/search/followinglist/${record.user_id}`,
                         {
                             method: 'PUT',
                             headers: {
@@ -49,7 +49,7 @@ const SearchPage = () => {
                     // for unfollowed, send a followed request, the frontend render the status as
                     // pending
                     fetch(
-                        `http://localhost:5000/api/follows/followinglist/${record.user_id}`,
+                        `http://localhost:5000/api/search/followinglist/${record.user_id}`,
                         {
                             method: 'PUT',
                             headers: {
@@ -159,7 +159,6 @@ const SearchPage = () => {
                     else{
 
                     }//unfollowed
-
 
     
                     // PLEASE OMIT CODE ABOVE
