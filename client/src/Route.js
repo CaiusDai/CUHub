@@ -133,6 +133,10 @@ export const AppRouter = [
                 path: 'admin/deleteconfirm/:email',
                 element: <DeleteConfirmPage />,
             },
+            {
+                path: 'admin/logout',
+                element: <Logout />,
+            },
         ],
     },
     {
