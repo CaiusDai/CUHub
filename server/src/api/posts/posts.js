@@ -317,7 +317,6 @@ post_router.post('/like', async (req, res) => {
 })
 
 //Repost
-
 post_router.post('/repost', async (req, res) => {
     if (!req.session.isAuthenticated) {
         res.status(HTTPCode.Unauthorized).json({
@@ -391,6 +390,7 @@ post_router.post('/repost', async (req, res) => {
     }
 })
 
+// Create new post
 post_router.post(
     '/new',
     image_upload.fields([{ name: 'image', maxCount: 1 }]),

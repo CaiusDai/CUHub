@@ -11,8 +11,8 @@ const query_account =
 
 const query_follow_relationship =
     'CREATE TABLE FollowRelationship(\
-        user1 INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
-        user2 INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+        user1 INTEGER NOT NULL REFERENCES Account ON DELETE CASCADE,\
+        user2 INTEGER NOT NULL REFERENCES Account ON DELETE CASCADE,\
         status BOOLEAN NOT NULL,\
         creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
         PRIMARY KEY (user1,user2),\
@@ -29,7 +29,7 @@ const query_gender_type =
 
 const query_profile =
     "CREATE TABLE Profile(\
-        user_id INTEGER PRIMARY KEY REFERENCES Account ON DELETE RESTRICT,\
+        user_id INTEGER PRIMARY KEY REFERENCES Account ON DELETE CASCADE,\
         major TEXT,\
         gender GENDER DEFAULT 'others',\
         birthday DATE ,\
@@ -66,8 +66,8 @@ const query_block =
 const query_chat_session =
     'CREATE TABLE ChatSession(\
         session_id SERIAL PRIMARY KEY,\
-        user1 INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
-        user2 INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+        user1 INTEGER NOT NULL REFERENCES Account ON DELETE CASCADE,\
+        user2 INTEGER NOT NULL REFERENCES Account ON DELETE CASCADE,\
         CHECK(user1<>user2),\
         UNIQUE(user1,user2))'
 
@@ -75,7 +75,7 @@ const query_message =
     'CREATE TABLE Message(\
         session_id INTEGER NOT NULL REFERENCES ChatSession ON DELETE CASCADE,\
         message_id SERIAL NOT NULL UNIQUE,\
-        sender_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+        sender_id INTEGER NOT NULL REFERENCES Account ON DELETE CASCADE,\
         content TEXT,\
         image TEXT,\
         PRIMARY KEY (session_id,message_id),\
@@ -86,7 +86,7 @@ const query_tag_type =
 const query_post =
     "CREATE TABLE Post (\
                             post_id BIGSERIAL PRIMARY KEY ,\
-                            user_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+                            user_id INTEGER NOT NULL REFERENCES Account ON DELETE CASCADE,\
                             content TEXT NOT NULL,\
                             creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
                             num_like INTEGER DEFAULT 0,\
@@ -105,9 +105,9 @@ const query_index_post = 'CREATE INDEX PostCreator ON Post(user_id)'
 const query_comment =
     'CREATE TABLE Comment(\
         comment_id BIGSERIAL PRIMARY KEY,\
-        user_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+        user_id INTEGER NOT NULL REFERENCES Account ON DELETE CASCADE,\
         post_id BIGINT NOT NULL REFERENCES Post ON DELETE CASCADE,\
-        reply_to INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+        reply_to INTEGER NOT NULL REFERENCES Account ON DELETE CASCADE,\
         content TEXT NOT NULL,\
         creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
         CHECK (user_id<>reply_to))'
@@ -118,9 +118,9 @@ const query_repost =
     'CREATE TABLE Repost(\
         repost_id BIGSERIAL PRIMARY KEY,\
         comment TEXT,\
-        original_post_id BIGINT NOT NULL REFERENCES Post,\
+        original_post_id BIGINT NOT NULL REFERENCES Post ON DELETE CASCADE,\
         creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
-        user_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT)'
+        user_id INTEGER NOT NULL REFERENCES Account ON DELETE CASCADE)'
 
 const query_index_repost = 'CREATE INDEX RepostBy ON Repost(user_id)'
 
@@ -128,7 +128,7 @@ const query_status_type = "CREATE TYPE STATUSTYPE AS ENUM ('like', 'dislike')"
 
 const query_postaltitude =
     'CREATE TABLE PostAltitude(\
-        user_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
+        user_id INTEGER NOT NULL REFERENCES Account ON DELETE CASCADE,\
         post_id BIGINT NOT NULL REFERENCES Post ON DELETE CASCADE,\
         status STATUSTYPE NOT NULL,\
         PRIMARY KEY (user_id,post_id))'
