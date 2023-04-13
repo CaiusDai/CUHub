@@ -114,55 +114,7 @@ const Page = () => {
                                                         width: 64,
                                                     }}
                                                 />
-                                                <div>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
+                                                <div style={{ position: 'absolute', transform: 'translateX(500%)' }}>
                                                     <Button
                                                         color="primary"
                                                         size="small"
@@ -208,9 +160,6 @@ const Page = () => {
                                                         Following{' '}
                                                         {userData &&
                                                             userData.num_of_following}
-                                                        <SvgIcon>
-                                                            <VscBlank />
-                                                        </SvgIcon>
                                                         Followers{' '}
                                                         {userData &&
                                                             userData.num_of_follower}
@@ -226,9 +175,6 @@ const Page = () => {
                                                         Post
                                                     </Button>
 
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
                                                     <Button
                                                         color="primary"
                                                         size="large"
@@ -241,12 +187,6 @@ const Page = () => {
                                                     >
                                                         Followers
                                                     </Button>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
                                                     <Button
                                                         color="primary"
                                                         size="large"
@@ -259,12 +199,6 @@ const Page = () => {
                                                     >
                                                         Following
                                                     </Button>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
-                                                    <SvgIcon>
-                                                        <VscBlank />
-                                                    </SvgIcon>
                                                     <Button
                                                         color="primary"
                                                         size="large"
