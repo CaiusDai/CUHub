@@ -26,6 +26,10 @@ const Page = () => {
         window.location.href = 'profile/follower_list'
     }
 
+    const handleFollowingClick = () =>{
+        window.location.href = 'profile/following_list'
+    }
+
     useEffect(() => {
         fetch(`http://localhost:5000/api/profiles/me`, {
             method: 'GET',
@@ -247,6 +251,10 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
+                                                        onClick={()=>
+                                                          handleFollowingClick(
+                                                          )
+                                                    }
                                                     >
                                                         Following
                                                     </Button>

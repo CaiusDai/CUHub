@@ -18,9 +18,9 @@ const SearchPage = () => {
         // true: following, false:unfollowed, none, pending
         const updatedData = searchResultToDisplay.map((user) => {
             if (user.user_id === record.user_id) {
-                if (user.followed === true || user.followed === null) {
+                if (user.status === true || user.status === false) {
                     // for following and pending, cancel the follow request
-                    user.followed = false
+                    user.status = null
                     
                     fetch(
                         `http://localhost:5000/api/follows/followinglist/${record.user_id}`,
@@ -37,6 +37,7 @@ const SearchPage = () => {
                             if (data.status === 'deleted') {
                                 //Successfully change status back to no relationship
                                 console.log(data.message)
+                                console.log("follow request has been canceled")
                             } else{
                                 //error
                                 console.log(data.message)
@@ -59,8 +60,10 @@ const SearchPage = () => {
                     )
                         .then((response) => response.json())
                         .then((data) => {
+                            console.log(data.status)
                             if (data.status === 'inserted') {
                                 //Add new record to the table, now is pending
+                                console.log("a follow request has been sent")
                                 console.log(data.message)
                             } else{
                                 //error
@@ -69,7 +72,7 @@ const SearchPage = () => {
                         })
 
 
-                    user.followed = null
+                    user.status = false
                     // backend: do something here to send the request to corresponding user
                 }
             }
@@ -96,20 +99,20 @@ const SearchPage = () => {
         },
         {
             title: 'FOLLOWED',
-            dataIndex: 'followed',
-            key: 'followed',
-            render: (followed, record) => {
+            dataIndex: 'status',
+            key: 'status',
+            render: (status, record) => {
 
                 let buttonText
-                switch (followed) {
+                switch (status) {
                     case true:
                         buttonText = 'Following'
                         break
                     case false:
-                        buttonText = 'Unfollowed'
+                        buttonText = 'Pending'
                         break
                     default:
-                        buttonText = 'Pending'
+                        buttonText = 'Unfollowed'
                 }
                 return (
                     <button onClick={() => handleFollowedChange(record)}>
@@ -137,22 +140,30 @@ const SearchPage = () => {
                     const user_list = data.data.user_list
                     console.log('The following is search result')
                     console.log(user_list)
+                    setSearchResultToDisplay(user_list) // Update postToDisplay using the state setter
+                    setIsLoading(false)
                     // PLEASE OMIT CODE BELLOW UNTIL NEXT REMINDER
                     // since the current result from back end does not have property call followed
                     // Adding the "followed" property to each user object in the data
                     
                     //user_list[0].user_id, user_list[0].username, user_list[0].email, user_list[0].status
 
-                    if(user_list[0].status === false)//pending
+                    if(user_list[0].status === false){
+
+                    }//pending
 
                     if(user_list[0].status === true){
+
                     }//following
-                    else//No relationship
+                    
+                    else{
+
+                    }//unfollowed
 
 
     
                     // PLEASE OMIT CODE ABOVE
-                    setSearchResultToDisplay(dataWithFollowed)
+                    setSearchResultToDisplay(user_list)
                     setIsLoading(false)
                     //user_list is the array of users
                     //Retrieve the elements in user_list in the format: userlist[0].username, userlist[0].user_id, userlist[0].email, only these three elements in an object of the array
