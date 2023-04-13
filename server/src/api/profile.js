@@ -3,6 +3,7 @@ const config = require('../configs/configs')
 
 const { connect_db } = require('../configs/db.js')
 
+const util = require('../util/utils')
 const HTTPCodes = config.HTTPCode
 const profile_router = express.Router()
 
@@ -139,6 +140,7 @@ profile_router.get('/:user_id', async (req, res) => {
             res.status(HTTPCodes.Ok).json({
                 status: 'success',
                 data: {
+                    follow_status: 'unfollowed',
                     profile: profile,
                     posts: [],
                 },
@@ -149,6 +151,7 @@ profile_router.get('/:user_id', async (req, res) => {
             res.status(HTTPCodes.Ok).json({
                 status: 'success',
                 data: {
+                    follow_status: 'pending',
                     profile: profile,
                     posts: [],
                 },
@@ -156,13 +159,110 @@ profile_router.get('/:user_id', async (req, res) => {
             })
         } else if (db_status.rows[0].status === true) {
             //If current user is following the user
-            const query_get_post = `SELECT` //Unfinished
+            const query_get_post = `WITH OriginalPosts AS (
+                SELECT 
+                  p.post_id, 
+                  p.content, 
+                  p.creation_time, 
+                  p.num_like, 
+                  p.num_dislike, 
+                  p.num_retweet, 
+                  p.num_comment, 
+                  p.images,
+                  NULL AS repost_creator_username, 
+                  a.username AS creator_username, 
+                  p.tags, 
+                  false AS is_repost, 
+                  NULL AS repost_content,
+                  false AS retweeted_by_user,
+                  pf.profile_photo AS avatar
+                FROM 
+                  Post AS p 
+                  JOIN Account AS a ON a.user_id = p.user_id 
+                  JOIN PROFILE AS pf ON pf.user_id = a.user_id
+                WHERE 
+                  p.is_draft = false 
+                  AND a.user_id = ${user_id}
+                UNION 
+                SELECT 
+                  p.post_id, 
+                  p.content AS content, 
+                  r.creation_time AS creation_time, 
+                  p.num_like, 
+                  p.num_dislike, 
+                  p.num_retweet, 
+                  p.num_comment, 
+                  p.images,
+                  a2.username AS repost_creator_username, 
+                  a.username AS creator_username, 
+                  p.tags, 
+                  true AS is_repost, 
+                  r.comment AS repost_content,
+                  r.user_id = ${current_id} AS retweeted_by_user,
+                  f.profile_photo AS avatar
+                FROM 
+                  Post AS p 
+                  JOIN Repost AS r ON r.original_post_id = p.post_id 
+                  JOIN Account AS a ON a.user_id = p.user_id 
+                  JOIN Account AS a2 ON a2.user_id = r.user_id 
+                  JOIN Profile AS f ON f.user_id = a2.user_id
+                WHERE 
+                  p.is_draft = false 
+                  AND a2.user_id = ${user_id}
+            )
+            SELECT 
+              op.post_id, 
+              op.content, 
+              op.creation_time, 
+              op.num_like, 
+              op.num_dislike, 
+              op.num_retweet, 
+              op.num_comment, 
+              op.repost_creator_username, 
+              op.creator_username AS creator, 
+              op.tags, 
+              op.is_repost, 
+              op.repost_content, 
+              COALESCE(pa.status = 'like', false) AS liked_by_user, 
+              COALESCE(pa.status = 'dislike', false) AS disliked_by_user, 
+              op.retweeted_by_user,
+              op.avatar,
+              op.images
+            FROM 
+              OriginalPosts AS op
+              LEFT JOIN PostAltitude AS pa ON op.post_id = pa.post_id AND pa.user_id = ${current_id}
+            ORDER BY 
+              creation_time DESC
+            
+            ` //Unfinished
             const result_post = await database.query(query_get_post)
+            const posts = result_post.rows.map((post) => {
+                return {
+                    is_repost: post.is_repost,
+                    repost_content: post.repost_content,
+                    repost_creator_username: post.repost_creator_username,
+                    post_id: post.post_id,
+                    content: post.content,
+                    creation_time: util.format_date(post.creation_time),
+                    num_like: post.num_like,
+                    num_dislike: post.num_dislike,
+                    num_retweet: post.num_retweet,
+                    num_comment: post.num_comment,
+                    creator_name: post.creator,
+                    tag: post.tags,
+                    is_liked: post.liked_by_user,
+                    disliked_by_user: post.disliked_by_user,
+                    is_retweeted: post.retweeted_by_user,
+                    avatar: post.avatar,
+                    images: post.images,
+                }
+            })
             res.status(HTTPCodes.Ok).json({
                 status: 'success',
                 data: {
+                    follow_status: 'following',
                     profile: profile,
-                    posts: result_post,
+                    posts: posts,
                 },
                 message: '[INFO] Get profile successfully',
             })

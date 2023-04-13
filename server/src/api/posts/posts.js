@@ -73,7 +73,7 @@ post_router.get('/all', (req, res) => {
         })
 })
 
-// Get all Firends' Post
+// Get all Friends' Post
 post_router.get('/friends', (req, res) => {
     // Check identity:
     if (!req.session.isAuthenticated) {
@@ -88,6 +88,7 @@ post_router.get('/friends', (req, res) => {
     }
     const user_id = req.session.uid
     // Content CreationTime num_likes num_dislikes Post
+
     const query = `WITH OriginalPosts AS (
         SELECT 
           p.post_id, 
@@ -104,11 +105,11 @@ post_router.get('/friends', (req, res) => {
           false AS is_repost, 
           NULL AS repost_content,
           false AS retweeted_by_user,
-          f.profile_photo AS avatar
+          pf.profile_photo AS avatar
         FROM 
           Post AS p 
           JOIN Account AS a ON a.user_id = p.user_id 
-          JOIN PROFILE AS f ON p.user_id = a.user_id
+          JOIN PROFILE AS pf ON pf.user_id = a.user_id
           INNER JOIN (
             SELECT 
               user2 
@@ -138,13 +139,13 @@ post_router.get('/friends', (req, res) => {
           true AS is_repost, 
           r.comment AS repost_content,
           r.user_id = ${user_id} AS retweeted_by_user,
-          f.profile_photo AS avatar
+          pf.profile_photo AS avatar
         FROM 
           Post AS p 
           JOIN Repost AS r ON r.original_post_id = p.post_id 
           JOIN Account AS a ON a.user_id = p.user_id 
           JOIN Account AS a2 ON a2.user_id = r.user_id 
-          JOIN Profile AS f ON a.user_id = f.user_id
+          JOIN Profile AS pf ON a2.user_id = pf.user_id
           JOIN (
             SELECT 
               user2 
@@ -168,7 +169,7 @@ post_router.get('/friends', (req, res) => {
       op.num_retweet, 
       op.num_comment, 
       op.repost_creator_username, 
-      op.creator_username, 
+      op.creator_username AS creator, 
       op.tags, 
       op.is_repost, 
       op.repost_content, 
@@ -183,6 +184,7 @@ post_router.get('/friends', (req, res) => {
     ORDER BY 
       creation_time DESC
     `
+
     connect_db()
         .then((database) => database.query(query))
         .then((db_result) => {
@@ -194,15 +196,14 @@ post_router.get('/friends', (req, res) => {
                     post_id: post.post_id,
                     content: post.content,
                     creation_time: util.format_date(post.creation_time),
-                    num_likes: post.num_like,
-                    num_dislikes: post.num_dislike,
-                    num_retweets: post.num_retweet,
-                    num_comments: post.num_comment,
-                    creator: post.creator,
-                    creator_username: post.creator_username,
+                    num_like: post.num_like,
+                    num_dislike: post.num_dislike,
+                    num_retweet: post.num_retweet,
+                    num_comment: post.num_comment,
+                    creator_name: post.creator,
                     tag: post.tags,
                     is_liked: post.liked_by_user,
-                    is_disliked: post.disliked_by_user,
+                    disliked_by_user: post.disliked_by_user,
                     is_retweeted: post.retweeted_by_user,
                     avatar: post.avatar,
                     images: post.images,
