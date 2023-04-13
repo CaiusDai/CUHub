@@ -24,6 +24,7 @@ import DeleteConfirmPage from './Admin/admin-pages/deleteconfirm'
 import ChatPage from './Homepage/homepage-pages/Chat'
 import ChatWindow from './Homepage/homepage-pages/chat_p/ChatWindow'
 import FollowerListPage from "./Homepage/homepage-pages/profile/profile-components/follower-list";
+import FollowingListPage from "./Homepage/homepage-pages/profile/profile-components/following-list";
 
 export const AppRouter = [
     {
@@ -84,6 +85,10 @@ export const AppRouter = [
             {
                 path: 'homepage/profile/follower_list',
                 element: <FollowerListPage/>,
+            },
+            {
+                path: 'homepage/profile/following_list',
+                element: <FollowingListPage/>,
             },
         ],
     },
