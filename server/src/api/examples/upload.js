@@ -31,7 +31,7 @@ upload_router.post('/uploads', image_upload.array('images', 10), (req, res) => {
 // Example for uploading avatar:
 upload_router.post(
     '/upload_avatar',
-    avatar_upload.single('image'),
+    avatar_upload.single('images'),
     async (req, res) => {
         console.log('Uploading avatar...')
         try {
@@ -41,7 +41,7 @@ upload_router.post(
             // Resize and compress the image
             const image = await sharp(req.file.path)
                 .resize(200, 200)
-                .jpeg({ quality: 50 })
+                .jpeg({ quality: 100 })
                 .toBuffer()
 
             // Save the revised image

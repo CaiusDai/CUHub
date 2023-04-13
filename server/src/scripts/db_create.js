@@ -34,7 +34,7 @@ const query_profile =
         gender GENDER DEFAULT 'others',\
         birthday DATE ,\
         college TEXT,\
-        profile_photo BYTEA ,\
+        profile_photo TEXT ,\
         interests TEXT ARRAY,\
         num_of_follower INTEGER NOT NULL DEFAULT 0,\
         num_of_following INTEGER NOT NULL DEFAULT 0,\
@@ -76,8 +76,10 @@ const query_message =
         session_id INTEGER NOT NULL REFERENCES ChatSession ON DELETE CASCADE,\
         message_id SERIAL NOT NULL UNIQUE,\
         sender_id INTEGER NOT NULL REFERENCES Account ON DELETE RESTRICT,\
-        content TEXT NOT NULL,\
-        PRIMARY KEY (session_id,message_id))'
+        content TEXT,\
+        image TEXT,\
+        PRIMARY KEY (session_id,message_id),\
+        CHECK (image IS NOT NULL OR content IS NOT NULL))'
 
 const query_tag_type =
     "CREATE TYPE TAG AS ENUM ('information','treehole','trading','jobseeking','academic')"
@@ -89,7 +91,7 @@ const query_post =
                             creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
                             num_like INTEGER DEFAULT 0,\
                             num_dislike INTEGER DEFAULT 0,\
-                            images BYTEA,\
+                            images TEXT ARRAY,\
                             num_comment INTEGER DEFAULT 0,\
                             num_retweet INTEGER DEFAULT 0,\
                             is_anonymous BOOLEAN NOT NULL,\
