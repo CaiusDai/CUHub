@@ -28,8 +28,10 @@ follow_router.get('/followinglist/me', async (req, res) => {
         //The user have no following user
         if (db_result.rowCount === 0) {
             res.status(HTTPCode.Ok).json({
-                status: 'none',
-                data: {},
+                status: 'success',
+                data: {
+                    user_list: []
+                },
                 message: '[INFO] You have no following user',
             })
             return
