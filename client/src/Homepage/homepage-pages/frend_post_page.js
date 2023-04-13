@@ -85,7 +85,7 @@ const FriendsPost = () => {
         return <div>Loading posts...</div>
     }
 
-    console.log("the following is post for friends page")
+    console.log('the following is post for friends page')
     console.log(postToDisplay)
 
     return (
