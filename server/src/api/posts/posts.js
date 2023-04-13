@@ -411,13 +411,14 @@ post_router.post(
             return
         }
         const user_id = req.session.uid
-        const { postContent, tagChoices,anonymous, is_public } = req.body
+        const { postContent, tagChoices,anonymous, is_public,friends_only } = req.body
         const image_name = req.files.image[0].filename
         console.log('image name: ', image_name)
-        const is_anonymous = anonymous
+        const is_anonymous = friends_only? false:anonymous
+        const _public = friends_only? false : is_public
         const is_draft = false
         const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft,images)
-                   VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft},'${image_name}')
+                   VALUES (${user_id}, '${postContent}', ${_public}, ${is_anonymous}, '${tagChoices}',${is_draft},'${image_name}')
                    RETURNING post_id`
         connect_db()
             .then((database) => database.query(query))
