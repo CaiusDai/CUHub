@@ -334,27 +334,24 @@ post_router.post('/repost', async (req, res) => {
             return
         }
 
-        console.log('1')
 
         //First check status of repost
-        const query_check_status = `SELECT * FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
-        const db_result = await database.query(query_check_status)
+        // const query_check_status = `SELECT * FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
+        // const db_result = await database.query(query_check_status)
 
         //If not exist
-        if (db_result.rowCount === 0) {
-            const query_insert_repost = `INSERT INTO Repost VALUES(DEFAULT, NULL, ${post_id},DEFAULT,${user_id})`
-            await database.query(query_insert_repost)
-            console.log('2')
 
-            res.status(HTTPCode.Ok).json({
-                status: 'success',
-                data: {
-                    result: 'reposted',
-                },
-                message: '[INFO] Repost successfully',
-            })
-            return
-        }
+        const query_insert_repost = `INSERT INTO Repost VALUES(DEFAULT, NULL, ${post_id},DEFAULT,${user_id})`
+        await database.query(query_insert_repost)
+
+        res.status(HTTPCode.Ok).json({
+            status: 'success',
+            data: {
+                result: 'reposted',
+            },
+            message: '[INFO] Repost successfully',
+        })
+        return
 
         //If existed, cancel the repost
         // else {
@@ -384,15 +381,15 @@ post_router.post('/new', (req, res) => {
     // Check identity:
     if (!req.session.isAuthenticated || req.session.isAdmin) {
         const error_code = req.session.isAuthenticated
-          ? config.ErrorCodes.InvalidAccess
-          : config.ErrorCodes.NotAuthenticated
+            ? config.ErrorCodes.InvalidAccess
+            : config.ErrorCodes.NotAuthenticated
         res.status(HTTPCode.Unauthorized).json({
             status: 'fail',
             data: {
                 error_code: error_code,
             },
             message:
-              'Post can only be created by normal users that have signed in',
+                'Post can only be created by normal users that have signed in',
         })
         return
     }
@@ -405,23 +402,23 @@ post_router.post('/new', (req, res) => {
                    VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft})
                    RETURNING post_id`
     connect_db()
-      .then((database) => database.query(query))
-      .then(() => {
-          res.status(config.HTTPCode.Ok).json({
-              status: 'success',
-              data: {
-                  is_success: true,
-              },
-              message: 'Post Created',
-          })
-      })
-      .catch((err) => {
-          console.log(err)
-          res.status(config.HTTPCode.BadRequest).json({
-              status: 'error',
-              message: 'Wrong query format',
-          })
-      })
+        .then((database) => database.query(query))
+        .then(() => {
+            res.status(config.HTTPCode.Ok).json({
+                status: 'success',
+                data: {
+                    is_success: true,
+                },
+                message: 'Post Created',
+            })
+        })
+        .catch((err) => {
+            console.log(err)
+            res.status(config.HTTPCode.BadRequest).json({
+                status: 'error',
+                message: 'Wrong query format',
+            })
+        })
 })
 
 module.exports = post_router

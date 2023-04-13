@@ -63,4 +63,78 @@ search_router.get('/', async (req, res) => {
     }
 })
 
+//For search, handling 
+search_router.put('/followinglist/:id',async (req,res)=>{
+
+    //Check validity
+    if (!req.session.isAuthenticated) {
+        res.status(HTTPCode.Unauthorized).json({
+            status: 'fail',
+            data: {
+                error_code: config.ErrorCodes.Unauthorized,
+            },
+            message: 'Unauthenticated visit',
+        })
+        return
+    }
+
+    try{
+        const user_id = req.session.uid
+        const following_id = req.params.id
+        const database = await connect_db()
+        
+        const status = await database.query(`SELECT status FROM FollowRelationship WHERE user1 = ${user_id} AND user2 = ${following_id}`)
+
+        //If there's no record of those two user, add pending record to database, for user clicking following button on search page
+        if(status.rowCount === 0)
+        {
+
+            const query_insert_following = `INSERT INTO FollowRelationship (user1,user2,status,creation_time) VALUES(${user_id},${following_id},FALSE,DEFAULT)`
+            await database.query(query_insert_following)
+            res.status(HTTPCode.Ok).json({
+                status: 'inserted',
+                data: {
+                },
+                message: "[INFO] Sent request to following others successfully",
+            })
+            return
+        }
+
+        //If there's existed record on database, no matter pending or approved, if user click button on search page, 
+        //the follow record will be deleted, and only update num_of_following and num_of_follower when the status is true
+
+        let query_remove_following
+        if(status.rows[0].status === false)
+        {
+            query_remove_following = `DELETE FROM FollowRelationship WHERE user1 = ${user_id} AND user2 = ${following_id}`
+        }
+        else if(status.rows[0].status === true)
+        {
+            query_remove_following = `DELETE FROM FollowRelationship WHERE user1 = ${user_id} AND user2 = ${following_id};UPDATE Profile SET num_of_follower = num_of_follower - 1 WHERE user_id = ${following_id};UPDATE Profile SET num_of_following = num_of_following - 1 WHERE user_id = ${user_id}`
+        }
+
+        await database.query(query_remove_following)
+
+        //The record is deleted
+
+        res.status(HTTPCode.Ok).json({
+            status: 'deleted',
+            data: {
+            },
+            message: "[INFO] Updating the status succesffully",
+        })
+
+
+
+    }
+    catch(err){
+        console.error(`[Error] Failed to operate following list.\n Error: ${err}`)
+            res.status(HTTPCode.BadRequest).json({
+                status: 'error',
+                message: '[Error] Invalid query format',
+            })
+
+    }
+})
+
 module.exports = search_router
