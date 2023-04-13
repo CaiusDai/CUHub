@@ -21,6 +21,11 @@ const Page = () => {
     const [userData, setUserData] = useState(null)
     const [avatarUrl, setAvatarUrl] = useState('')
 
+    const handleFollowerClick = () => {
+        console.log('Trying to get follower list')
+        window.location.href = 'profile/follower_list'
+    }
+
     useEffect(() => {
         fetch(`http://localhost:5000/api/profiles/me`, {
             method: 'GET',
@@ -225,6 +230,10 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
+                                                        onClick={() =>
+                                                          handleFollowerClick(
+                                                          )
+                                                        }
                                                     >
                                                         Followers
                                                     </Button>
