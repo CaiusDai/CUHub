@@ -384,15 +384,15 @@ post_router.post('/new', (req, res) => {
     // Check identity:
     if (!req.session.isAuthenticated || req.session.isAdmin) {
         const error_code = req.session.isAuthenticated
-          ? config.ErrorCodes.InvalidAccess
-          : config.ErrorCodes.NotAuthenticated
+            ? config.ErrorCodes.InvalidAccess
+            : config.ErrorCodes.NotAuthenticated
         res.status(HTTPCode.Unauthorized).json({
             status: 'fail',
             data: {
                 error_code: error_code,
             },
             message:
-              'Post can only be created by normal users that have signed in',
+                'Post can only be created by normal users that have signed in',
         })
         return
     }
@@ -405,23 +405,23 @@ post_router.post('/new', (req, res) => {
                    VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft})
                    RETURNING post_id`
     connect_db()
-      .then((database) => database.query(query))
-      .then(() => {
-          res.status(config.HTTPCode.Ok).json({
-              status: 'success',
-              data: {
-                  is_success: true,
-              },
-              message: 'Post Created',
-          })
-      })
-      .catch((err) => {
-          console.log(err)
-          res.status(config.HTTPCode.BadRequest).json({
-              status: 'error',
-              message: 'Wrong query format',
-          })
-      })
+        .then((database) => database.query(query))
+        .then(() => {
+            res.status(config.HTTPCode.Ok).json({
+                status: 'success',
+                data: {
+                    is_success: true,
+                },
+                message: 'Post Created',
+            })
+        })
+        .catch((err) => {
+            console.log(err)
+            res.status(config.HTTPCode.BadRequest).json({
+                status: 'error',
+                message: 'Wrong query format',
+            })
+        })
 })
 
 module.exports = post_router

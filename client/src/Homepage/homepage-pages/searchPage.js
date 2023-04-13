@@ -145,8 +145,8 @@ const SearchPage = () => {
 
                     if(user_list[0].status === false)//pending
 
-                    if(user_list[0].status === true)//following
-                    
+                    if(user_list[0].status === true){
+                    }//following
                     else//No relationship
 
 

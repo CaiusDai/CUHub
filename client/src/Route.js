@@ -23,7 +23,7 @@ import UnblockConfirmPage from './Admin/admin-pages/unblockconfirm'
 import DeleteConfirmPage from './Admin/admin-pages/deleteconfirm'
 import ChatPage from './Homepage/homepage-pages/Chat'
 import ChatWindow from './Homepage/homepage-pages/chat_p/ChatWindow'
-import FollowerListPage from "./Homepage/homepage-pages/profile/profile-components/follower-list";
+import FollowerListPage from './Homepage/homepage-pages/profile/profile-components/follower-list'
 
 export const AppRouter = [
     {
@@ -83,7 +83,7 @@ export const AppRouter = [
             },
             {
                 path: 'homepage/profile/follower_list',
-                element: <FollowerListPage/>,
+                element: <FollowerListPage />,
             },
         ],
     },
