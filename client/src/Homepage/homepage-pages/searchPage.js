@@ -146,19 +146,14 @@ const SearchPage = () => {
 
                     //user_list[0].user_id, user_list[0].username, user_list[0].email, user_list[0].status
 
-                    if(user_list[0].status === false){
+                    if (user_list[0].status === false) {
+                    } //pending
 
-                    }//pending
+                    if (user_list[0].status === true) {
+                    } //following
+                    else {
+                    } //unfollowed
 
-                    if(user_list[0].status === true){
-
-                    }//following
-                    
-                    else{
-
-                    }//unfollowed
-
-    
                     // PLEASE OMIT CODE ABOVE
                     setSearchResultToDisplay(user_list)
                     setIsLoading(false)

@@ -114,7 +114,13 @@ const Page = () => {
                                                         width: 64,
                                                     }}
                                                 />
-                                                <div style={{ position: 'absolute', transform: 'translateX(500%)' }}>
+                                                <div
+                                                    style={{
+                                                        position: 'absolute',
+                                                        transform:
+                                                            'translateX(500%)',
+                                                    }}
+                                                >
                                                     <Button
                                                         color="primary"
                                                         size="small"

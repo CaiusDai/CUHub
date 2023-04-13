@@ -1,7 +1,5 @@
 import React from 'react'
 import { Table, Button } from 'antd'
-import React from 'react'
-import { Table, Button } from 'antd'
 
 const FollowerListPage = () => {
     // front end need the following information: The users who already followed the user and the users
@@ -32,31 +30,6 @@ const FollowerListPage = () => {
         { name: 'Chris Lee', username: 'chris_lee', email: 'sample' },
     ]
 
-    const followedColumns = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Username',
-            dataIndex: 'username',
-            key: 'username',
-        },
-        {
-            title: 'Remove',
-            key: 'action',
-            render: (text, record) => (
-                <Button
-                    type="link"
-                    style={{ backgroundColor: 'red', color: 'white' }}
-                    onClick={() => handleRemoveFollower(record)}
-                >
-                    Remove
-                </Button>
-            ),
-        },
-    ]
     const followedColumns = [
         {
             title: 'Name',
@@ -184,5 +157,4 @@ const FollowerListPage = () => {
     )
 }
 
-export default FollowerListPage
 export default FollowerListPage
