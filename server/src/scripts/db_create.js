@@ -34,7 +34,7 @@ const query_profile =
         gender GENDER DEFAULT 'others',\
         birthday DATE ,\
         college TEXT,\
-        profile_photo TEXT ,\
+        profile_photo TEXT DEFAULT 'default.jfif',\
         interests TEXT ARRAY,\
         num_of_follower INTEGER NOT NULL DEFAULT 0,\
         num_of_following INTEGER NOT NULL DEFAULT 0,\
