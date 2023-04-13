@@ -23,8 +23,9 @@ import UnblockConfirmPage from './Admin/admin-pages/unblockconfirm'
 import DeleteConfirmPage from './Admin/admin-pages/deleteconfirm'
 import ChatPage from './Homepage/homepage-pages/Chat'
 import ChatWindow from './Homepage/homepage-pages/chat_p/ChatWindow'
-import FollowerListPage from './Homepage/homepage-pages/profile/profile-components/follower-list'
-import FollowingListPage from './Homepage/homepage-pages/profile/profile-components/following-list'
+import FollowerListPage from "./Homepage/homepage-pages/profile/profile-components/follower-list";
+import FollowingListPage from "./Homepage/homepage-pages/profile/profile-components/following-list";
+import OtherProfilePage from "./Homepage/homepage-pages/profile/others_profile";
 
 export const AppRouter = [
     {
@@ -59,6 +60,10 @@ export const AppRouter = [
                 element: <SpecificPostPage />,
             },
             {
+                path: 'homepage/other_profile/:id',
+                element: <OtherProfilePage/>,
+            },
+            {
                 path: 'search/:searchContent',
                 element: <SearchPage />,
             },
@@ -85,6 +90,10 @@ export const AppRouter = [
             {
                 path: 'homepage/profile/follower_list',
                 element: <FollowerListPage />,
+            },
+            {
+                path: 'homepage/profile/following_list',
+                element: <FollowingListPage />,
             },
             {
                 path: 'homepage/profile/following_list',

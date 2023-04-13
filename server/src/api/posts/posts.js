@@ -338,27 +338,23 @@ post_router.post('/repost', async (req, res) => {
             return
         }
 
-        console.log('1')
-
         //First check status of repost
-        const query_check_status = `SELECT * FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
-        const db_result = await database.query(query_check_status)
+        // const query_check_status = `SELECT * FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
+        // const db_result = await database.query(query_check_status)
 
         //If not exist
-        if (db_result.rowCount === 0) {
-            const query_insert_repost = `INSERT INTO Repost VALUES(DEFAULT, NULL, ${post_id},DEFAULT,${user_id})`
-            await database.query(query_insert_repost)
-            console.log('2')
 
-            res.status(HTTPCode.Ok).json({
-                status: 'success',
-                data: {
-                    result: 'reposted',
-                },
-                message: '[INFO] Repost successfully',
-            })
-            return
-        }
+        const query_insert_repost = `INSERT INTO Repost VALUES(DEFAULT, NULL, ${post_id},DEFAULT,${user_id})`
+        await database.query(query_insert_repost)
+
+        res.status(HTTPCode.Ok).json({
+            status: 'success',
+            data: {
+                result: 'reposted',
+            },
+            message: '[INFO] Repost successfully',
+        })
+        return
 
         //If existed, cancel the repost
         // else {
