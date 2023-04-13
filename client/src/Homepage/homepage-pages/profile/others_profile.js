@@ -21,36 +21,33 @@ import { useParams } from 'react-router-dom'
 const OtherProfilePage = () => {
     const { id } = useParams()
 
-  fetch(
-    `http://localhost:5000/api/profiles/${id}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    }
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === 'success') {
-        //Successfully get profile of other user
-        console.log(data.message)
-        const profile = data.data.profile //profile is object of profile, contains username,major,gender, birthday,
-        //college,interests,email,profile_photo,num_of_follower,num_of_following
-        const posts = data.data.posts //posts is array of posts
-        console.log(profile)
-      } else {
-        //error or unauthorized
-        console.log(data.message)
-      }
+    fetch(`http://localhost:5000/api/profiles/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
     })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === 'success') {
+                //Successfully get profile of other user
+                console.log(data.message)
+                const profile = data.data.profile //profile is object of profile, contains username,major,gender, birthday,
+                //college,interests,email,profile_photo,num_of_follower,num_of_following
+                const posts = data.data.posts //posts is array of posts
+                console.log(profile)
+            } else {
+                //error or unauthorized
+                console.log(data.message)
+            }
+        })
 
-  // here is the interface for view others profile, the id above provide to you
-  // is the creator_id corresponding to the post, please help me to provide all
-  // info that require current user (A) to see about the creator user (B) in here
-  // please note if the statues between these two users are A following B, all B post should
-  // also return to A
+    // here is the interface for view others profile, the id above provide to you
+    // is the creator_id corresponding to the post, please help me to provide all
+    // info that require current user (A) to see about the creator user (B) in here
+    // please note if the statues between these two users are A following B, all B post should
+    // also return to A
 
     console.log('the following is the id for this profile')
     console.log(id)
