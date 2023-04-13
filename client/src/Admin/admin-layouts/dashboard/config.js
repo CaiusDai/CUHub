@@ -34,15 +34,6 @@ export const items = [
         label: 'All Accounts List',
     },
     {
-        href: '/404',
-        icon: (
-            <SvgIcon>
-                <ExclamationTriangleIcon />
-            </SvgIcon>
-        ),
-        label: 'Error',
-    },
-    {
         href: '/admin/logout',
         icon: (
             <SvgIcon>

@@ -411,15 +411,22 @@ post_router.post(
             return
         }
         const user_id = req.session.uid
-        const { postContent, tagChoices,anonymous, is_public,friends_only } = req.body
-        const image_name = req.files.image[0].filename
-        console.log('image name: ', image_name)
-        const is_anonymous = friends_only? false:anonymous
-        const _public = friends_only? false : is_public
+        console.log(req.body)
+        const { postContent, tagChoices, visibilityChoices } = req.body
+        const has_image = req.image?true:false
+        const image_name = has_image ? req.files.image[0].filename : ''
+        const is_anonymous = visibilityChoices==='anonymous'
+        const is_public = (is_anonymous || visibilityChoices==='is_public')? true:false
+        console.log(`public: ${is_public}, anonymous: ${is_anonymous}`)
         const is_draft = false
-        const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft,images)
-                   VALUES (${user_id}, '${postContent}', ${_public}, ${is_anonymous}, '${tagChoices}',${is_draft},'${image_name}')
-                   RETURNING post_id`
+        const query_without_image =  `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft)
+                                        VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft})
+                                        RETURNING post_id`
+        const query = has_image?`INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft,images)
+                   VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft},'${image_name}')
+                   RETURNING post_id`:query_without_image
+
+        
         connect_db()
             .then((database) => database.query(query))
             .then(() => {

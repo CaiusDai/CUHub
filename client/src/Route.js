@@ -26,6 +26,7 @@ import ChatWindow from './Homepage/homepage-pages/chat_p/ChatWindow'
 import FollowerListPage from './Homepage/homepage-pages/profile/profile-components/follower-list'
 import FollowingListPage from './Homepage/homepage-pages/profile/profile-components/following-list'
 import OtherProfilePage from './Homepage/homepage-pages/profile/others_profile'
+import AdminHomePage from './Admin/admin-pages/admin_hompage'
 
 export const AppRouter = [
     {
@@ -118,7 +119,7 @@ export const AppRouter = [
         children: [
             {
                 path: 'admin',
-                element: <ReportsPage />,
+                element: <AdminHomePage />,
             },
             {
                 path: 'admin/blocking_list',
