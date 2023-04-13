@@ -29,6 +29,8 @@ const FollowingListPage = () => {
         console.log(data.message)
       } //Some error in query
     })
+
+
   const followedUsers = [
     { name: 'John Smith', username: 'john_smith', email: 'sample' },
     { name: 'Jane Doe', username: 'jane_doe', email: 'sample' },
@@ -79,14 +81,13 @@ const FollowingListPage = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === 'success') {
-          //Successfully get following list
+          //Successfully remove user from following list
           console.log(data.message)
           
-          //following_list is the list of following users, array, get elements by following_list[0].(user_id,username,email,status)
         } else {
           //error or unauthorized
           console.log(data.message)
-        } //Some error in query
+        }
       })
 
 
