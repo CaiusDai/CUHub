@@ -160,8 +160,6 @@ const SearchPage = () => {
 
                     }//unfollowed
 
-
-                    const dataWithFollowed = user_list
     
                     // PLEASE OMIT CODE ABOVE
                     setSearchResultToDisplay(user_list)
