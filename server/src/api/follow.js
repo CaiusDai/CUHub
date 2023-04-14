@@ -80,7 +80,7 @@ follow_router.delete('/followinglist/:id', async (req, res) => {
     try {
         const user_id = req.session.uid
         const following_id = req.params.id
-        console.log(following_id)
+
         const database = await connect_db()
 
         const status = await database.query(
@@ -258,7 +258,7 @@ follow_router.delete('/followerlist/:id', async (req, res) => {
         })
     } catch (err) {
         console.error(
-            `[Error] Failed to operate following list.\n Error: ${err}`
+            `[Error] Failed to operate follower list.\n Error: ${err}`
         )
         res.status(HTTPCode.BadRequest).json({
             status: 'error',
@@ -285,7 +285,7 @@ follow_router.put('/followerlist/:id', async (req, res) => {
         const user_id = req.session.uid
         const following_id = req.params.id
         const database = await connect_db()
-        const query = `UPDATE FollowRelationship SET status = true WHERE user1 = ${following_id} AND user2 = ${user_id}; UPDATE Profile SET num_of_follower = num_of_follower + 1 WHERE user_id = ${user_id}; UPDATE Profile SET num_of_following = num_of_following + 1 WHERE user_id = ${following_id}`
+        const query = `UPDATE FollowRelationship SET status = true WHERE user1 =${following_id} AND user2 = ${user_id}; UPDATE Profile SET num_of_follower = num_of_follower + 1 WHERE user_id = ${user_id}; UPDATE Profile SET num_of_following = num_of_following + 1 WHERE user_id = ${following_id}`
 
         await database.query(query)
 
