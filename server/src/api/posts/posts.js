@@ -412,8 +412,9 @@ post_router.post(
         }
         const user_id = req.session.uid
         const { postContent, tagChoices, visibilityChoices } = req.body
-        const has_image = req.image?true:false
+        const has_image = req.files.image?true:false
         const image_name = has_image ? req.files.image[0].filename : ''
+        console.log(`has_image ${has_image} image name: ${image_name}`)
         const is_anonymous = visibilityChoices==='anonymous'
         const is_public = (is_anonymous || visibilityChoices==='is_public')? true:false
         const is_draft = false

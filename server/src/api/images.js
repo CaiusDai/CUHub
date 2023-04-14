@@ -109,7 +109,6 @@ image_router.get('/avatars/:path', (req, res) => {
             image_path,
             {
                 headers: {
-                    'Access-Control-Allow-Origin': 'http://localhost:3000',
                     'Content-Type': content_type,
                     'Cache-Control': 'max-age=3600', // Cache the image for 1 hour
                 },
