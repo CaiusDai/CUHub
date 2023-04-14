@@ -277,7 +277,7 @@ post_router.post('/like', async (req, res) => {
             // await database.query(query_delete_record)
             // //Then update num_like in post table
             // const query_minus_number = `UPDATE Post SET num_like = num_like - 1 WHERE post_id = ${post_id}`
-            const query_delete_and_minus_number = `DELETE FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id};UPDATE Post SET num_like = num_like - 1 WHERE post_id = ${post_id}`
+            const query_delete_and_minus_number = `DELETE FROM PostAltitude WHERE post_id = ${post_id} AND user_id = ${user_id}`
             await database.query(query_delete_and_minus_number)
             res.status(HTTPCode.Ok).json({
                 status: 'success',
@@ -411,7 +411,7 @@ post_router.post(
             return
         }
         const user_id = req.session.uid
-        const { postContent, tagChoices,anonymous, is_public } = req.body
+        const { postContent, tagChoices, anonymous, is_public } = req.body
         const image_name = req.files.image[0].filename
         console.log('image name: ', image_name)
         const is_anonymous = anonymous
