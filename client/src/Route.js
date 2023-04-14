@@ -80,14 +80,6 @@ export const AppRouter = [
                 path: 'homepage/logout',
                 element: <Logout />,
             },
-            {
-                path: 'homepage/unfollowed_profile',
-                element: <UnfollowedProfilePage />,
-            },
-            {
-                path: 'homepage/followed_profile',
-                element: <FollowedProfilePage />,
-            },
         ],
     },
     {
