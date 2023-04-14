@@ -124,131 +124,143 @@ export const PostTable = (props) => {
     }
 
     const handleAvatarClick = (CreatorId) => {
-        const handleAvatarClick = (CreatorId) => {
-            navigate(`/homepage/other_profile/${CreatorId}`)
-        }
-
-        const handleCommentClick = (postId) => {
-            // TODO: Implement logic to navigate to the comments section of a post
-            console.log(`Navigated to comments section of post ${postId}`)
-            navigate(`/homepage/particular_post/${postId}`)
-            // window.location.href = {'/homepage/particular_post/${postId}'}
-        }
-
-        return (
-            <div>
-                <Scrollbar>
-                    <Table
-                        sx={{
-                            minWidth: 500,
-                            width: '100%',
-                        }}
-                    >
-                        <TableBody>
-                            {items.map((post) => {
-                                return (
-                                    <TableRow key={post.post_id}>
-                                        <TableCell>
-                                            <ButtonBase
-                                                onClick={() =>
-                                                    handleAvatarClick(
-                                                        post.creator_id
-                                                    )
-                                                }
-                                            >
-                                                <Avatar
-                                                    src={`http://localhost:5000/avatar_images/${post.avatar}`}
-                                                    alt={post.authorName}
-                                                />
-                                            </ButtonBase>
-                                            <Card variant="outlined">
-                                                <CardHeader
-                                                    title={post.creator_name}
-                                                    subheader={post.tag}
-                                                />
-                                                <CardContent>
-                                                    <Typography>
-                                                        {post.content}
-                                                    </Typography>
-                                                </CardContent>
-                                                {post.images && (
-                                                    <CardMedia
-                                                        component="img"
-                                                        src={`http://localhost:5000/post_images/${post.images}`}
-                                                        alt={post.content}
-                                                        sx={{ height: 200 }}
-                                                    />
-                                                )}
-                                                <CardActions>
-                                                    <IconButton
-                                                        color={
-                                                            post.is_liked
-                                                                ? 'primary'
-                                                                : 'default'
-                                                        }
-                                                        aria-label="Like"
-                                                        onClick={() =>
-                                                            handleLikeClick(
-                                                                post.post_id
-                                                            )
-                                                        }
-                                                    >
-                                                        <FavoriteIcon />
-                                                    </IconButton>
-                                                    <IconButton
-                                                        color={
-                                                            post.disliked_by_user
-                                                                ? 'primary'
-                                                                : 'default'
-                                                        }
-                                                        aria-label="Repost"
-                                                        onClick={() =>
-                                                            handleRepostClick(
-                                                                post.post_id
-                                                            )
-                                                        }
-                                                    >
-                                                        <RepeatIcon />
-                                                    </IconButton>
-                                                    <IconButton
-                                                        color="default"
-                                                        aria-label="Comment"
-                                                        onClick={() =>
-                                                            handleCommentClick(
-                                                                post.post_id
-                                                            )
-                                                        }
-                                                    >
-                                                        <ChatIcon />
-                                                    </IconButton>
-                                                </CardActions>
-                                            </Card>
-                                        </TableCell>
-                                    </TableRow>
-                                )
-                            })}
-                        </TableBody>
-                    </Table>
-                </Scrollbar>
-                <Divider />
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={count}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={onPageChange}
-                    onRowsPerPageChange={onRowsPerPageChange}
-                />
-            </div>
-        )
+        navigate(`/homepage/other_profile/${CreatorId}`)
     }
 
-    PostTable.propTypes = {
-        items: PropTypes.array,
-        page: PropTypes.number,
-        rowsPerPage: PropTypes.number,
-        onPageChange: PropTypes.func,
-        onRowsPerPageChange: PropTypes.func,
+    const handleCommentClick = (postId) => {
+        // TODO: Implement logic to navigate to the comments section of a post
+        console.log(`Navigated to comments section of post ${postId}`)
+        navigate(`/homepage/particular_post/${postId}`)
+        // window.location.href = {'/homepage/particular_post/${postId}'}
     }
+
+    return (
+        <div>
+            <Scrollbar>
+                <Table
+                    sx={{
+                        minWidth: 500,
+                        width: '100%',
+                    }}
+                >
+                    <TableBody>
+                        {items.map((post) => {
+                            return (
+                                <TableRow key={post.post_id}>
+                                    <TableCell>
+                                        <ButtonBase
+                                            onClick={() =>
+                                                handleAvatarClick(
+                                                    post.creator_id
+                                                )
+                                            }
+                                        >
+                                            <Avatar
+                                                src={`http://localhost:5000/avatar_images/${post.avatar}`}
+                                                alt={post.authorName}
+                                            />
+                                        </ButtonBase>
+                                        <Card variant="outlined">
+                                            <CardHeader
+                                                title={post.creator_name}
+                                                subheader={post.tag}
+                                            />
+                                            <CardContent>
+                                                <Typography>
+                                                    {post.content}
+                                                </Typography>
+                                            </CardContent>
+                                            {post.images && (
+                                                <CardMedia
+                                                    component="img"
+                                                    src={`http://localhost:5000/post_images/${post.images}`}
+                                                    alt={post.content}
+                                                    sx={{ height: 200 }}
+                                                />
+                                            )}
+                                            <CardActions>
+                                                <IconButton
+                                                    color={
+                                                        post.is_liked
+                                                            ? 'primary'
+                                                            : 'default'
+                                                    }
+                                                    aria-label="Like"
+                                                    onClick={() =>
+                                                        handleLikeClick(
+                                                            post.post_id
+                                                        )
+                                                    }
+                                                >
+                                                    <FavoriteIcon />
+                                                </IconButton>
+                                                <IconButton
+                                                    color={
+                                                        post.disliked_by_user
+                                                            ? 'primary'
+                                                            : 'default'
+                                                    }
+                                                    aria-label="Repost"
+                                                    onClick={() =>
+                                                        handleRepostClick(
+                                                            post.post_id
+                                                        )
+                                                    }
+                                                >
+                                                    <RepeatIcon />
+                                                </IconButton>
+                                                <IconButton
+                                                    color="default"
+                                                    aria-label="Comment"
+                                                    onClick={() =>
+                                                        handleCommentClick(
+                                                            post.post_id
+                                                        )
+                                                    }
+                                                >
+                                                    <ChatIcon />
+                                                </IconButton>
+                                            </CardActions>
+                                            {post.is_repost ? (
+                                                <Typography
+                                                    variant="body2"
+                                                    color="textSecondary"
+                                                    component="p"
+                                                >
+                                                    Created by{' '}
+                                                    {post.creator_username}{' '}
+                                                    Reposted by{' '}
+                                                    {
+                                                        post.repost_creator_username
+                                                    }
+                                                </Typography>
+                                            ) : null}
+                                        </Card>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })}
+                    </TableBody>
+                </Table>
+            </Scrollbar>
+            <Divider />
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={count}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={onPageChange}
+                onRowsPerPageChange={onRowsPerPageChange}
+            />
+        </div>
+    )
+}
+
+PostTable.propTypes = {
+    items: PropTypes.array,
+    page: PropTypes.number,
+    rowsPerPage: PropTypes.number,
+    onPageChange: PropTypes.func,
+    onRowsPerPageChange: PropTypes.func,
 }

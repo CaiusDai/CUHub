@@ -123,16 +123,20 @@ const FollowerListPage = () => {
 
     const handleRequestApprove = (record) => {
         // Implement your logic to remove the user from the followedUsers array
-        console.log(`Approve user ${record.id} follow request`)
+        console.log(record)
+        console.log(`Approve user ${record.user_id} follow request`)
 
         // send request approve to backend and update server corresponding
-        fetch(`http://localhost:5000/api/follows/followerlist/${record.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        })
+        fetch(
+            `http://localhost:5000/api/follows/followerlist/${record.user_id}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            }
+        )
             .then((result) => result.json())
             .then((result) => {
                 // handle no data in data block
