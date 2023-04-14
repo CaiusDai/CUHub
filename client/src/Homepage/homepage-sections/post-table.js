@@ -221,6 +221,20 @@ export const PostTable = (props) => {
                                                     <ChatIcon />
                                                 </IconButton>
                                             </CardActions>
+                                            {post.is_repost ? (
+                                                <Typography
+                                                    variant="body2"
+                                                    color="textSecondary"
+                                                    component="p"
+                                                >
+                                                    Created by{' '}
+                                                    {post.creator_username}{' '}
+                                                    Reposted by{' '}
+                                                    {
+                                                        post.repost_creator_username
+                                                    }
+                                                </Typography>
+                                            ) : null}
                                         </Card>
                                     </TableCell>
                                 </TableRow>

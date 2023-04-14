@@ -42,7 +42,6 @@ const OtherProfilePage = () => {
                 console.log(data.message)
             }
         })
-
     // here is the interface for view others profile, the id above provide to you
     // is the creator_id corresponding to the post, please help me to provide all
     // info that require current user (A) to see about the creator user (B) in here
