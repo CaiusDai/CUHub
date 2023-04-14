@@ -12,12 +12,44 @@ import {
     Unstable_Grid2 as Grid,
 } from '@mui/material'
 import { AiOutlineHeart } from 'react-icons/ai'
+import { VscBlank } from 'react-icons/vsc'
 import { SvgIcon } from '@mui/material'
 import backgroundimg from 'src/Images/bg.png'
 import white from 'src/Images/white.png'
 import { HiOutlineCake } from 'react-icons/hi'
+import { useParams } from 'react-router-dom'
+const OtherProfilePage = () => {
+    const { id } = useParams()
 
-const Page = () => {
+    fetch(`http://localhost:5000/api/profiles/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === 'success') {
+                //Successfully get profile of other user
+                console.log(data.message)
+                const profile = data.data.profile //profile is object of profile, contains username,major,gender, birthday,
+                //college,interests,email,profile_photo,num_of_follower,num_of_following
+                const posts = data.data.posts //posts is array of posts
+                console.log(profile)
+            } else {
+                //error or unauthorized
+                console.log(data.message)
+            }
+        })
+    // here is the interface for view others profile, the id above provide to you
+    // is the creator_id corresponding to the post, please help me to provide all
+    // info that require current user (A) to see about the creator user (B) in here
+    // please note if the statues between these two users are A following B, all B post should
+    // also return to A
+
+    console.log('the following is the id for this profile')
+    console.log(id)
     const [userData, setUserData] = useState(null)
     const [avatarUrl, setAvatarUrl] = useState('')
 
@@ -114,9 +146,14 @@ const Page = () => {
                                                         width: 64,
                                                     }}
                                                 />
-                                                <div>
+                                                <div
+                                                    style={{
+                                                        position: 'absolute',
+                                                        transform:
+                                                            'translateX(500%)',
+                                                    }}
+                                                >
                                                     <Button
-                                                        sx={{ ml: 30 }}
                                                         color="primary"
                                                         size="small"
                                                         type="button"
@@ -125,6 +162,7 @@ const Page = () => {
                                                     >
                                                         Edit Profile
                                                     </Button>
+                                                    <div></div>
                                                 </div>
                                             </Stack>
                                             <Box sx={{ maxWidth: 600 }}>
@@ -145,26 +183,14 @@ const Page = () => {
                                                         <SvgIcon>
                                                             <AiOutlineHeart />
                                                         </SvgIcon>
-                                                        <span
-                                                            style={{
-                                                                margin: '0 8px',
-                                                            }}
-                                                        ></span>
                                                         {userData &&
                                                             userData.interests}
-                                                        <span
-                                                            style={{
-                                                                margin: '0 8px',
-                                                            }}
-                                                        ></span>
+                                                        <SvgIcon>
+                                                            <VscBlank />
+                                                        </SvgIcon>
                                                         <SvgIcon>
                                                             <HiOutlineCake />
                                                         </SvgIcon>{' '}
-                                                        <span
-                                                            style={{
-                                                                margin: '0 8px',
-                                                            }}
-                                                        ></span>
                                                         {userData &&
                                                             userData.birthday}
                                                     </Typography>
@@ -172,11 +198,6 @@ const Page = () => {
                                                         Following{' '}
                                                         {userData &&
                                                             userData.num_of_following}
-                                                        <span
-                                                            style={{
-                                                                margin: '0 8px',
-                                                            }}
-                                                        ></span>
                                                         Followers{' '}
                                                         {userData &&
                                                             userData.num_of_follower}
@@ -188,7 +209,6 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
-                                                        sx={{ ml: 2 }}
                                                     >
                                                         Post
                                                     </Button>
@@ -198,7 +218,6 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
-                                                        sx={{ ml: 2 }}
                                                         onClick={() =>
                                                             handleFollowerClick()
                                                         }
@@ -210,7 +229,6 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
-                                                        sx={{ ml: 2 }}
                                                         onClick={() =>
                                                             handleFollowingClick()
                                                         }
@@ -222,7 +240,6 @@ const Page = () => {
                                                         size="large"
                                                         type="submit"
                                                         variant="outlined"
-                                                        sx={{ ml: 2 }}
                                                     >
                                                         LikedPost
                                                     </Button>
@@ -240,4 +257,4 @@ const Page = () => {
     )
 }
 
-export default Page
+export default OtherProfilePage

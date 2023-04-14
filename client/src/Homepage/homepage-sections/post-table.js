@@ -21,6 +21,7 @@ import RepeatIcon from '@mui/icons-material/Repeat'
 import ChatIcon from '@mui/icons-material/Chat'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ButtonBase } from '@mui/material'
 
 export const PostTable = (props) => {
     const navigate = useNavigate()
@@ -122,6 +123,10 @@ export const PostTable = (props) => {
         setPosts(updatedPosts)
     }
 
+    const handleAvatarClick = (CreatorId) => {
+        navigate(`/homepage/other_profile/${CreatorId}`)
+    }
+
     const handleCommentClick = (postId) => {
         // TODO: Implement logic to navigate to the comments section of a post
         console.log(`Navigated to comments section of post ${postId}`)
@@ -143,10 +148,18 @@ export const PostTable = (props) => {
                             return (
                                 <TableRow key={post.post_id}>
                                     <TableCell>
-                                        <Avatar
-                                            src={post.authorAvatar}
-                                            alt={post.authorName}
-                                        />
+                                        <ButtonBase
+                                            onClick={() =>
+                                                handleAvatarClick(
+                                                    post.creator_id
+                                                )
+                                            }
+                                        >
+                                            <Avatar
+                                                src={`http://localhost:5000/avatar_images/${post.avatar}`}
+                                                alt={post.authorName}
+                                            />
+                                        </ButtonBase>
                                         <Card variant="outlined">
                                             <CardHeader
                                                 title={post.creator_name}
@@ -157,10 +170,10 @@ export const PostTable = (props) => {
                                                     {post.content}
                                                 </Typography>
                                             </CardContent>
-                                            {post.image && (
+                                            {post.images && (
                                                 <CardMedia
                                                     component="img"
-                                                    image={post.image}
+                                                    src={`http://localhost:5000/post_images/${post.images}`}
                                                     alt={post.content}
                                                     sx={{ height: 200 }}
                                                 />
@@ -208,6 +221,20 @@ export const PostTable = (props) => {
                                                     <ChatIcon />
                                                 </IconButton>
                                             </CardActions>
+                                            {post.is_repost ? (
+                                                <Typography
+                                                    variant="body2"
+                                                    color="textSecondary"
+                                                    component="p"
+                                                >
+                                                    Created by{' '}
+                                                    {post.creator_username}{' '}
+                                                    Reposted by{' '}
+                                                    {
+                                                        post.repost_creator_username
+                                                    }
+                                                </Typography>
+                                            ) : null}
                                         </Card>
                                     </TableCell>
                                 </TableRow>

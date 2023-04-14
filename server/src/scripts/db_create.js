@@ -34,7 +34,7 @@ const query_profile =
         gender GENDER DEFAULT 'others',\
         birthday DATE ,\
         college TEXT,\
-        profile_photo TEXT ,\
+        profile_photo TEXT DEFAULT 'default.jfif',\
         interests TEXT ARRAY,\
         num_of_follower INTEGER NOT NULL DEFAULT 0,\
         num_of_following INTEGER NOT NULL DEFAULT 0,\
@@ -91,7 +91,7 @@ const query_post =
                             creation_time TIMESTAMP NOT NULL DEFAULT NOW(),\
                             num_like INTEGER DEFAULT 0,\
                             num_dislike INTEGER DEFAULT 0,\
-                            images TEXT ARRAY,\
+                            images TEXT,\
                             num_comment INTEGER DEFAULT 0,\
                             num_retweet INTEGER DEFAULT 0,\
                             is_anonymous BOOLEAN NOT NULL,\

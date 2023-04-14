@@ -5,6 +5,7 @@ const util = require('../../util/utils')
 const HTTPCode = config.HTTPCode
 const post_router = express.Router()
 const comment_router = require('./comments')
+const { image_upload } = require('../../util/upload_controller')
 
 post_router.use('/comments', comment_router)
 
@@ -25,11 +26,12 @@ post_router.get('/all', (req, res) => {
     // Content CreationTime num_likes num_dislikes Post
     const query = `SELECT p.post_id, p.content, p.creation_time, p.num_like, p.num_dislike,
                     p.num_retweet, p.num_comment, p.is_anonymous, p.tags,
-                    a.username AS creator, a.user_id AS creator_id,
+                    a.username AS creator, a.user_id AS creator_id, f.profile_photo AS avatar, p.images,
                     EXISTS(SELECT 1 FROM PostAltitude WHERE user_id = ${user_id} AND post_id = p.post_id AND status = 'like') AS liked_by_user,
                     EXISTS(SELECT 1 FROM PostAltitude WHERE user_id = ${user_id} AND post_id = p.post_id AND status = 'dislike') AS disliked_by_user
                     FROM Post p
                     JOIN Account a ON p.user_id = a.user_id
+                    JOIN Profile f ON f.user_id = a.user_id
                     WHERE p.is_public = true AND p.is_draft = false
                     ORDER BY p.creation_time DESC`
     connect_db()
@@ -50,6 +52,8 @@ post_router.get('/all', (req, res) => {
                     creator_id: post.creator_id,
                     is_liked: post.liked_by_user,
                     disliked_by_user: post.disliked_by_user,
+                    avatar: post.avatar,
+                    images: post.images,
                 }
             })
             res.status(HTTPCode.Ok).json({
@@ -69,7 +73,7 @@ post_router.get('/all', (req, res) => {
         })
 })
 
-// Get all Firends' Post
+// Get all Friends' Post
 post_router.get('/friends', (req, res) => {
     // Check identity:
     if (!req.session.isAuthenticated) {
@@ -84,6 +88,7 @@ post_router.get('/friends', (req, res) => {
     }
     const user_id = req.session.uid
     // Content CreationTime num_likes num_dislikes Post
+
     const query = `WITH OriginalPosts AS (
         SELECT 
           p.post_id, 
@@ -93,16 +98,19 @@ post_router.get('/friends', (req, res) => {
           p.num_dislike, 
           p.num_retweet, 
           p.num_comment, 
+          p.images,
           NULL AS repost_creator_username, 
           a.username AS creator_username, 
           p.tags, 
           false AS is_repost, 
           NULL AS repost_content,
-          false AS retweeted_by_user
+          false AS retweeted_by_user,
+          pf.profile_photo AS avatar
         FROM 
           Post AS p 
           JOIN Account AS a ON a.user_id = p.user_id 
-          LEFT JOIN (
+          JOIN PROFILE AS pf ON pf.user_id = a.user_id
+          INNER JOIN (
             SELECT 
               user2 
             FROM 
@@ -124,17 +132,20 @@ post_router.get('/friends', (req, res) => {
           p.num_dislike, 
           p.num_retweet, 
           p.num_comment, 
+          p.images,
           a2.username AS repost_creator_username, 
           a.username AS creator_username, 
           p.tags, 
           true AS is_repost, 
           r.comment AS repost_content,
-          r.user_id = ${user_id} AS retweeted_by_user
+          r.user_id = ${user_id} AS retweeted_by_user,
+          pf.profile_photo AS avatar
         FROM 
           Post AS p 
           JOIN Repost AS r ON r.original_post_id = p.post_id 
           JOIN Account AS a ON a.user_id = p.user_id 
           JOIN Account AS a2 ON a2.user_id = r.user_id 
+          JOIN Profile AS pf ON a2.user_id = pf.user_id
           JOIN (
             SELECT 
               user2 
@@ -158,19 +169,22 @@ post_router.get('/friends', (req, res) => {
       op.num_retweet, 
       op.num_comment, 
       op.repost_creator_username, 
-      op.creator_username, 
+      op.creator_username AS creator, 
       op.tags, 
       op.is_repost, 
       op.repost_content, 
-      COALESCE(pa.status = 'like', false) AS liked_by_user,
-      COALESCE(pa.status = 'dislike', false) AS disliked_by_user,
-      op.retweeted_by_user
+      COALESCE(pa.status = 'like', false) AS liked_by_user, 
+      COALESCE(pa.status = 'dislike', false) AS disliked_by_user, 
+      op.retweeted_by_user,
+      op.avatar,
+      op.images
     FROM 
       OriginalPosts AS op
       LEFT JOIN PostAltitude AS pa ON op.post_id = pa.post_id AND pa.user_id = ${user_id}
     ORDER BY 
       creation_time DESC
     `
+
     connect_db()
         .then((database) => database.query(query))
         .then((db_result) => {
@@ -182,16 +196,17 @@ post_router.get('/friends', (req, res) => {
                     post_id: post.post_id,
                     content: post.content,
                     creation_time: util.format_date(post.creation_time),
-                    num_likes: post.num_like,
-                    num_dislikes: post.num_dislike,
-                    num_retweets: post.num_retweet,
-                    num_comments: post.num_comment,
-                    creator: post.creator,
-                    creator_username: post.creator_username,
+                    num_like: post.num_like,
+                    num_dislike: post.num_dislike,
+                    num_retweet: post.num_retweet,
+                    num_comment: post.num_comment,
+                    creator_name: post.creator,
                     tag: post.tags,
                     is_liked: post.liked_by_user,
-                    is_disliked: post.disliked_by_user,
+                    disliked_by_user: post.disliked_by_user,
                     is_retweeted: post.retweeted_by_user,
+                    avatar: post.avatar,
+                    images: post.images,
                 }
             })
             res.status(HTTPCode.Ok).json({
@@ -334,27 +349,23 @@ post_router.post('/repost', async (req, res) => {
             return
         }
 
-        console.log('1')
-
         //First check status of repost
-        const query_check_status = `SELECT * FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
-        const db_result = await database.query(query_check_status)
+        // const query_check_status = `SELECT * FROM Repost WHERE original_post_id = ${post_id} AND user_id = ${user_id}`
+        // const db_result = await database.query(query_check_status)
 
         //If not exist
-        if (db_result.rowCount === 0) {
-            const query_insert_repost = `INSERT INTO Repost VALUES(DEFAULT, NULL, ${post_id},DEFAULT,${user_id})`
-            await database.query(query_insert_repost)
-            console.log('2')
 
-            res.status(HTTPCode.Ok).json({
-                status: 'success',
-                data: {
-                    result: 'reposted',
-                },
-                message: '[INFO] Repost successfully',
-            })
-            return
-        }
+        const query_insert_repost = `INSERT INTO Repost VALUES(DEFAULT, NULL, ${post_id},DEFAULT,${user_id})`
+        await database.query(query_insert_repost)
+
+        res.status(HTTPCode.Ok).json({
+            status: 'success',
+            data: {
+                result: 'reposted',
+            },
+            message: '[INFO] Repost successfully',
+        })
+        return
 
         //If existed, cancel the repost
         // else {
@@ -380,48 +391,54 @@ post_router.post('/repost', async (req, res) => {
     }
 })
 
-post_router.post('/new', (req, res) => {
-    // Check identity:
-    if (!req.session.isAuthenticated || req.session.isAdmin) {
-        const error_code = req.session.isAuthenticated
-          ? config.ErrorCodes.InvalidAccess
-          : config.ErrorCodes.NotAuthenticated
-        res.status(HTTPCode.Unauthorized).json({
-            status: 'fail',
-            data: {
-                error_code: error_code,
-            },
-            message:
-              'Post can only be created by normal users that have signed in',
-        })
-        return
-    }
-    const user_id = req.session.uid
-    const { postContent, tagChoices } = req.body
-    const is_public = true
-    const is_anonymous = false
-    const is_draft = false
-    const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft)
-                   VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft})
+post_router.post(
+    '/new',
+    image_upload.fields([{ name: 'image', maxCount: 1 }]),
+    (req, res) => {
+        // Check identity:
+        if (!req.session.isAuthenticated || req.session.isAdmin) {
+            const error_code = req.session.isAuthenticated
+                ? config.ErrorCodes.InvalidAccess
+                : config.ErrorCodes.NotAuthenticated
+            res.status(HTTPCode.Unauthorized).json({
+                status: 'fail',
+                data: {
+                    error_code: error_code,
+                },
+                message:
+                    'Post can only be created by normal users that have signed in',
+            })
+            return
+        }
+        const user_id = req.session.uid
+        const { postContent, tagChoices } = req.body
+        const image_name = req.files.image[0].filename
+        console.log('image name: ', image_name)
+        const is_public = true
+        const is_anonymous = false
+        const is_draft = false
+        const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft,images)
+                   VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft},'${image_name}')
                    RETURNING post_id`
-    connect_db()
-      .then((database) => database.query(query))
-      .then(() => {
-          res.status(config.HTTPCode.Ok).json({
-              status: 'success',
-              data: {
-                  is_success: true,
-              },
-              message: 'Post Created',
-          })
-      })
-      .catch((err) => {
-          console.log(err)
-          res.status(config.HTTPCode.BadRequest).json({
-              status: 'error',
-              message: 'Wrong query format',
-          })
-      })
-})
+        connect_db()
+            .then((database) => database.query(query))
+            .then(() => {
+                res.status(config.HTTPCode.Ok).json({
+                    status: 'success',
+                    data: {
+                        is_success: true,
+                    },
+                    message: 'Post Created',
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+                res.status(config.HTTPCode.BadRequest).json({
+                    status: 'error',
+                    message: 'Wrong query format',
+                })
+            })
+    }
+)
 
 module.exports = post_router
