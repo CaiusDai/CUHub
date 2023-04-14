@@ -43,7 +43,6 @@ search_router.get('/', async (req, res) => {
                     status: row.status,
                 }
             })
-            console.log(result_array)
 
             res.status(HTTPCode.Ok).json({
                 status: 'success',

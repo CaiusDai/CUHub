@@ -32,7 +32,7 @@ const FollowingListPage = () => {
                     console.log(data.message)
                 } //Some error in query
             })
-    })
+    }, [])
 
     const followedUsers = [
         { name: 'John Smith', username: 'john_smith', email: 'sample' },
@@ -68,9 +68,9 @@ const FollowingListPage = () => {
 
     const handleUnfollow = (record) => {
         // Implement your logic to unfollow a user
-        console.log(`Removing user ${record.id} from followed users`)
+        console.log(`Removing user ${record.user_id} from followed users`)
 
-        fetch(`http://localhost:5000/api/follows/followinglist/${record.id}`, {
+        fetch(`http://localhost:5000/api/follows/followinglist/${record.user_id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
