@@ -28,20 +28,20 @@ const OtherProfilePage = () => {
         },
         credentials: 'include',
     })
-      .then((response) => response.json())
-      .then((data) => {
-          if (data.status === 'success') {
-              //Successfully get profile of other user
-              console.log(data.message)
-              const profile = data.data.profile //profile is object of profile, contains username,major,gender, birthday,
-              //college,interests,email,profile_photo,num_of_follower,num_of_following
-              const posts = data.data.posts //posts is array of posts
-              console.log(profile)
-          } else {
-              //error or unauthorized
-              console.log(data.message)
-          }
-      })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === 'success') {
+                //Successfully get profile of other user
+                console.log(data.message)
+                const profile = data.data.profile //profile is object of profile, contains username,major,gender, birthday,
+                //college,interests,email,profile_photo,num_of_follower,num_of_following
+                const posts = data.data.posts //posts is array of posts
+                console.log(profile)
+            } else {
+                //error or unauthorized
+                console.log(data.message)
+            }
+        })
     // here is the interface for view others profile, the id above provide to you
     // is the creator_id corresponding to the post, please help me to provide all
     // info that require current user (A) to see about the creator user (B) in here

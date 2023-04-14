@@ -156,7 +156,7 @@ export const PostTable = (props) => {
                                             }
                                         >
                                             <Avatar
-                                                src={post.authorAvatar}
+                                                src={`http://localhost:5000/post_images/${post.images}`}
                                                 alt={post.authorName}
                                             />
                                         </ButtonBase>
@@ -170,10 +170,10 @@ export const PostTable = (props) => {
                                                     {post.content}
                                                 </Typography>
                                             </CardContent>
-                                            {post.image && (
+                                            {post.images && (
                                                 <CardMedia
                                                     component="img"
-                                                    image={post.image}
+                                                    src={`http://localhost:5000/post_images/${post.images}`}
                                                     alt={post.content}
                                                     sx={{ height: 200 }}
                                                 />
