@@ -317,7 +317,6 @@ post_router.post('/like', async (req, res) => {
 })
 
 //Repost
-
 post_router.post('/repost', async (req, res) => {
     if (!req.session.isAuthenticated) {
         res.status(HTTPCode.Unauthorized).json({
@@ -391,6 +390,7 @@ post_router.post('/repost', async (req, res) => {
     }
 })
 
+// Create new post
 post_router.post(
     '/new',
     image_upload.fields([{ name: 'image', maxCount: 1 }]),
@@ -411,11 +411,10 @@ post_router.post(
             return
         }
         const user_id = req.session.uid
-        const { postContent, tagChoices } = req.body
+        const { postContent, tagChoices,anonymous, is_public } = req.body
         const image_name = req.files.image[0].filename
         console.log('image name: ', image_name)
-        const is_public = true
-        const is_anonymous = false
+        const is_anonymous = anonymous
         const is_draft = false
         const query = `INSERT INTO Post (user_id, content, is_public, is_anonymous, tags,is_draft,images)
                    VALUES (${user_id}, '${postContent}', ${is_public}, ${is_anonymous}, '${tagChoices}',${is_draft},'${image_name}')

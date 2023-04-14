@@ -70,13 +70,16 @@ const FollowingListPage = () => {
         // Implement your logic to unfollow a user
         console.log(`Removing user ${record.user_id} from followed users`)
 
-        fetch(`http://localhost:5000/api/follows/followinglist/${record.user_id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        })
+        fetch(
+            `http://localhost:5000/api/follows/followinglist/${record.user_id}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            }
+        )
             .then((response) => response.json())
             .then((data) => {
                 if (data.status === 'success') {
