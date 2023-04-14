@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Input, Button, Select, Upload, message } from 'antd'
+import { Form, Input, Button, Select, Upload, message, Row, Col } from 'antd'
 import { LockOutlined, UploadOutlined } from '@ant-design/icons'
 
 const { Option } = Select
@@ -11,7 +11,7 @@ const NewPostForm = () => {
     const handleSubmit = (values) => {
         setSubmitting(true)
         // Do something with the post content, tag choices, and image here, like sending them to a server
-        const { postContent, tagChoices, image } = values
+        const { postContent, image, tagChoices, visibilityChoices } = values
 
         // handle create a post here, currently, frontend can only consider text content, you can take it as
         // every post do not have a image input currently, the input to backend is : postContent (the text input
@@ -20,6 +20,7 @@ const NewPostForm = () => {
         const formData = new FormData()
         formData.append('postContent', postContent)
         formData.append('tagChoices', tagChoices)
+        formData.append('visibilityChoices', visibilityChoices)
         formData.append('image', image?.file)
         fetch('http://localhost:5000/api/posts/new', {
             method: 'POST',
@@ -91,32 +92,67 @@ const NewPostForm = () => {
                     placeholder="What happens to you today? Share it to your friends!"
                 />
             </Form.Item>
-            <Form.Item
-                label="Tag Choices"
-                name="tagChoices"
-                rules={[
-                    { required: true, message: 'Please select tag choices' },
-                ]}
-            >
-                <Select mode="multiple" placeholder="Please select tag choices">
-                    <Option value="treehole">Tree Hole</Option>
-                    <Option value="jobseeking">Job Seeking</Option>
-                    <Option value="trading">Trading</Option>
-                    <Option value="academic">Academic</Option>
-                    <Option value="information">Info</Option>
-                </Select>
-            </Form.Item>
-            <Form.Item label="Image" name="image">
-                <Upload
-                    id="images"
-                    name="image"
-                    maxCount={1}
-                    beforeUpload={() => false}
-                    onChange={handleUploadChange}
-                >
-                    <Button icon={<UploadOutlined />}>Upload Image</Button>
-                </Upload>
-            </Form.Item>
+            <Row gutter={16}>
+                <Col xs={16} sm={8}>
+                    <Form.Item label="Image" name="image">
+                        <Upload
+                            id="images"
+                            name="image"
+                            maxCount={1}
+                            beforeUpload={() => false}
+                            onChange={handleUploadChange}
+                        >
+                            <Button icon={<UploadOutlined />}>
+                                Upload Image
+                            </Button>
+                        </Upload>
+                    </Form.Item>
+                </Col>
+                <Col xs={16} sm={8}>
+                    <Form.Item
+                        label="Tag Choices"
+                        name="tagChoices"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please select tag choices',
+                            },
+                        ]}
+                    >
+                        <Select
+                            mode="single"
+                            placeholder="Please select tag choices"
+                        >
+                            <Option value="treehole">Tree Hole</Option>
+                            <Option value="jobseeking">Job Seeking</Option>
+                            <Option value="trading">Trading</Option>
+                            <Option value="academic">Academic</Option>
+                            <Option value="information">Info</Option>
+                        </Select>
+                    </Form.Item>
+                </Col>
+                <Col xs={16} sm={8}>
+                    <Form.Item
+                        label="Visibility"
+                        name="visibilityChoices"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please select tag choices',
+                            },
+                        ]}
+                    >
+                        <Select
+                            mode="single"
+                            placeholder="Please select tag choices"
+                        >
+                            <Option value="is_public">Public</Option>
+                            <Option value="friends_only">Friends only</Option>
+                            <Option value="anonymous">Anonymous</Option>
+                        </Select>
+                    </Form.Item>
+                </Col>
+            </Row>
             <Form.Item>
                 <Button type="primary" htmlType="submit" loading={submitting}>
                     Post

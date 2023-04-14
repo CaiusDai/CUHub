@@ -108,13 +108,16 @@ const FollowerListPage = () => {
     const handleRemoveFollower = (record) => {
         // Implement your logic to remove the user from the followedUsers array
         console.log(`Removing user ${record.user_id} from followed users`)
-        fetch(`http://localhost:5000/api/follows/followerlist/${record.user_id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        })
+        fetch(
+            `http://localhost:5000/api/follows/followerlist/${record.user_id}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            }
+        )
             .then((result) => result.json())
             .then((result) => {
                 // handle
@@ -140,8 +143,7 @@ const FollowerListPage = () => {
             .then((result) => result.json())
             .then((result) => {
                 // handle no data in data block
-                if(result.status === 'success')
-                console.log(result.message)
+                if (result.status === 'success') console.log(result.message)
             })
     }
 
@@ -149,13 +151,16 @@ const FollowerListPage = () => {
         // Implement your logic to remove the user from the followedUsers array
         console.log(`Deny user ${record.user_id} follow request`)
         // send request deny to backend and update server corresponding
-        fetch(`http://localhost:5000/api/follows/followerlist/${record.user_id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        })
+        fetch(
+            `http://localhost:5000/api/follows/followerlist/${record.user_id}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            }
+        )
             .then((result) => result.json())
             .then((result) => {
                 // handle
