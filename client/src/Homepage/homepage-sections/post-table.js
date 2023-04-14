@@ -156,7 +156,7 @@ export const PostTable = (props) => {
                                             }
                                         >
                                             <Avatar
-                                                src={`http://localhost:5000/post_images/${post.images}`}
+                                                src={`http://localhost:5000/avatar_images/${post.avatar}`}
                                                 alt={post.authorName}
                                             />
                                         </ButtonBase>
