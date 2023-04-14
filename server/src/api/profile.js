@@ -69,7 +69,7 @@ profile_router.put('/', (req, res) => {
         return
     }
 
-    const { username, major, gender, birthday, college, interests } = req.body
+    const { major, gender, birthday, college, interests } = req.body
     // const profile_photo = req.body.profile_photo//Needs to be solved using the way of uploading photo
     const user_id = req.session.uid
     const query_edit_profile = `UPDATE Profile SET major = '${major}', gender = '${gender}',birthday = '${birthday}', college = '${college}',interests = ARRAY['${interests[0]}','${interests[1]}','${interests[2]}'] WHERE user_id = ${user_id}`

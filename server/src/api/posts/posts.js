@@ -411,7 +411,7 @@ post_router.post(
             return
         }
         const user_id = req.session.uid
-        const { postContent, tagChoices,anonymous, is_public } = req.body
+        const { postContent, tagChoices, anonymous, is_public } = req.body
         const image_name = req.files.image[0].filename
         console.log('image name: ', image_name)
         const is_anonymous = anonymous

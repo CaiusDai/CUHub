@@ -172,8 +172,6 @@ AFTER DELETE ON Repost
 FOR EACH ROW
 EXECUTE FUNCTION decrement_num_of_repost();`
 
-
-
 function create_query_execute(database, table_name, query) {
     return database
         .query(query)
@@ -236,9 +234,17 @@ async function create_table() {
             'Index AltitudeOf',
             query_index_altitude_of
         )
-        await create_query_execute(database,'Trigger_like',query_trigger_like)
-        await create_query_execute(database,'Trigger_comment',query_trigger_comment)
-        await create_query_execute(database,'Trigger_repost',query_trigger_repost)
+        await create_query_execute(database, 'Trigger_like', query_trigger_like)
+        await create_query_execute(
+            database,
+            'Trigger_comment',
+            query_trigger_comment
+        )
+        await create_query_execute(
+            database,
+            'Trigger_repost',
+            query_trigger_repost
+        )
 
         return Promise.resolve()
     } catch (error) {
