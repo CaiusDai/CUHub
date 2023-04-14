@@ -25,12 +25,14 @@ comment_router.get('/:post_id', async (req, res) => {
         let result_array = {}
 
         //First get post
-        const query_get_post = `SELECT * FROM Post WHERE post_id = ${post_id}`
+        const query_get_post = `SELECT p.*,pf.profile_photo FROM Post p JOIN Profile pf ON p.user_id = pf.user_id
+                                WHERE post_id = ${post_id}`
         let db_result = await database.query(query_get_post)
         result_array.post = db_result.rows[0]
 
         //Then get comments
-        const query_get_comment = `SELECT * FROM Comment WHERE post_id = ${post_id} ORDER BY comment_id ASC`
+        const query_get_comment = `SELECT c.*,pf.profile_photo FROM Comment c JOIN Profile pf ON c.user_id = pf.user_id
+                                   WHERE post_id = ${post_id} ORDER BY comment_id ASC`
         db_result = await database.query(query_get_comment)
         result_array.comments = db_result.rows
 
