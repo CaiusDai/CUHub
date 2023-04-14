@@ -73,6 +73,12 @@ export const PostTable = (props) => {
         // Update the name property of the relevant item object
         updatedPosts[itemIndex].is_liked = !updatedPosts[itemIndex].is_liked
 
+        if(updatedPosts[itemIndex].is_liked){
+            updatedPosts[itemIndex].num_like = updatedPosts[itemIndex].num_like +1;
+        }else{
+            updatedPosts[itemIndex].num_like = updatedPosts[itemIndex].num_like - 1;
+        }
+
         // Update the state with the updated items array
         setPosts(updatedPosts)
     }
@@ -119,6 +125,7 @@ export const PostTable = (props) => {
         updatedPosts[itemIndex].disliked_by_user =
             !updatedPosts[itemIndex].disliked_by_user
 
+
         // Update the state with the updated items array
         setPosts(updatedPosts)
     }
@@ -162,7 +169,7 @@ export const PostTable = (props) => {
                                         </ButtonBase>
                                         <Card variant="outlined">
                                             <CardHeader
-                                                title={post.creator_name}
+                                                title={post.is_anonymous? 'Anonymous': post.creator_name}
                                                 subheader={post.tag}
                                             />
                                             <CardContent>
@@ -193,6 +200,9 @@ export const PostTable = (props) => {
                                                     }
                                                 >
                                                     <FavoriteIcon />
+                                                    <Typography>
+                                                        {post.num_like}
+                                                    </Typography>
                                                 </IconButton>
                                                 <IconButton
                                                     color={
