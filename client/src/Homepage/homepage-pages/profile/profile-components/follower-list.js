@@ -26,7 +26,7 @@ const FollowerListPage = () => {
                 setIsLoading(false)
                 // Handle
             })
-    })
+    }, [])
 
     const followedUsers = [
         { name: 'John Smith', username: 'john_smith', email: 'sample' },
@@ -140,6 +140,8 @@ const FollowerListPage = () => {
             .then((result) => result.json())
             .then((result) => {
                 // handle no data in data block
+                if(result.status === 'success')
+                console.log(result.message)
             })
     }
 
