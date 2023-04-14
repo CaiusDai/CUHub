@@ -25,17 +25,19 @@ const Page = () => {
     }
     //below I need the email of the user.
     const { email } = useParams()
-    fetch(`http://localhost:5000/api/admin/block/?email=${email}`,{
+    fetch(`http://localhost:5000/api/admin/block/?email=${email}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-    }).then(response => response.json()).then(res =>{
-        if(res.status==='sucess')
-            //Do something here
-            console.log("Unblocking succeed")
     })
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.status === 'sucess')
+                //Do something here
+                console.log('Unblocking succeed')
+        })
     return (
         <>
             <Helmet>

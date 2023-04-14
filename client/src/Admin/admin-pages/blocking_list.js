@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Box, Card, Container, Divider, Stack, Typography } from '@mui/material'
 import { OrdersSearch } from 'src/Admin/admin-sections/orders/orders-search'
@@ -7,28 +7,7 @@ import { OrdersTable } from 'src/Admin/admin-sections/orders/orders-table'
 //I need backend to provide the mail address(id) and the start & end date of the blocking user.
 //You can refer to the examples already entered below,
 //but of course I will replace them with real user data after you have provided me with the backend user data.
-let block_list
 
-fetch(`http://localhost:5000/api/admin/block/`, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-})
-    .then((response) => response.json())
-    .then((res) => {
-        // Format of resposne:
-        //const stauts = res.status // status. 'success' for a success operation
-        const data = res.data
-        //const message = res.message // Debug only
-        block_list = data.block_list // Array of {email,startAt,endAt}
-        // Example : for email1
-        // const email1 = block_list[0].email
-        // const startAt = block_list[0].startAt
-        // const endAt = block_list[0].endAt
-        console.log(block_list)
-    })
 // {
 //     id: 'usermail@gmail.com',
 //     createdAt: subDays(now, 21).getTime(),
@@ -70,6 +49,9 @@ const Page = () => {
     const [query, setQuery] = useState('')
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [isLoading, setIsLoading] = useState(true) // Add loading state
+
+    const [blockingListToDisplay, setBlockingListToDisplay] = useState([])
 
     const handleModeChange = useCallback((event, value) => {
         if (value) {
@@ -89,6 +71,34 @@ const Page = () => {
         setRowsPerPage(parseInt(event.target.value, 10))
         setPage(0)
     }, [])
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/api/admin/block/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        })
+            .then((response) => response.json())
+            .then((res) => {
+                // Format of resposne:
+                //const stauts = res.status // status. 'success' for a success operation
+                const data = res.data
+                //const message = res.message // Debug only
+                setBlockingListToDisplay(data.block_list) // Array of {email,startAt,endAt}
+                setIsLoading(false)
+                // Example : for email1
+                // const email1 = block_list[0].email
+                // const startAt = block_list[0].startAt
+                // const endAt = block_list[0].endAt
+            })
+    }, [])
+
+    if (isLoading) {
+        // Render a loading message while the posts are being retrieved
+        return <div>Loading posts...</div>
+    }
 
     return (
         <>
@@ -122,8 +132,8 @@ const Page = () => {
                                 />
                                 <Divider />
                                 <OrdersTable
-                                    count={block_list.length}
-                                    items={block_list}
+                                    count={blockingListToDisplay.length}
+                                    items={blockingListToDisplay}
                                     page={page}
                                     rowsPerPage={rowsPerPage}
                                     onPageChange={handleChangePage}
