@@ -26,7 +26,7 @@ const FollowerListPage = () => {
                 setIsLoading(false)
                 // Handle
             })
-    })
+    }, [])
 
     const followedUsers = [
         { name: 'John Smith', username: 'john_smith', email: 'sample' },

@@ -227,8 +227,6 @@ export const PostTable = (props) => {
                                                     color="textSecondary"
                                                     component="p"
                                                 >
-                                                    Created by{' '}
-                                                    {post.creator_username}{' '}
                                                     Reposted by{' '}
                                                     {
                                                         post.repost_creator_username

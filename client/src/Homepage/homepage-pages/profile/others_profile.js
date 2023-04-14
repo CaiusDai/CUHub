@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async'
 import { useFormik } from 'formik'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import { PostTable } from '../../homepage-sections/post-table'
 import {
     Avatar,
     Box,
@@ -21,27 +22,43 @@ import { useParams } from 'react-router-dom'
 const OtherProfilePage = () => {
     const { id } = useParams()
 
-    fetch(`http://localhost:5000/api/profiles/${id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.status === 'success') {
-                //Successfully get profile of other user
-                console.log(data.message)
-                const profile = data.data.profile //profile is object of profile, contains username,major,gender, birthday,
-                //college,interests,email,profile_photo,num_of_follower,num_of_following
-                const posts = data.data.posts //posts is array of posts
-                console.log(profile)
-            } else {
-                //error or unauthorized
-                console.log(data.message)
-            }
+    const [isLoading, setIsLoading] = useState(true) // Add loading state
+
+    const [othersProfileToDisplay, setOthersProfileToDisplay] = useState([])
+
+    const [othersPostToDisplay, setOthersPostToDisplay] = useState([])
+
+    const [followStatusToDisplay, setFollowStatusToDisplay] = useState([])
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/api/profiles/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
         })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.status === 'success') {
+                    //Successfully get profile of other user
+                    console.log(data.message)
+                    const follow_status = data.data.follow_status
+                    const profile = data.data.profile //profile is object of profile, contains username,major,gender, birthday,
+                    //college,interests,email,profile_photo,num_of_follower,num_of_following
+                    const posts = data.data.posts //posts is array of posts
+                    console.log(profile)
+                    setOthersProfileToDisplay(profile)
+                    setFollowStatusToDisplay(follow_status)
+                    setOthersPostToDisplay(posts)
+                    setIsLoading(false)
+                } else {
+                    //error or unauthorized
+                    console.log(data.message)
+                }
+            })
+    }, [])
+
     // here is the interface for view others profile, the id above provide to you
     // is the creator_id corresponding to the post, please help me to provide all
     // info that require current user (A) to see about the creator user (B) in here
@@ -50,9 +67,6 @@ const OtherProfilePage = () => {
 
     console.log('the following is the id for this profile')
     console.log(id)
-    const [userData, setUserData] = useState(null)
-    const [avatarUrl, setAvatarUrl] = useState('')
-
     const handleFollowerClick = () => {
         console.log('Trying to get follower list')
         window.location.href = 'profile/follower_list'
@@ -62,43 +76,22 @@ const OtherProfilePage = () => {
         window.location.href = 'profile/following_list'
     }
 
-    useEffect(() => {
-        fetch(`http://localhost:5000/api/profiles/me`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        })
-            .then((response) => response.json())
-            .then((res) => {
-                const data = res.data
-                setUserData(data.profile)
-                const profile_photo = data.profile.profile_photo
-                return fetch(
-                    `http://localhost:5000/api/images/avatars/${profile_photo}`,
-                    {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        credentials: 'include',
-                    }
-                )
-            })
-            .then((response) => response.blob())
-            .then((blob) => {
-                const objectURL = URL.createObjectURL(blob)
-                setAvatarUrl(objectURL)
-            })
-    }, [])
-
     const formik = useFormik({
         onSubmit: async (values, helpers) => {
             helpers.setStatus({ success: true })
             helpers.setSubmitting(false)
         },
     })
+
+    if (isLoading) {
+        // Render a loading message while the posts are being retrieved
+        return <div>Loading posts...</div>
+    }
+
+    console.log('the following is others profile')
+    console.log(othersProfileToDisplay)
+    console.log('the following is the follow statue')
+    console.log(followStatusToDisplay)
 
     return (
         <>
@@ -115,140 +108,120 @@ const OtherProfilePage = () => {
                     <Stack spacing={3}>
                         <div>
                             <Grid container spacing={3}>
-                                <Grid xs={12} md={8}>
-                                    <Card sx={{ p: 3 }}>
-                                        <form onSubmit={formik.handleSubmit}>
-                                            <img
-                                                style={{
-                                                    maxWidth: 600,
-                                                    width: 'auto',
-                                                }}
-                                                src={backgroundimg}
-                                                alt="backgroundpic"
-                                            />
+                                x s={12}
+                                md={8}
+                                <Card sx={{ p: 3 }}>
+                                    <form onSubmit={formik.handleSubmit}>
+                                        <img
+                                            style={{
+                                                maxWidth: 600,
+                                                width: 'auto',
+                                            }}
+                                            src={backgroundimg}
+                                            alt="backgroundpic"
+                                        />
+                                        <Avatar
+                                            src={white}
+                                            sx={{
+                                                height: 20,
+                                                width: 20,
+                                            }}
+                                        />
+                                        <Stack
+                                            alignItems="center"
+                                            direction="row"
+                                            spacing={4}
+                                            sx={{ mb: 3 }}
+                                        >
                                             <Avatar
-                                                src={white}
+                                                src={`http://localhost:5000/avatar_images/${othersProfileToDisplay.profile_photo}`}
                                                 sx={{
-                                                    height: 20,
-                                                    width: 20,
+                                                    height: 64,
+                                                    width: 64,
                                                 }}
                                             />
-                                            <Stack
-                                                alignItems="center"
-                                                direction="row"
-                                                spacing={4}
-                                                sx={{ mb: 3 }}
-                                            >
-                                                <Avatar
-                                                    src={avatarUrl}
-                                                    sx={{
-                                                        height: 64,
-                                                        width: 64,
-                                                    }}
-                                                />
-                                                <div
-                                                    style={{
-                                                        position: 'absolute',
-                                                        transform:
-                                                            'translateX(500%)',
-                                                    }}
+                                            <div sx={{ ml: 30 }}>
+                                                <Button
+                                                    color="primary"
+                                                    size="small"
+                                                    type="button"
+                                                    variant="outlined"
                                                 >
-                                                    <Button
-                                                        color="primary"
-                                                        size="small"
-                                                        type="button"
-                                                        variant="outlined"
-                                                        href={`/homepage/profile_edit?avatar=${avatarUrl}`}
+                                                    {followStatusToDisplay ===
+                                                    'unfollowed' ? (
+                                                        <p>Follow</p>
+                                                    ) : (
+                                                        <p>UnFollow</p>
+                                                    )}
+                                                </Button>
+                                                {followStatusToDisplay ===
+                                                'pending' ? (
+                                                    <Typography
+                                                        variant="body2"
+                                                        color="textSecondary"
+                                                        component="p"
                                                     >
-                                                        Edit Profile
-                                                    </Button>
-                                                    <div></div>
-                                                </div>
+                                                        your request is still
+                                                        pending
+                                                    </Typography>
+                                                ) : null}
+                                            </div>
+                                        </Stack>
+                                        <Box sx={{ maxWidth: 600 }}>
+                                            <Stack spacing={1}>
+                                                <Typography variant="h4">
+                                                    {
+                                                        othersProfileToDisplay.username
+                                                    }
+                                                </Typography>
+                                                <Typography variant="h6">
+                                                    {
+                                                        othersProfileToDisplay.email
+                                                    }
+                                                </Typography>
+                                                <Typography variant="h6">
+                                                    {
+                                                        othersProfileToDisplay.college
+                                                    }
+                                                </Typography>
+                                                <Typography variant="h6">
+                                                    <SvgIcon>
+                                                        <AiOutlineHeart />
+                                                    </SvgIcon>
+                                                    {
+                                                        othersProfileToDisplay.interests
+                                                    }
+                                                    <SvgIcon>
+                                                        <VscBlank />
+                                                    </SvgIcon>
+                                                    <SvgIcon>
+                                                        <HiOutlineCake />
+                                                    </SvgIcon>{' '}
+                                                    {
+                                                        othersProfileToDisplay.birthday
+                                                    }
+                                                </Typography>
+                                                <Typography variant="h6">
+                                                    Following{' '}
+                                                    {
+                                                        othersProfileToDisplay.num_of_following
+                                                    }
+                                                    Followers{' '}
+                                                    {
+                                                        othersProfileToDisplay.num_of_follower
+                                                    }
+                                                </Typography>
                                             </Stack>
-                                            <Box sx={{ maxWidth: 600 }}>
-                                                <Stack spacing={1}>
-                                                    <Typography variant="h4">
-                                                        {userData &&
-                                                            userData.username}
-                                                    </Typography>
-                                                    <Typography variant="h6">
-                                                        {userData &&
-                                                            userData.email}
-                                                    </Typography>
-                                                    <Typography variant="h6">
-                                                        {userData &&
-                                                            userData.college}
-                                                    </Typography>
-                                                    <Typography variant="h6">
-                                                        <SvgIcon>
-                                                            <AiOutlineHeart />
-                                                        </SvgIcon>
-                                                        {userData &&
-                                                            userData.interests}
-                                                        <SvgIcon>
-                                                            <VscBlank />
-                                                        </SvgIcon>
-                                                        <SvgIcon>
-                                                            <HiOutlineCake />
-                                                        </SvgIcon>{' '}
-                                                        {userData &&
-                                                            userData.birthday}
-                                                    </Typography>
-                                                    <Typography variant="h6">
-                                                        Following{' '}
-                                                        {userData &&
-                                                            userData.num_of_following}
-                                                        Followers{' '}
-                                                        {userData &&
-                                                            userData.num_of_follower}
-                                                    </Typography>
-                                                </Stack>
-                                                <Box sx={{ mt: 3 }}>
-                                                    <Button
-                                                        color="primary"
-                                                        size="large"
-                                                        type="submit"
-                                                        variant="outlined"
-                                                    >
-                                                        Post
-                                                    </Button>
-
-                                                    <Button
-                                                        color="primary"
-                                                        size="large"
-                                                        type="submit"
-                                                        variant="outlined"
-                                                        onClick={() =>
-                                                            handleFollowerClick()
-                                                        }
-                                                    >
-                                                        Followers
-                                                    </Button>
-                                                    <Button
-                                                        color="primary"
-                                                        size="large"
-                                                        type="submit"
-                                                        variant="outlined"
-                                                        onClick={() =>
-                                                            handleFollowingClick()
-                                                        }
-                                                    >
-                                                        Following
-                                                    </Button>
-                                                    <Button
-                                                        color="primary"
-                                                        size="large"
-                                                        type="submit"
-                                                        variant="outlined"
-                                                    >
-                                                        LikedPost
-                                                    </Button>
-                                                </Box>
-                                            </Box>
-                                        </form>
-                                    </Card>
-                                </Grid>
+                                        </Box>
+                                    </form>
+                                </Card>
                             </Grid>
+                            {followStatusToDisplay === 'following' ? (
+                                <PostTable
+                                    count={othersPostToDisplay.length}
+                                    items={othersPostToDisplay}
+                                />
+                            ) : null}
                         </div>
                     </Stack>
                 </Container>
