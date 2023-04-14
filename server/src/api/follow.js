@@ -80,8 +80,7 @@ follow_router.delete('/followinglist/:id', async (req, res) => {
     try {
         const user_id = req.session.uid
         const following_id = req.params.id
-        console.log(following_id)
-        console.log(user_id)
+
         const database = await connect_db()
 
         const status = await database.query(
@@ -226,8 +225,6 @@ follow_router.delete('/followerlist/:id', async (req, res) => {
     try {
         const user_id = req.session.uid
         const follower_id = req.params.id
-        console.log(user_id)
-        console.log(follower_id)
         const database = await connect_db()
         const status = await database.query(
             `SELECT status FROM FollowRelationship WHERE user1 = ${follower_id} AND user2 = ${user_id}`
