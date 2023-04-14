@@ -257,7 +257,7 @@ async function insert_data() {
                 'female',
                 '2001-02-05',
                 'CUHK',
-                'DEFAULT',
+                'default.jfif',
                 ['sing', 'jump', 'rap'],
                 0,
                 0
@@ -272,7 +272,7 @@ async function insert_data() {
                 'male',
                 '2001-02-05',
                 'CUHK',
-                'DEFAULT',
+                'default.jfif',
                 ['sing', 'jump', 'rap'],
                 0,
                 0
