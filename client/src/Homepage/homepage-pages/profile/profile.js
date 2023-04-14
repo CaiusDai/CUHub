@@ -18,12 +18,13 @@ import backgroundimg from 'src/Images/bg.png'
 import white from 'src/Images/white.png'
 import { HiOutlineCake } from 'react-icons/hi'
 
+
 const Page = () => {
     const [userData, setUserData] = useState(null)
     const [avatarUrl, setAvatarUrl] = useState('')
-    const userDataString = JSON.stringify(userData)
-    const encodedUserDataString = encodeURIComponent(userDataString)
-    const encodedavatarUrl = encodeURIComponent(avatarUrl)
+    const userDataString = JSON.stringify(userData);
+    const encodedUserDataString = encodeURIComponent(userDataString);
+    const encodedavatarUrl = encodeURIComponent(avatarUrl);
     useEffect(() => {
         fetch(`http://localhost:5000/api/profiles/me`, {
             method: 'GET',
@@ -199,11 +200,7 @@ const Page = () => {
                                                     </Typography>
                                                     <Typography variant="h6">
                                                         {userData &&
-                                                            userData.college}
-                                                        {' ('}
-                                                        {userData &&
-                                                            userData.major}
-                                                        {')'}
+                                                            userData.college}{' ('}{userData&&userData.major}{')'}
                                                     </Typography>
                                                     <Typography
                                                         variant="h5"
@@ -216,15 +213,13 @@ const Page = () => {
                                                         </SvgIcon>
                                                         {userData &&
                                                             userData
-                                                                .interests[0]}
-                                                        ,{' '}
-                                                        {userData &&
+                                                                .interests[0]}{', '}
+                                                                {userData &&
                                                             userData
-                                                                .interests[1]}
-                                                        ,{' '}
-                                                        {userData &&
+                                                                .interests[1]}{', '}
+                                                                {userData &&
                                                             userData
-                                                                .interests[2]}{' '}
+                                                                .interests[2]}
                                                         <SvgIcon>
                                                             <VscBlank />
                                                         </SvgIcon>

@@ -85,16 +85,18 @@ const Page = () => {
             console.log('Errror')
         }
 
-        let { username, major, college, birthday, gender } = values
-        let interest = [values, values, values]
-        fetch(`http://localhost:5000/api/profile/`, {
+        let { username, major, college, birthday, gender,interests } = values
+        var partsArray = interests.split(',');
+        console.log(interests)
+        console.log(partsArray)
+        fetch(`http://localhost:5000/api/profiles/`, {
             method: 'PUT',
             body: JSON.stringify({
                 username: username,
                 major: major,
                 college: college,
                 birthday: birthday,
-                interests: interest,
+                interests: partsArray,
                 gender: gender,
             }),
             headers: {
@@ -159,7 +161,7 @@ const Page = () => {
                                                 major: userData.major,
                                                 college: userData.college,
                                                 birthday: userData.birthday,
-                                                interest: userData.interests,
+                                                interests: userData.interests,
                                                 gender: userData.gender,
                                             }}
                                             onFinish={onFinish}
@@ -248,14 +250,14 @@ const Page = () => {
                                                         </Form.Item>
                                                     </div>
                                                     <div className="input-container">
-                                                        <label htmlFor="interest">
+                                                        <label htmlFor="interests">
                                                             Interest (Should be:
                                                             interest1,interest2,interest3):
                                                         </label>
-                                                        <Form.Item name="interest">
+                                                        <Form.Item name="interests">
                                                             <Input
-                                                                type="interest"
-                                                                id="interest"
+                                                                type="interests"
+                                                                id="interests"
                                                             />
                                                         </Form.Item>
                                                     </div>
