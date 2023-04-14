@@ -6,14 +6,14 @@ const config = require('../../configs/configs')
 const { image_upload, avatar_upload } = require('../../util/upload_controller')
 
 // Example for uploading one image
-upload_router.post('/upload', image_upload.single('image'), (req, res) => {
-    console.log('Uploading...')
-    // Get the file name
-    const file_name = req.file.filename
-    // Query operation should happen here
-    // Send result to the front end
-    res.send(`Image ${file_name}uploaded`)
-})
+// upload_router.post('/upload', image_upload.single('image'), (req, res) => {
+//     console.log('Uploading...')
+//     // Get the file name
+//     const file_name = req.file.filename
+//     // Query operation should happen here
+//     // Send result to the front end
+//     res.send(`Image ${file_name}uploaded`)
+// })
 
 // Example for uploading multiple images:
 upload_router.post('/uploads', image_upload.array('images', 10), (req, res) => {
