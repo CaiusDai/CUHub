@@ -136,6 +136,42 @@ const query_postaltitude =
 const query_index_altitude_of =
     'CREATE INDEX AltitudeOf ON PostAltitude(user_id)'
 
+const query_trigger_like = `CREATE OR REPLACE FUNCTION decrement_num_of_like() RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE Post SET num_like = num_like - 1 WHERE post_id = OLD.post_id;
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER decrement_num_of_like_trigger
+AFTER DELETE ON PostAltitude
+FOR EACH ROW
+EXECUTE FUNCTION decrement_num_of_like();`
+
+const query_trigger_comment = `CREATE OR REPLACE FUNCTION decrement_num_of_comment() RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE Post SET num_comment = num_comment - 1 WHERE post_id = OLD.post_id;
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER decrement_num_of_comment_trigger
+AFTER DELETE ON Comment
+FOR EACH ROW
+EXECUTE FUNCTION decrement_num_of_comment();`
+
+const query_trigger_repost = `CREATE OR REPLACE FUNCTION decrement_num_of_repost() RETURNS TRIGGER AS $$
+BEGIN
+  UPDATE Post SET num_retweet = num_retweet - 1 WHERE post_id = OLD.original_post_id;
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER decrement_num_of_repost_trigger
+AFTER DELETE ON Repost
+FOR EACH ROW
+EXECUTE FUNCTION decrement_num_of_repost();`
+
 function create_query_execute(database, table_name, query) {
     return database
         .query(query)
@@ -198,6 +234,18 @@ async function create_table() {
             'Index AltitudeOf',
             query_index_altitude_of
         )
+        await create_query_execute(database, 'Trigger_like', query_trigger_like)
+        await create_query_execute(
+            database,
+            'Trigger_comment',
+            query_trigger_comment
+        )
+        await create_query_execute(
+            database,
+            'Trigger_repost',
+            query_trigger_repost
+        )
+
         return Promise.resolve()
     } catch (error) {
         return Promise.reject(error)
