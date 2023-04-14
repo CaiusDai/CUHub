@@ -34,7 +34,8 @@ export const OrdersTable = (props) => {
         console.log(
             `Navigated to view_info section of the account ${user_email}`
         )
-        navigate(`/admin/view_info/${user_email}`)
+        // navigate(`/admin/view_info/${user_email}`)
+        navigate(`/homepage/other_profile/${user_email}`)
         // window.location.href = {'/homepage/particular_post/${postId}'}
     }
     const handleDeleteClick = (user_email) => {
@@ -76,7 +77,7 @@ export const OrdersTable = (props) => {
                                             variant="contained"
                                             onClick={() =>
                                                 handleViewinfoClick(
-                                                    user_list.email
+                                                    user_list.user_id
                                                 )
                                             }
                                         >
